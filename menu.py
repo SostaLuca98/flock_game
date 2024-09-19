@@ -4,9 +4,9 @@ import pygame, time
 
 class MenuScene(Scene):
 
-    def __init__(self, manager: SceneManager, screen: pygame.Surface, sprites: dict) -> None:
+    def __init__(self, manager: SceneManager, screen: pygame.Surface, tracker, sprites: dict) -> None:
         
-        super().__init__(manager, screen, sprites)
+        super().__init__(manager, screen, tracker, sprites)
         self.previous_time = None
 
         # Create buttons

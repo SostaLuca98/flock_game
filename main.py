@@ -3,6 +3,8 @@ from menu import MenuScene
 from game import GameScene
 import pygame, time
 
+from tracker import Tracker
+
 PAGE_WIDTH  = 1280
 PAGE_HEIGHT = 720
 
@@ -14,13 +16,14 @@ class Game:
         pygame.init() 
         self.running = True
         self.screen  = pygame.display.set_mode((PAGE_WIDTH, PAGE_HEIGHT))
+        self.tracker = Tracker()
         self.sprites = self.load_sprites()
         self.load_scenes()
 
     def load_scenes(self) -> None:
         self.scene_manager = SceneManager()
-        scenes = {"game": GameScene(self.scene_manager, self.screen, self.sprites),
-                  "menu": MenuScene(self.scene_manager, self.screen, self.sprites)}
+        scenes = {"game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites, "birds"),
+                  "menu": MenuScene(self.scene_manager, self.screen, self.tracker, self.sprites)}
         self.scene_manager.initialize(scenes, "game") # DI BASE ANDREBBE MENU
 
 
@@ -49,6 +52,7 @@ class Game:
             if self.scene_manager.quit == True:
                 self.running = False    
         pygame.quit()
+        self.tracker.quit()
 
 g = Game()
 g.run()

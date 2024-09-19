@@ -5,12 +5,9 @@ import pygame, time
 
 class GameScene(Scene):
 
-    def __init__(self, manager: SceneManager, screen: pygame.Surface, sprites: dict) -> None:
+    def __init__(self, manager: SceneManager, screen: pygame.Surface, tracker, sprites: dict, level: str) -> None:
 
-        super().__init__(manager, screen, sprites)
-
-        self.player = Player(100,200,self.sprites["ship"])
-        self.npcs   = [NPC(self.sprites["ship"]) for _ in range(10)]
+        super().__init__(manager, screen, tracker, sprites)
 
         self.keybinds_dir = {pygame.K_w: "N",
                              pygame.K_d: "E",
@@ -25,9 +22,16 @@ class GameScene(Scene):
 
         self.score_cell = Button(1100, 680, "SCORE:  10")
 
+        self.build_level(level)
+
+    def build_level(self, level):
+        self.player = Player(100,200,self.sprites["ship"])
+        self.npcs   = [NPC(self.sprites["ship"]) for _ in range(10)]
+
     def update(self) -> None:
 
         dt = self.update_time()
+        self.tracker.track()
         self.player.update(dt)
         for npc in self.npcs:
             npc.set_direction(self.player)

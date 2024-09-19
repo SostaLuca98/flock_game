@@ -69,9 +69,10 @@ class SceneManager:
 
 class Scene:
     
-    def __init__(self, manager: SceneManager, screen: pygame.Surface, sprites: dict) -> None:
+    def __init__(self, manager: SceneManager, screen: pygame.Surface, tracker, sprites: dict) -> None:
         self.manager = manager # SceneManager to switch between scene and master things
         self.screen  = screen  # Blackboard for drawing
+        self.tracker = tracker
         self.sprites = sprites # Collection of all png images for this scene
         self.previous_time = None
 
