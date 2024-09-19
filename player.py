@@ -12,14 +12,14 @@ class Player:
         self.spe_c = 60
         self.acc_c = 300
         
-        self.rot_speed = 1
+        self.rot_speed = 3
         self.tar_angle = 0
         self.dir_angle = 0
 
         self.speed = self.spe_c
         self.accel = self.acc_c
         self.set_direction("E")
-        self.moving = False
+        self.moving = True
         self.rect = self.sprite.get_rect()
 
     def update(self, dt) -> None:

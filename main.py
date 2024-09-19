@@ -4,7 +4,7 @@ from game import GameScene
 import pygame, time
 
 PAGE_WIDTH  = 1280
-PAGE_HEIGHT = 720   
+PAGE_HEIGHT = 720
 
 class Game:
 

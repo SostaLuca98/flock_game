@@ -29,7 +29,9 @@ class GameScene(Scene):
 
         dt = self.update_time()
         self.player.update(dt)
-        for npc in self.npcs: npc.update(dt)
+        for npc in self.npcs:
+            npc.set_direction(self.player)
+            npc.update(dt)
         self.score_cell.text = f"SCORE: {int(10*self.player.speed/self.player.spe_c)}"
         self.score_cell.update(dt)
 
@@ -72,11 +74,6 @@ class GameScene(Scene):
                     self.curr_key_dir  = self.keystack_dir[-1]
 
                     self.player.set_direction(self.keybinds_dir[self.curr_key_dir])
-                    for npc in self.npcs:
-                        npc.set_direction(self.keybinds_dir[self.curr_key_dir])
-                        npc.moving = True
                     self.player.moving = True
             else:
                 self.curr_key_dir = None
-                for npc in self.npcs: npc.moving = False
-                #self.player.moving = False
