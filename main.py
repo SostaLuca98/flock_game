@@ -21,7 +21,7 @@ class Game:
         self.scene_manager = SceneManager()
         scenes = {"game": GameScene(self.scene_manager, self.screen, self.sprites),
                   "menu": MenuScene(self.scene_manager, self.screen, self.sprites)}
-        self.scene_manager.initialize(scenes, "game")
+        self.scene_manager.initialize(scenes, "game") # DI BASE ANDREBBE MENU
 
 
     def load_sprites(self) -> dict: 

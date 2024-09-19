@@ -9,11 +9,13 @@ class Player:
         self.x , self.y  = x, y
         self.vx, self.vy = 100, 0
         self.speed = 60
-        self.acceleration = self.speed 
+        self.acc_c = 300
+        self.rot_speed = 1
         self.tar_angle = 0
         self.dir_angle = 0
 
-        self.direction = "E"
+        self.accel = self.acc_c
+        self.set_direction("E")
         self.moving = False
         self.rect = self.sprite.get_rect()
 
@@ -27,17 +29,23 @@ class Player:
         screen.blit(rot_surf, (self.x-rot_surf.get_size()[0]/2, self.y-rot_surf.get_size()[1]/2))
 
     def set_direction(self, direction):
-        self.direction = direction
+        if   direction == "S": self.tar_angle = +math.pi/2
+        elif direction == "N": self.tar_angle = -math.pi/2
+        elif direction == "E": self.tar_angle = 0
+        elif direction == "W": self.tar_angle = math.pi
+    
+    def set_speed(self, direction):
+        if direction == "U": self.accel = +self.acc_c
+        if direction == "D": self.accel = -self.acc_c
+        if direction == "0": self.accel = 0
 
     def move(self, dt) -> None:
 
-        if   self.direction == "S": self.tar_angle = +math.pi/2
-        elif self.direction == "N": self.tar_angle = -math.pi/2
-        elif self.direction == "E": self.tar_angle = 0
-        elif self.direction == "W": self.tar_angle = math.pi
+        self.speed += self.accel*dt
+        self.speed = max(10, self.speed)
         
-        self.vx += self.acceleration*math.cos(self.tar_angle)*dt
-        self.vy += self.acceleration*math.sin(self.tar_angle)*dt
+        self.vx += self.rot_speed*self.speed*math.cos(self.tar_angle)*dt
+        self.vy += self.rot_speed*self.speed*math.sin(self.tar_angle)*dt
         vmod = math.sqrt(self.vx**2+self.vy**2)
         self.vx = self.vx/vmod*self.speed
         self.vy = self.vy/vmod*self.speed
