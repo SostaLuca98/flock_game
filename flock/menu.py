@@ -1,4 +1,4 @@
-from utils import Scene, SceneManager, Button
+from flock.utils import Scene, SceneManager, Button
 import pygame, time
 
 

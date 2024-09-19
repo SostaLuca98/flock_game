@@ -1,6 +1,6 @@
-from utils import Scene, SceneManager, Button
-from player import Player
-from npc import NPC
+from flock.utils import Scene, SceneManager, Button
+from flock.player import Player
+from flock.npc import NPC
 import pygame, time
 
 class GameScene(Scene):
@@ -31,7 +31,6 @@ class GameScene(Scene):
     def update(self) -> None:
 
         dt = self.update_time()
-        self.tracker.track()
         self.player.update(dt)
         for npc in self.npcs:
             npc.set_direction(self.player)
@@ -47,6 +46,8 @@ class GameScene(Scene):
         pygame.display.update()
 
     def poll_events(self) -> None:
+
+        self.tracker.track()
 
         for event in pygame.event.get():
 
@@ -72,12 +73,11 @@ class GameScene(Scene):
                 self.curr_key_spe = None
                 self.player.set_speed("0")
 
-
             if len(self.keystack_dir):
                 if  self.curr_key_dir != self.keystack_dir[-1]:
                     self.curr_key_dir  = self.keystack_dir[-1]
 
                     self.player.set_direction(self.keybinds_dir[self.curr_key_dir])
                     self.player.moving = True
-            else:
+            else: 
                 self.curr_key_dir = None

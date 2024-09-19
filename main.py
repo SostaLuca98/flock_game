@@ -1,9 +1,9 @@
-from utils import SceneManager
-from menu import MenuScene
-from game import GameScene
+from flock.utils import SceneManager
+from flock.menu import MenuScene
+from flock.game import GameScene
 import pygame, time
 
-from tracker import Tracker
+from flock.tracker import Tracker
 
 PAGE_WIDTH  = 1280
 PAGE_HEIGHT = 720
