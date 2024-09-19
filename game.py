@@ -1,4 +1,4 @@
-from utils import Scene, SceneManager
+from utils import Scene, SceneManager, Button
 from player import Player
 from npc import NPC
 import pygame, time
@@ -23,16 +23,21 @@ class GameScene(Scene):
         self.keystack_spe = []
         self.curr_key_spe = None
 
+        self.score_cell = Button(1100, 680, "SCORE:  10")
+
     def update(self) -> None:
 
         dt = self.update_time()
         self.player.update(dt)
         for npc in self.npcs: npc.update(dt)
+        self.score_cell.text = f"SCORE: {int(10*self.player.speed/self.player.spe_c)}"
+        self.score_cell.update(dt)
 
     def render(self) -> None:
         self.screen.fill("black")
-        self.player.render(self.screen)
         for npc in self.npcs: npc.render(self.screen)
+        self.player.render(self.screen)
+        self.score_cell.render(self.screen)
         pygame.display.update()
 
     def poll_events(self) -> None:

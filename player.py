@@ -8,12 +8,15 @@ class Player:
         
         self.x , self.y  = x, y
         self.vx, self.vy = 100, 0
-        self.speed = 60
+        
+        self.spe_c = 60
         self.acc_c = 300
+        
         self.rot_speed = 1
         self.tar_angle = 0
         self.dir_angle = 0
 
+        self.speed = self.spe_c
         self.accel = self.acc_c
         self.set_direction("E")
         self.moving = False
@@ -42,7 +45,7 @@ class Player:
     def move(self, dt) -> None:
 
         self.speed += self.accel*dt
-        self.speed = max(10, self.speed)
+        self.speed = min(10*self.spe_c,max(self.spe_c/10, self.speed))
         
         self.vx += self.rot_speed*self.speed*math.cos(self.tar_angle)*dt
         self.vy += self.rot_speed*self.speed*math.sin(self.tar_angle)*dt
