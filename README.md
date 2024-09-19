@@ -4,9 +4,14 @@
 Per ora serve solo pygame
 
 ## Istruzioni Base
-Il giocatore è la navetta più grande (non ho ancora le immagini di animali)
-Per muoverlo usate WASD. Questi tasti selezionano l'angolo verso cui vuole virare e pian piano gira verso quella direzione (ovviamente queste velocità sono parametrizzate e modificabili).
-Quelle piccole sono mosse sempre con WASD, ma in modo diretto.
+
+
+## Funzionamento Generale
+Il programma è diviso in SCENE che costituiscono possibili livelli o menu. In ogni momento c'è una scena attiva scelta tramite MANAGER che consente anche di cambiare le scene tra di loro.
+Le scene di gioco si basano sulla classe GAME. Il meccaniso generale di qualsiasi scena è mostrato nella funzione RUN del MAIN ed è basato sul loop:
+- POOL_EVENTS: raccogliere gli input, sia da tastiera che da tracker
+- UPDATE: Aggiorna tutto il necessario spostandosi di dt (dt è adattivo in funzione di quanto ci mette a calcolare) rispetto all'istante precedente
+- RENDER: Ridisegna tutto sullo SCREEN. 
 
 ## Questioni Aperte
 - Che forme possono avere gli ostacoli
