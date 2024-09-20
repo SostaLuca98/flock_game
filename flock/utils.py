@@ -37,17 +37,6 @@ class Button:
     def render(self, screen: pygame.Surface):
         screen.blit(self.text_surface, (self.x, self.y))
 
-class Entity:
-
-    def __init__(self) -> None:
-        pass
-
-    def update(self, dt) -> None:
-        pass
-
-    def render(self, screen: pygame.Surface) -> None:
-        pass
-
 class SceneManager:
 
     def __init__(self) -> None:

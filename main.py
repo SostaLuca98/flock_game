@@ -1,9 +1,6 @@
-from flock.utils import SceneManager
-from flock.menu import MenuScene
-from flock.game import GameScene
-import pygame, time
+from flock import SceneManager, MenuScene, GameScene, Tracker
 
-from flock.tracker import Tracker
+import pygame, time
 
 PAGE_WIDTH  = 1280
 PAGE_HEIGHT = 720
@@ -16,7 +13,7 @@ class Game:
         pygame.init() 
         self.running = True
         self.screen  = pygame.display.set_mode((PAGE_WIDTH, PAGE_HEIGHT))
-        self.tracker = Tracker()
+        self.tracker = None#Tracker()
         self.sprites = self.load_sprites()
         self.load_scenes()
 
@@ -52,7 +49,7 @@ class Game:
             if self.scene_manager.quit == True:
                 self.running = False    
         pygame.quit()
-        self.tracker.quit()
+        #self.tracker.quit()
 
 g = Game()
 g.run()

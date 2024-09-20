@@ -1,6 +1,7 @@
-from flock.utils import Scene, SceneManager, Button
-from flock.player import Player
-from flock.npc import NPC
+from .utils import Scene, SceneManager, Button
+from .player import Player
+from .npc import NPC
+from .block import Block
 import pygame, time
 
 class GameScene(Scene):
@@ -20,13 +21,14 @@ class GameScene(Scene):
         self.keystack_spe = []
         self.curr_key_spe = None
 
-        self.score_cell = Button(1100, 680, "SCORE:  10")
+        self.score_cell = Button(1100, 680, "")
 
         self.build_level(level)
 
     def build_level(self, level):
         self.player = Player(100,200,self.sprites["ship"])
         self.npcs   = [NPC(self.sprites["ship"]) for _ in range(10)]
+        self.blocks = [Block((i+1)*50,(i+1)*20, 10, None) for i in range(10)]
 
     def update(self) -> None:
 
@@ -35,11 +37,14 @@ class GameScene(Scene):
         for npc in self.npcs:
             npc.set_direction(self.player)
             npc.update(dt)
-        self.score_cell.text = f"SCORE: {int(10*self.player.speed/self.player.spe_c)}"
+        for block in self.blocks:
+            block.update(dt)
+        self.score_cell.text = f"SPEED: {int(10*self.player.speed/self.player.spe_c)}"
         self.score_cell.update(dt)
 
     def render(self) -> None:
         self.screen.fill("black")
+        for block in self.blocks: block.render(self.screen)
         for npc in self.npcs: npc.render(self.screen)
         self.player.render(self.screen)
         self.score_cell.render(self.screen)
@@ -47,11 +52,14 @@ class GameScene(Scene):
 
     def poll_events(self) -> None:
 
-        self.tracker.track()
+        #self.tracker.track()
 
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
+                self.manager.quit_game()
+            
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 self.manager.quit_game()
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:

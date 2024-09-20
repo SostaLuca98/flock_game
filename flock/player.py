@@ -24,8 +24,6 @@ class Player:
 
     def update(self, dt) -> None:
         if self.moving: self.move(dt)
-        self.rect.x = int(self.x)
-        self.rect.y = int(self.y)
 
     def render(self, screen: pygame.Surface) -> None:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle) 

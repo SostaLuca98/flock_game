@@ -48,6 +48,8 @@ class MenuScene(Scene):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.manager.quit_game()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                self.manager.quit_game()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self.manager.set_scene("game")
 

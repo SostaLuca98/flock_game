@@ -1,7 +1,9 @@
 # FLOCK GAME
 
 ## Requirements
-Per ora serve solo pygame
+Python (3.11.9 se dove scaricarlo)
+Virtualenv
+Installate i requirements.txt tramite pip
 
 ## Istruzioni Base
 
