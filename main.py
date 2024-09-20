@@ -49,7 +49,8 @@ class Game:
             if self.scene_manager.quit == True:
                 self.running = False    
         pygame.quit()
-        #self.tracker.quit()
+        if self.tracker is not None:
+            self.tracker.quit()
 
 g = Game()
 g.run()

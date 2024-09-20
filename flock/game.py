@@ -52,7 +52,8 @@ class GameScene(Scene):
 
     def poll_events(self) -> None:
 
-        #self.tracker.track()
+        if self.tracker is not None:
+            self.tracker.track()
 
         for event in pygame.event.get():
 
