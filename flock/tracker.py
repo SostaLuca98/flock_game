@@ -17,7 +17,7 @@ class Tracker:
     def calculate_inclination(self, landmarks):
         x1, y1 = landmarks[self.mp_hands.HandLandmark.INDEX_FINGER_TIP].x, landmarks[self.mp_hands.HandLandmark.INDEX_FINGER_TIP].y
         x2, y2 = landmarks[self.mp_hands.HandLandmark.WRIST].x,            landmarks[self.mp_hands.HandLandmark.WRIST].y
-        return np.arctan2(y2 - y1, x2 - x1)
+        return np.arctan2(y1 - y2, x1 - x2)*360/np.pi/2 +np.pi
 
     def track(self):
         success, image = self.cap.read()
@@ -39,11 +39,11 @@ class Tracker:
                 hand_label = results.multi_handedness[idx].classification[0].label
                 if hand_label == 'Right':
                     inclination = self.calculate_inclination(hand_landmarks.landmark)
-                    print("/right_hand/inclination", inclination)
-                    #print(f"Sent /right_hand/inclination{inclination}")
+                    #print("/right_hand/inclination", int(inclination))
+                    return int(inclination)
                 elif hand_label == 'Left':
                     inclination = self.calculate_inclination(hand_landmarks.landmark)
-                    print("/left_hand/inclination", inclination)
-                    #print(f"Sent /left_hand/inclination {inclination}")
-
-        cv2.imshow('MediaPipe Hands', image)
+                    #print("/left_hand/inclination", int(inclination))
+                    return int(inclination)
+                    
+        #cv2.imshow('MediaPipe Hands', image)

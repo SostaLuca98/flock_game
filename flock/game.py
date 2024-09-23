@@ -57,7 +57,8 @@ class GameScene(Scene):
         for block in self.blocks:
             block.update(dt)
 
-        self.score_cell.text = f"SPEED: {int(10*self.player.speed/self.player.spe_c)}"
+        #self.score_cell.text = f"SPEED: {int(10*self.player.speed/self.player.spe_c)}"
+        self.score_cell.text = f"ANGLE: {-int(self.player.tar_angle*360/2/numpy.pi)}"
         self.score_cell.update(dt)
 
     def render(self) -> None:
@@ -70,8 +71,6 @@ class GameScene(Scene):
 
     def poll_events(self) -> None:
 
-        if self.tracker is not None:
-            self.tracker.track()
 
         for event in pygame.event.get():
 
@@ -108,3 +107,8 @@ class GameScene(Scene):
                     self.player.moving = True
             else: 
                 self.curr_key_dir = None
+
+        if self.tracker is not None:
+            angle = self.tracker.track()
+            if angle is not None:
+                self.player.tar_angle = angle/360*2*numpy.pi
