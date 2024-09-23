@@ -4,15 +4,15 @@ class Player:
 
     def __init__(self, x: float, y: float, sprite: pygame.Surface) -> None:
 
-        self.sprite = pygame.transform.scale_by(sprite, 0.3)
+        self.sprite = pygame.transform.scale_by(sprite, 0.075)
         
         self.x , self.y  = x, y
         self.vx, self.vy = 100, 0
         
-        self.spe_c = 60
+        self.spe_c = 50
         self.acc_c = 300
         
-        self.rot_speed = 3
+        self.rot_speed = 5
         self.tar_angle = 0
         self.dir_angle = 0
 
@@ -53,7 +53,9 @@ class Player:
 
         self.x += self.vx * dt
         self.y += self.vy * dt
-        self.x = max(self.rect.width/2 ,min(1280-self.rect.width/2,  self.x))
-        self.y = max(self.rect.height/2,min( 720-self.rect.height/2, self.y))
+        self.x = self.x%1280
+        self.y = self.y%720
+        #self.x = max(self.rect.width/2 ,min(1280-self.rect.width/2,  self.x))
+        #self.y = max(self.rect.height/2,min( 720-self.rect.height/2, self.y))
 
-        self.dir_angle = (-math.atan2(self.vy,self.vx)*360/(2*math.pi))%(360)
+        self.dir_angle = (math.atan2(-self.vy,self.vx)*360/(2*math.pi))%(360)

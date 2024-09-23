@@ -2,14 +2,32 @@ from .utils import Scene, SceneManager, Button
 from .player import Player
 from .npc import NPC
 from .block import Block
-import pygame, time
+from .engine import Engine
+import pygame, time, numpy
+from dataclasses import dataclass
 
 class GameScene(Scene):
+
+    @dataclass
+    class Params:
+        n = 200 # Numero di elementi dello stormo
+        w = 1000  # Numero di leader
+        T = 20 # Numero di istanti temporali simulati
+        ps = 10 # plot ogni tot istanti (utile in sviluppo)
+        x_max = 1280 # Lunghezza del dominio
+        y_max = 720  # Altezza del dominio
+        x0_max = 300
+        y0_max = 150
+        theta0_avg = 0
+        theta0_var = numpy.pi/6
+        v = 1  # Lunghezza di 1 passo temporale
+        r = 50 # Raggio legame di vicinanza
 
     def __init__(self, manager: SceneManager, screen: pygame.Surface, tracker, sprites: dict, level: str) -> None:
 
         super().__init__(manager, screen, tracker, sprites)
 
+        self.args = self.Params()
         self.keybinds_dir = {pygame.K_w: "N",
                              pygame.K_d: "E",
                              pygame.K_s: "S",
@@ -26,24 +44,24 @@ class GameScene(Scene):
         self.build_level(level)
 
     def build_level(self, level):
-        self.player = Player(100,200,self.sprites["ship"])
-        self.npcs   = [NPC(self.sprites["ship"]) for _ in range(10)]
+        self.player = Player(100,200,self.sprites["capo"])
+        self.npcs   = [NPC(self.sprites["bird"]) for _ in range(self.args.n)]
         self.blocks = [Block((i+1)*50,(i+1)*20, 10, None) for i in range(10)]
+        self.engine = Engine(self.args, self.player, self.npcs, self.blocks)
 
     def update(self) -> None:
 
         dt = self.update_time()
-        self.player.update(dt)
-        for npc in self.npcs:
-            npc.set_direction(self.player)
-            npc.update(dt)
+        self.engine.update(dt)
+
         for block in self.blocks:
             block.update(dt)
+
         self.score_cell.text = f"SPEED: {int(10*self.player.speed/self.player.spe_c)}"
         self.score_cell.update(dt)
 
     def render(self) -> None:
-        self.screen.fill("black")
+        self.screen.fill((13//1.2, 128//1.2, 96//1.2))
         for block in self.blocks: block.render(self.screen)
         for npc in self.npcs: npc.render(self.screen)
         self.player.render(self.screen)

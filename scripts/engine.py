@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+np.random.seed(1234)
 
 Dati = {
 	'n': 100, # Numero di elementi dello stormo
@@ -168,7 +169,6 @@ def SimulaStormo(Dati):
 	# Setup leaders
 	leaders = PercorsoLeader(Dati)
 	x[0:Dati["n_leaders"]], y[0:Dati["n_leaders"]], u[0:Dati["n_leaders"]], v[0:Dati["n_leaders"]] = leaders.getPosVel()
-	import pdb; pdb.set_trace()
 
 	# Spostamento degli Individui interni all'ostacolo
 	if Dati["Ostacolo"].startswith("Cerchio"):

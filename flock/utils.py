@@ -1,4 +1,5 @@
 import pygame, time, random
+FPS = 30
 
 class Button:
     def __init__(self,
@@ -70,6 +71,9 @@ class Scene:
             self.previous_time = time.time()
         now = time.time()
         dt = now - self.previous_time
+        while(dt<1/FPS):
+            now = time.time()
+            dt = now - self.previous_time
         self.previous_time = now
         return dt
 

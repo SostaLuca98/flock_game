@@ -29,6 +29,8 @@ class Game:
         
         sprites = {}
         sprites["ship"] = pygame.transform.rotate(pygame.image.load("gfx/ship.png").convert_alpha(),-90)
+        sprites["bird"] = pygame.transform.rotate(pygame.image.load("gfx/mangotu.png").convert_alpha(),225)
+        sprites["capo"] = pygame.transform.rotate(pygame.image.load("gfx/peraio.png").convert_alpha(),225)
         # UCCELLO
         # PECORA
         # PESCE
