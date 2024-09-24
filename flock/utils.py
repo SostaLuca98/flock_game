@@ -2,7 +2,7 @@ import pygame, time, random
 FPS = 30
 SW = 1280
 SH = 720
-SF = 1
+SF = 1.2
 
 class Button:
     def __init__(self,

@@ -31,7 +31,7 @@ class Player:
 
     def render(self, screen: pygame.Surface) -> None:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle) 
-        pygame.draw.circle(screen, (255,117,20), (self.x,self.y), self.args.r, width=3)
+        pygame.draw.circle(screen, (255,117,20), (self.x*SF,self.y*SF), self.args.r*SF, width=3)
         screen.blit(pygame.transform.scale_by(rot_surf, SF), ((self.x-rot_surf.get_size()[0]/2)*SF, (self.y-rot_surf.get_size()[1]/2)*SF))
 
     def set_direction(self, direction):
