@@ -1,9 +1,8 @@
 from flock import SceneManager, MenuScene, GameScene, Tracker
-
+from flock import SW, SH, SF
 import pygame, time
 
-PAGE_WIDTH  = 1280
-PAGE_HEIGHT = 720
+TRACKER_FLAG = True
 
 class Game:
 
@@ -12,8 +11,8 @@ class Game:
 
         pygame.init() 
         self.running = True
-        self.screen  = pygame.display.set_mode((PAGE_WIDTH, PAGE_HEIGHT))
-        self.tracker = Tracker()
+        self.screen  = pygame.display.set_mode((int(SW*SF), int(SH*SF)))
+        self.tracker = Tracker() if TRACKER_FLAG else None
         self.sprites = self.load_sprites()
         self.load_scenes()
 

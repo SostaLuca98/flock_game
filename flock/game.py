@@ -10,18 +10,9 @@ class GameScene(Scene):
 
     @dataclass
     class Params:
-        n = 200 # Numero di elementi dello stormo
+        n = 200   # Numero di elementi dello stormo
         w = 1000  # Numero di leader
-        T = 20 # Numero di istanti temporali simulati
-        ps = 10 # plot ogni tot istanti (utile in sviluppo)
-        x_max = 1280 # Lunghezza del dominio
-        y_max = 720  # Altezza del dominio
-        x0_max = 300
-        y0_max = 150
-        theta0_avg = 0
-        theta0_var = numpy.pi/6
-        v = 1  # Lunghezza di 1 passo temporale
-        r = 50 # Raggio legame di vicinanza
+        r = 50    # Raggio legame di vicinanza
 
     def __init__(self, manager: SceneManager, screen: pygame.Surface, tracker, sprites: dict, level: str) -> None:
 
@@ -41,9 +32,10 @@ class GameScene(Scene):
 
         self.score_cell = Button(1100, 680, "")
 
-        self.build_level(level)
+        self.level = level
+        self.build_level()
 
-    def build_level(self, level):
+    def build_level(self):
         self.player = Player(100,200,self.sprites["capo"])
         self.npcs   = [NPC(self.sprites["bird"]) for _ in range(self.args.n)]
         self.blocks = [Block((i+1)*50,(i+1)*20, 10, None) for i in range(10)]
@@ -62,8 +54,8 @@ class GameScene(Scene):
         self.score_cell.update(dt)
 
     def render(self) -> None:
-        self.screen.fill((13//1.2, 128//1.2, 96//1.2))
-        for block in self.blocks: block.render(self.screen)
+        self.screen.fill((10, 106, 80))
+        #for block in self.blocks: block.render(self.screen)
         for npc in self.npcs: npc.render(self.screen)
         self.player.render(self.screen)
         self.score_cell.render(self.screen)
@@ -71,9 +63,14 @@ class GameScene(Scene):
 
     def poll_events(self) -> None:
 
+        if self.tracker is not None:
+            angle = self.tracker.track()
+            if angle is not None:
+                self.player.tar_angle = angle/360*2*numpy.pi
 
         for event in pygame.event.get():
 
+            
             if event.type == pygame.QUIT:
                 self.manager.quit_game()
             
@@ -107,8 +104,3 @@ class GameScene(Scene):
                     self.player.moving = True
             else: 
                 self.curr_key_dir = None
-
-        if self.tracker is not None:
-            angle = self.tracker.track()
-            if angle is not None:
-                self.player.tar_angle = angle/360*2*numpy.pi

@@ -38,14 +38,8 @@ class Tracker:
                 #index_finger_tip = hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP]
                 hand_label = results.multi_handedness[idx].classification[0].label
                 cv2.imshow('MediaPipe Hands', image)
-                if hand_label == 'Right':
+                if hand_label == 'Right' or hand_label =='Left':
                     inclination = self.calculate_inclination(hand_landmarks.landmark)
-
-                    #print("/right_hand/inclination", int(inclination))
-                    return int(inclination)
-                elif hand_label == 'Left':
-                    inclination = self.calculate_inclination(hand_landmarks.landmark)
-                    #print("/left_hand/inclination", int(inclination))
                     return int(inclination)
 
         cv2.imshow('MediaPipe Hands', image)

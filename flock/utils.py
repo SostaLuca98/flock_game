@@ -1,12 +1,15 @@
 import pygame, time, random
 FPS = 30
+SW = 1280
+SH = 720
+SF = 1
 
 class Button:
     def __init__(self,
                  x, y,
                  text: str) -> None:
-        self.x = x
-        self.y = y
+        self.x = x*SF
+        self.y = y*SF
         
         self.font = pygame.font.SysFont("Calibri", 36)
         self.color = "white"
@@ -36,7 +39,7 @@ class Button:
         self.event = func
 
     def render(self, screen: pygame.Surface):
-        screen.blit(self.text_surface, (self.x, self.y))
+        screen.blit(pygame.transform.scale_by(self.text_surface, SF), (self.x, self.y))
 
 class SceneManager:
 

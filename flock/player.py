@@ -1,4 +1,5 @@
 import pygame, math
+from .utils import SW, SH, SF
 
 class Player:
 
@@ -6,18 +7,19 @@ class Player:
 
         self.sprite = pygame.transform.scale_by(sprite, 0.075)
         
-        self.x , self.y  = x, y
-        self.vx, self.vy = 100, 0
-        
         self.spe_c = 50
         self.acc_c = 300
+
+        self.x , self.y  = x, y
+        self.vx, self.vy = self.spe_c, 0
         
         self.rot_speed = 5
         self.tar_angle = 0
         self.dir_angle = 0
 
+        self.accel = 0
         self.speed = self.spe_c
-        self.accel = self.acc_c
+
         self.set_direction("E")
         self.moving = True
         self.rect = self.sprite.get_rect()
@@ -27,7 +29,7 @@ class Player:
 
     def render(self, screen: pygame.Surface) -> None:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle) 
-        screen.blit(rot_surf, (self.x-rot_surf.get_size()[0]/2, self.y-rot_surf.get_size()[1]/2))
+        screen.blit(pygame.transform.scale_by(rot_surf, SF), ((self.x-rot_surf.get_size()[0]/2)*SF, (self.y-rot_surf.get_size()[1]/2)*SF))
 
     def set_direction(self, direction):
         if   direction == "S": self.tar_angle = +math.pi/2
@@ -53,9 +55,7 @@ class Player:
 
         self.x += self.vx * dt
         self.y += self.vy * dt
-        self.x = self.x%1280
-        self.y = self.y%720
-        #self.x = max(self.rect.width/2 ,min(1280-self.rect.width/2,  self.x))
-        #self.y = max(self.rect.height/2,min( 720-self.rect.height/2, self.y))
+        self.x = self.x%SW
+        self.y = self.y%SH
 
         self.dir_angle = (math.atan2(-self.vy,self.vx)*360/(2*math.pi))%(360)

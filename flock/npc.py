@@ -1,4 +1,5 @@
 import pygame, math, random
+from .utils import SW, SH, SF
 
 class NPC:
 
@@ -10,8 +11,8 @@ class NPC:
         self.tar_angle = random.random()*2*math.pi
         self.dir_angle = 0
 
-        self.x = random.randint(int(self.sprite.get_size()[0]/2),int(1280-self.sprite.get_size()[0]/2))
-        self.y = random.randint(int(self.sprite.get_size()[1]/2),int( 720-self.sprite.get_size()[1]/2))
+        self.x = random.randint(int(self.sprite.get_size()[0]/2),int(SW-self.sprite.get_size()[0]/2))
+        self.y = random.randint(int(self.sprite.get_size()[1]/2),int(SH-self.sprite.get_size()[1]/2))
         self.vx, self.vy = math.cos(self.tar_angle), math.sin(self.tar_angle)
         
         self.spe_c = 50
@@ -26,8 +27,8 @@ class NPC:
         if self.moving: self.move(dt)
 
     def render(self, screen: pygame.Surface) -> None:
-        rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle) 
-        screen.blit(rot_surf, (self.x-rot_surf.get_size()[0]/2, self.y-rot_surf.get_size()[1]/2))
+        rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle)
+        screen.blit(pygame.transform.scale_by(rot_surf, SF), ((self.x-rot_surf.get_size()[0]/2)*SF, (self.y-rot_surf.get_size()[1]/2)*SF))
 
     # def set_direction(self, player):
     #     dx = player.x-self.x
@@ -44,12 +45,9 @@ class NPC:
 
         self.x += self.vx * dt
         self.y += self.vy * dt
-        #if self.x < self.rect.width/2  or self.x > 1280-self.rect.width/2:  self.vx*=-1
-        #if self.y < self.rect.height/2 or self.y >  720-self.rect.height/2: self.vy*=-1
-        #self.x = max(self.rect.width/2 ,min(1280-self.rect.width/2,  self.x))
-        #self.y = max(self.rect.height/2,min( 720-self.rect.height/2, self.y))
-        self.x = self.x%1280
-        self.y = self.y%720
+
+        self.x = self.x%SW
+        self.y = self.y%SH
 
 
         self.dir_angle = (math.atan2(-self.vy,self.vx)*360/(2*math.pi))%(360)

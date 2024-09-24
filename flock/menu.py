@@ -15,7 +15,10 @@ class MenuScene(Scene):
 
         # Create button events
         def quit_button():  self.manager.quit = True
-        def start_button(): self.manager.set_scene("game")
+        #def start_button(): self.manager.set_scene("game")
+        def start_button():
+            self.manager.scenes["game"].build_level()
+            self.manager.set_scene("game")
 
         self.quit_button.register_event(quit_button)
         self.start_button.register_event(start_button)
