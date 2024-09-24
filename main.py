@@ -2,7 +2,7 @@ from flock import SceneManager, MenuScene, GameScene, Tracker
 from flock import SW, SH, SF
 import pygame, time
 
-TRACKER_FLAG = True
+TRACKER_FLAG = False
 
 class Game:
 
@@ -30,6 +30,7 @@ class Game:
         sprites["birdL"] = pygame.transform.rotate(pygame.image.load("gfx/birdL.png").convert_alpha(),225)
         sprites["birdN"] = pygame.transform.rotate(pygame.image.load("gfx/birdN.png").convert_alpha(),225)
         sprites["birdN"] = pygame.transform.rotate(pygame.image.load("gfx/dory.png").convert_alpha(),0)
+        sprites["birdL"] = pygame.transform.flip(pygame.image.load("gfx/nemo.png").convert_alpha(),flip_x=True, flip_y=False)
         sprites["obst"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
         sprites["compass"] = pygame.transform.rotate(pygame.image.load("gfx/compass.png").convert_alpha(),0)
         sprites["needle"] = pygame.transform.rotate(pygame.image.load("gfx/needle.png").convert_alpha(),270)

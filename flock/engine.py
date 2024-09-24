@@ -34,18 +34,36 @@ class Engine:
 
 		#theta = [(f.dir_angle/(360)*2*np.pi)%2*np.pi for f in self.flock] + [self.player.tar_angle%(2*np.pi)]
 		theta = self.move_step(vx, vy) % (2*np.pi)
-		
+		for i,f in enumerate(self.flock):
+			f.tar_angle = float(theta[i,0])
+
 		# AGGIUNGI COLLISIONI
+		for b in self.blocks:
+			for f in self.flock:
+				self.colision(b,f)
+			self.colision(b,self.player, r=1.0, angle=False)
 
 		self.player.update(dt)
 		for i,f in enumerate(self.flock):
-			f.tar_angle = float(theta[i,0])
 			f.update(dt)
 
-	def close(self,ii,jj):
+	def close(self,ii,jj,r=None):
+		if r is None: r = self.args.r
 		dist = np.sqrt((self.x[ii] - self.x[jj])**2 + (self.y[ii] - self.y[jj])**2)
-		return dist < self.args.r
+		return dist < r
 	
+	def close2(self,p1,p2,r):
+		dist = np.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
+		return dist < (p1.r+p2.r)*r
+
+	def colision(self, b, f, r=1.1, angle=True):
+		if not self.close2(b, f, r): return
+		new_angle = 2*np.atan2(b.y-f.y,b.x-f.x)-f.dir_angle/360*(2*np.pi)
+		if angle: f.tar_angle = -new_angle
+		vmod = np.sqrt((f.x-b.x)**2+(f.y-b.y)**2)
+		f.x = b.x + 1.5*(f.x-b.x)/vmod*b.r
+		f.y = b.y + 1.5*(f.y-b.y)/vmod*b.r
+
 	def connect(self):
 		A = np.zeros((self.N,self.N))
 		for ii in range(self.N):
