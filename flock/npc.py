@@ -3,18 +3,21 @@ from .utils import SW, SH, SF
 
 class NPC:
 
-    def __init__(self, sprite: pygame.Surface) -> None:
+    def __init__(self, args, sprite: pygame.Surface) -> None:
 
-        self.sprite = pygame.transform.scale_by(sprite, 0.05)
+        self.r = 20
+        self.sprite = pygame.transform.scale_by(sprite, 0.0029*self.r)
         
         self.rot_speed = 5
         self.tar_angle = random.random()*2*math.pi
         self.dir_angle = 0
 
+
         self.x = random.randint(int(self.sprite.get_size()[0]/2),int(SW-self.sprite.get_size()[0]/2))
         self.y = random.randint(int(self.sprite.get_size()[1]/2),int(SH-self.sprite.get_size()[1]/2))
         self.vx, self.vy = math.cos(self.tar_angle), math.sin(self.tar_angle)
-        
+
+
         self.spe_c = 50
         self.acc_c = 300
 

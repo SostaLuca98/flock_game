@@ -3,16 +3,17 @@ from .utils import SW, SH, SF
 
 class Player:
 
-    def __init__(self, x: float, y: float, sprite: pygame.Surface) -> None:
+    def __init__(self, args, x: float, y: float, sprite: pygame.Surface) -> None:
 
-        self.sprite = pygame.transform.scale_by(sprite, 0.075)
+        self.r = 25
+        self.sprite = pygame.transform.scale_by(sprite, 0.0029*self.r)
         
         self.spe_c = 50
         self.acc_c = 300
 
         self.x , self.y  = x, y
         self.vx, self.vy = self.spe_c, 0
-        
+
         self.rot_speed = 5
         self.tar_angle = 0
         self.dir_angle = 0

@@ -1,4 +1,4 @@
-from .utils import Scene, SceneManager, Button
+from .utils import Scene, SceneManager, Button, SF
 from .player import Player
 from .npc import NPC
 from .block import Block
@@ -26,7 +26,7 @@ class GameScene(Scene):
         self.keystack_dir = []
         self.curr_key_dir = None
         
-        self.keybinds_spe = {pygame.K_UP: "U", pygame.K_DOWN: "D"}
+        self.keybinds_spe = {pygame.K_UP: "U", pygame.K_DOWN: "D", pygame.K_RIGHT : "R"}
         self.keystack_spe = []
         self.curr_key_spe = None
 
@@ -36,9 +36,9 @@ class GameScene(Scene):
         self.build_level()
 
     def build_level(self):
-        self.player = Player(100,200,self.sprites["capo"])
-        self.npcs   = [NPC(self.sprites["bird"]) for _ in range(self.args.n)]
-        self.blocks = [Block((i+1)*50,(i+1)*20, 10, None) for i in range(10)]
+        self.blocks = [Block(self.args, 500, 200, 50, self.sprites["obst"])]
+        self.npcs   = [NPC(self.args,self.sprites["birdN"]) for _ in range(self.args.n)]
+        self.player = Player(self.args, 100,200,self.sprites["birdL"])
         self.engine = Engine(self.args, self.player, self.npcs, self.blocks)
 
     def update(self) -> None:
@@ -46,16 +46,14 @@ class GameScene(Scene):
         dt = self.update_time()
         self.engine.update(dt)
 
-        for block in self.blocks:
-            block.update(dt)
-
         #self.score_cell.text = f"SPEED: {int(10*self.player.speed/self.player.spe_c)}"
         self.score_cell.text = f"ANGLE: {-int(self.player.tar_angle*360/2/numpy.pi)}"
         self.score_cell.update(dt)
 
     def render(self) -> None:
         self.screen.fill((10, 106, 80))
-        #for block in self.blocks: block.render(self.screen)
+        self.screen.blit(pygame.transform.scale_by(self.sprites["screen"], SF),(0,0))
+        for block in self.blocks: block.render(self.screen)
         for npc in self.npcs: npc.render(self.screen)
         self.player.render(self.screen)
         self.score_cell.render(self.screen)
@@ -90,8 +88,11 @@ class GameScene(Scene):
             if len(self.keystack_spe):
                 if  self.curr_key_spe != self.keystack_spe[-1]:
                     self.curr_key_spe  = self.keystack_spe[-1]
-
-                    self.player.set_speed(self.keybinds_spe[self.curr_key_spe])
+                    if self.keybinds_spe[self.curr_key_spe] != "R":
+                        self.player.set_speed(self.keybinds_spe[self.curr_key_spe])
+                    else: 
+                        self.player.speed = self.player.spe_c
+                        self.player.set_speed("0")
             else:
                 self.curr_key_spe = None
                 self.player.set_speed("0")

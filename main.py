@@ -2,7 +2,7 @@ from flock import SceneManager, MenuScene, GameScene, Tracker
 from flock import SW, SH, SF
 import pygame, time
 
-TRACKER_FLAG = True
+TRACKER_FLAG = False
 
 class Game:
 
@@ -28,8 +28,10 @@ class Game:
         
         sprites = {}
         sprites["ship"] = pygame.transform.rotate(pygame.image.load("gfx/ship.png").convert_alpha(),-90)
-        sprites["bird"] = pygame.transform.rotate(pygame.image.load("gfx/doctor.png").convert_alpha(),225)
-        sprites["capo"] = pygame.transform.rotate(pygame.image.load("gfx/peraio.png").convert_alpha(),225)
+        sprites["birdL"] = pygame.transform.rotate(pygame.image.load("gfx/birdL.png").convert_alpha(),225)
+        sprites["birdN"] = pygame.transform.rotate(pygame.image.load("gfx/birdN.png").convert_alpha(),225)
+        sprites["obst"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
+        sprites["screen"] = pygame.transform.scale_by(pygame.image.load("gfx/screen.jpg"),1).convert_alpha()
         # UCCELLO
         # PECORA
         # PESCE
