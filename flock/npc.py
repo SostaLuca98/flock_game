@@ -5,7 +5,7 @@ class NPC:
 
     def __init__(self, args, sprite: pygame.Surface) -> None:
 
-        self.r = 20
+        self.r = args.r_npc
         self.sprite = pygame.transform.scale_by(sprite, 0.0029*self.r)
         
         self.rot_speed = 5

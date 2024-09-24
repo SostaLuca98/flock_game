@@ -12,7 +12,10 @@ class GameScene(Scene):
     class Params:
         n = 200   # Numero di elementi dello stormo
         w = 1000  # Numero di leader
-        r = 50    # Raggio legame di vicinanza
+        r = 150    # Raggio legame di vicinanza
+        r_player = 25
+        r_npc    = 20
+        speed    = 50
 
     def __init__(self, manager: SceneManager, screen: pygame.Surface, tracker, sprites: dict, level: str) -> None:
 
@@ -51,10 +54,15 @@ class GameScene(Scene):
         self.score_cell.update(dt)
 
     def render(self) -> None:
-        self.screen.fill((10, 106, 80))
+        self.screen.fill("black")
         self.screen.blit(pygame.transform.scale_by(self.sprites["screen"], SF),(0,0))
         for block in self.blocks: block.render(self.screen)
         for npc in self.npcs: npc.render(self.screen)
+        angle = -self.player.tar_angle*360/(2*numpy.pi)
+        compass = pygame.transform.scale_by(self.sprites["compass"], 0.3*SF)
+        needle  = pygame.transform.rotate(pygame.transform.scale_by(self.sprites["needle"], 0.3*SF),angle)
+        self.screen.blit(compass,(1200-compass.get_size()[0]/2,100-compass.get_size()[1]/2))
+        self.screen.blit(needle, (1200-needle.get_size()[0]/2,100-needle.get_size()[1]/2))
         self.player.render(self.screen)
         self.score_cell.render(self.screen)
         pygame.display.update()
@@ -67,7 +75,6 @@ class GameScene(Scene):
                 self.player.tar_angle = angle/360*2*numpy.pi
 
         for event in pygame.event.get():
-
             
             if event.type == pygame.QUIT:
                 self.manager.quit_game()

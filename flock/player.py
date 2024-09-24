@@ -5,10 +5,11 @@ class Player:
 
     def __init__(self, args, x: float, y: float, sprite: pygame.Surface) -> None:
 
-        self.r = 25
+        self.args = args
+        self.r = args.r_player
         self.sprite = pygame.transform.scale_by(sprite, 0.0029*self.r)
         
-        self.spe_c = 50
+        self.spe_c = args.speed
         self.acc_c = 300
 
         self.x , self.y  = x, y
@@ -30,6 +31,7 @@ class Player:
 
     def render(self, screen: pygame.Surface) -> None:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle) 
+        pygame.draw.circle(screen, (255,117,20), (self.x,self.y), self.args.r, width=3)
         screen.blit(pygame.transform.scale_by(rot_surf, SF), ((self.x-rot_surf.get_size()[0]/2)*SF, (self.y-rot_surf.get_size()[1]/2)*SF))
 
     def set_direction(self, direction):

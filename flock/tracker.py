@@ -32,14 +32,14 @@ class Tracker:
         image.flags.writeable = True
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
+        inclination = None
         if results.multi_hand_landmarks:
             for idx, hand_landmarks in enumerate(results.multi_hand_landmarks):
                 self.mp_drawing.draw_landmarks(image, hand_landmarks, self.mp_hands.HAND_CONNECTIONS)
                 #index_finger_tip = hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP]
                 hand_label = results.multi_handedness[idx].classification[0].label
-                cv2.imshow('MediaPipe Hands', image)
                 if hand_label == 'Right' or hand_label =='Left':
                     inclination = self.calculate_inclination(hand_landmarks.landmark)
-                    return int(inclination)
 
-        cv2.imshow('MediaPipe Hands', image)
+        #cv2.imshow('MediaPipe Hands', image)
+        if inclination is not None: return int(inclination)

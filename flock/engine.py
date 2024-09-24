@@ -71,7 +71,7 @@ class Engine:
 		theta = np.atan2(vy,vx)
 
 		noise = (np.random.rand(self.N, 1) - 0.5) * np.pi/2
-		return theta + noise
+		return theta + noise*3
 
 #D = np.diag(np.sum(A, axis=1))
 #F = np.linalg.solve(D, A)
