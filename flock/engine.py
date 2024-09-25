@@ -26,12 +26,11 @@ class Engine:
 		vx = [f.vx for f in self.flock] + [self.player.vx]
 		vy = [f.vy for f in self.flock] + [self.player.vy]
 
-		#theta = [(f.dir_angle/(360)*2*np.pi)%2*np.pi for f in self.flock] + [self.player.tar_angle%(2*np.pi)]
+		theta = [(f.dir_angle/(360)*2*np.pi)%2*np.pi for f in self.flock] + [self.player.tar_angle%(2*np.pi)]
 		theta = self.move_step(vx, vy) % (2*np.pi)
 		for i,f in enumerate(self.flock):
 			f.tar_angle = float(theta[i,0])
 
-		# AGGIUNGI COLLISIONI
 		for b in self.blocks:
 			for f in self.flock:
 				self.colision(b,f)
@@ -52,15 +51,13 @@ class Engine:
 					f.vy *= -1
 					f.y = glob.SH - f.sprite.get_size()[1] / 2 * 1.1
 
-
 		self.player.update(dt)
 		for i,f in enumerate(self.flock):
 			f.update(dt)
 
-	def close(self,ii,jj,r=None):
-		if r is None: r = args.r
+	def close(self,ii,jj):
 		dist = np.sqrt((self.x[ii] - self.x[jj])**2 + (self.y[ii] - self.y[jj])**2)
-		return dist < r
+		return dist < args.r
 	
 	def close2(self,p1,p2,r):
 		dist = np.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
@@ -76,9 +73,9 @@ class Engine:
 
 	def connect(self):
 		A = np.zeros((args.n+1,args.n+1))
-		for ii in range(args.n):
+		for ii in range(args.n+1):
 			A[ii,ii] = 1
-			for jj in range(ii + 1, args.n):
+			for jj in range(ii + 1, args.n+1):
 				if self.close(ii,jj):
 					A[ii, jj] = 1
 					A[jj, ii] = 1

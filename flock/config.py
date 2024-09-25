@@ -11,7 +11,7 @@ class Globals:
     FPS = 30
     SW = 1280
     SH = 720
-    SF = 1.2
+    SF = 1
 
 @dataclass
 class Params:
@@ -32,7 +32,7 @@ class Params:
 @dataclass
 class Options:
 
-    scen = 0
+    scen = 1
     diff = 0
     obst = 0
     mode = 0
