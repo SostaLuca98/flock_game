@@ -159,7 +159,6 @@ class Engine:
 
 	def __init__(self, args, player, flock, blocks):
 
-		self.args = args
 		self.player = player
 		self.flock  = flock
 		self.blocks = blocks

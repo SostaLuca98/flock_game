@@ -1,7 +1,7 @@
+from .config import glob, args, opts
 from .utils import Scene, SceneManager, Button
-import pygame, time
-from .config import args, options
 from .reader import Reader
+import pygame, time
 
 
 class ObstScene(Scene):
@@ -34,11 +34,11 @@ class ObstScene(Scene):
         mouse_x, mouse_y = pygame.mouse.get_pos()  # DA CAMBIARE CON MANO
 
         for b in self.buttons:
-            if b.hovered == False and b.rect.collidepoint(mouse_x / args.SF + b.surface.get_size()[0] / 2,
-                                                          mouse_y / args.SF + b.surface.get_size()[
+            if b.hovered == False and b.rect.collidepoint(mouse_x / glob.SF + b.surface.get_size()[0] / 2,
+                                                          mouse_y / glob.SF + b.surface.get_size()[
                                                               1] / 2): b.hovered = True
-            if b.hovered == True and not b.rect.collidepoint(mouse_x / args.SF + b.surface.get_size()[0] / 2,
-                                                             mouse_y / args.SF + b.surface.get_size()[
+            if b.hovered == True and not b.rect.collidepoint(mouse_x / glob.SF + b.surface.get_size()[0] / 2,
+                                                             mouse_y / glob.SF + b.surface.get_size()[
                                                                  1] / 2): b.hovered = False
             b.update(dt)
 

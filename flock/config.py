@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
 @dataclass
-class Params:
+class Globals:
+
     VERTICAL_CAMERA = 0
     TRACKER_FLAG = False
     CAMERA_FLAG  = False
@@ -10,7 +11,10 @@ class Params:
     FPS = 30
     SW = 1280
     SH = 720
-    SF = 1
+    SF = 1.2
+
+@dataclass
+class Params:
 
     n = 200  # Numero di elementi dello stormo
     w = 1000  # Numero di leader
@@ -22,14 +26,17 @@ class Params:
     speed = 60
     acc = 300
     rot = 5
+    noise = 1
 
 
 @dataclass
 class Options:
+
     scen = 0
     diff = 0
-    obst = 1
+    obst = 0
     mode = 0
 
+glob = Globals()
 args = Params()
-options = Options()
+opts = Options()

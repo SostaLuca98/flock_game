@@ -1,6 +1,6 @@
+from .config import glob, args, opts
 import cv2
 import numpy as np
-from .config import args, options
 
 class Reader:
 
@@ -10,7 +10,7 @@ class Reader:
         self.radii = []
 
     def open(self):
-        self.cap = cv2.VideoCapture(args.VERTICAL_CAMERA)
+        self.cap = cv2.VideoCapture(glob.VERTICAL_CAMERA)
 
     def quit(self):
         self.cap.release()

@@ -1,6 +1,5 @@
+from .config import glob, args, opts
 import pygame, time, random
-from .config import args, options
-
 
 class Button:
     def __init__(self,
@@ -42,8 +41,8 @@ class Button:
         return self
 
     def render(self, screen: pygame.Surface):
-        new_surface = pygame.transform.scale_by(self.surface, args.SF)
-        screen.blit(new_surface, (self.x * args.SF - new_surface.get_size()[0]/2, self.y * args.SF - new_surface.get_size()[1]/2))
+        new_surface = pygame.transform.scale_by(self.surface, glob.SF)
+        screen.blit(new_surface, (self.x * glob.SF - new_surface.get_size()[0]/2, self.y * glob.SF - new_surface.get_size()[1]/2))
 
 class SceneManager:
 
@@ -79,7 +78,7 @@ class Scene:
             self.previous_time = time.time()
         now = time.time()
         dt = now - self.previous_time
-        while(dt<1/args.FPS):
+        while(dt<1/glob.FPS):
             now = time.time()
             dt = now - self.previous_time
         self.previous_time = now

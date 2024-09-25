@@ -1,7 +1,7 @@
+from .config import glob, args, opts
 import cv2
 import mediapipe as mp
 import numpy as np
-from .config import args, options
 
 class Tracker:
 
@@ -42,7 +42,7 @@ class Tracker:
                 if hand_label == 'Right' or hand_label =='Left':
                     inclination = self.calculate_inclination(hand_landmarks.landmark)
 
-        if args.CAMERA_FLAG:
+        if glob.CAMERA_FLAG:
             cv2.imshow('MediaPipe Hands', image)
 
         if inclination is not None: return int(inclination)

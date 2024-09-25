@@ -1,25 +1,18 @@
 import numpy as np
-from .config import args, options
+from .config import glob, args, opts
 
 class Engine:
 
-	def __init__(self, args, player, flock, blocks):
+	def __init__(self, player, flock, blocks):
 
-		self.args = args
 		self.player = player
 		self.flock  = flock
 		self.blocks = blocks
-		self.n = self.args.n # Flock Members (not leader)
-		self.w = self.args.w # Leader Weight
 		self.build_flock()
 
-	@property
-	def N(self):
-		return self.n + 1
-
 	def build_flock(self):
-		self.x = np.zeros((self.N),dtype=float)
-		self.y = np.zeros((self.N),dtype=float)
+		self.x = np.zeros((args.n+1),dtype=float)
+		self.y = np.zeros((args.n+1),dtype=float)
 		
 	def update(self, dt):
 
@@ -44,20 +37,20 @@ class Engine:
 				self.colision(b,f)
 			self.colision(b,self.player, r=1.0, angle=False)
 
-		if options.scen == 1: # PESCI
+		if opts.scen == 1: # PESCI
 			if self.player.y < self.player.sprite.get_size()[1]/2 :
 				self.player.vy *= -1
 				self.player.y = self.player.sprite.get_size()[1]/2*1.1
-			if self.player.y > args.SH - self.player.sprite.get_size()[1]/2:
+			if self.player.y > glob.SH - self.player.sprite.get_size()[1]/2:
 				self.player.vy *= -1
-				self.player.y = args.SH - self.player.sprite.get_size()[1] / 2 * 1.1
+				self.player.y = glob.SH - self.player.sprite.get_size()[1] / 2 * 1.1
 			for f in self.flock:
 				if f.y < f.sprite.get_size()[1] / 2:
 					f.vy *= -1
 					f.y = f.sprite.get_size()[1] / 2 * 1.1
-				if f.y > args.SH - f.sprite.get_size()[1] / 2:
+				if f.y > glob.SH - f.sprite.get_size()[1] / 2:
 					f.vy *= -1
-					f.y = args.SH - f.sprite.get_size()[1] / 2 * 1.1
+					f.y = glob.SH - f.sprite.get_size()[1] / 2 * 1.1
 
 
 		self.player.update(dt)
@@ -65,7 +58,7 @@ class Engine:
 			f.update(dt)
 
 	def close(self,ii,jj,r=None):
-		if r is None: r = self.args.r
+		if r is None: r = args.r
 		dist = np.sqrt((self.x[ii] - self.x[jj])**2 + (self.y[ii] - self.y[jj])**2)
 		return dist < r
 	
@@ -82,15 +75,15 @@ class Engine:
 		f.y = b.y + 1.5*(f.y-b.y)/vmod*b.r
 
 	def connect(self):
-		A = np.zeros((self.N,self.N))
-		for ii in range(self.N):
+		A = np.zeros((args.n+1,args.n+1))
+		for ii in range(args.n):
 			A[ii,ii] = 1
-			for jj in range(ii + 1, self.N):
+			for jj in range(ii + 1, args.n):
 				if self.close(ii,jj):
 					A[ii, jj] = 1
 					A[jj, ii] = 1
-		A[-1,:] *= self.w
-		A[:,-1] *= self.w
+		A[-1,:] *= args.w
+		A[:,-1] *= args.w
 		A[-1,-1] = 1
 
 		D = np.sum(A, axis=1).reshape(-1,1)
@@ -105,5 +98,5 @@ class Engine:
 		vy = np.dot(F, np.array(vy)[...,None])
 		theta = np.atan2(vy,vx)
 
-		noise = (np.random.rand(self.N, 1) - 0.5) * np.pi/2
-		return theta + noise*3
+		noise = (np.random.rand(args.n+1, 1) - 0.5) * np.pi/2
+		return theta + noise*args.noise

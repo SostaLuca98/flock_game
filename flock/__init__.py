@@ -1,4 +1,4 @@
-from .config import args, options
+from .config import glob, args, opts
 from .utils import SceneManager
 from .menu import MenuScene
 from .game import GameScene

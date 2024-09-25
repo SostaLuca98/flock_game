@@ -1,10 +1,10 @@
+from .config import glob, args, opts
 from .utils import Scene, SceneManager, Button
 from .player import Player
 from .npc import NPC
 from .block import Block
 from .engine import Engine
 import pygame, numpy
-from .config import args, options
 
 class GameScene(Scene):
 
@@ -12,7 +12,6 @@ class GameScene(Scene):
 
         super().__init__(manager, screen, tracker, sprites)
 
-        self.args = args
         self.keybinds_dir = {pygame.K_w: "N",
                              pygame.K_d: "E",
                              pygame.K_s: "S",
@@ -28,11 +27,11 @@ class GameScene(Scene):
         self.build_level()
 
     def build_level(self):
-        self.scenario = options.scen
-        self.blocks = [Block(self.args, 500, 200, 50, self.sprites[f"{self.scenario}obs"])]
-        self.npcs   = [NPC(self.args,self.sprites[f"{self.scenario}npc"]) for _ in range(self.args.n)]
-        self.player = Player(self.args, 100,200,self.sprites[f"{self.scenario}led"])
-        self.engine = Engine(self.args, self.player, self.npcs, self.blocks)
+        self.scenario = opts.scen
+        self.blocks = [Block(500, 200, 50, self.sprites[f"{self.scenario}obs"])]
+        self.npcs   = [NPC(self.sprites[f"{self.scenario}npc"]) for _ in range(args.n)]
+        self.player = Player(100,200,self.sprites[f"{self.scenario}led"])
+        self.engine = Engine(self.player, self.npcs, self.blocks)
 
     def update(self) -> None:
 
@@ -45,14 +44,14 @@ class GameScene(Scene):
 
     def render(self) -> None:
         self.screen.fill("black")
-        self.screen.blit(pygame.transform.scale_by(self.sprites[f"{self.scenario}scr"], args.SF),(0,0))
+        self.screen.blit(pygame.transform.scale_by(self.sprites[f"{self.scenario}scr"], glob.SF),(0,0))
         for block in self.blocks: block.render(self.screen)
         for npc in self.npcs: npc.render(self.screen)
         angle = -self.player.tar_angle*360/(2*numpy.pi)
-        compass = pygame.transform.scale_by(self.sprites["compass"], 0.3*args.SF)
-        needle  = pygame.transform.rotate(pygame.transform.scale_by(self.sprites["needle"], 0.3*args.SF),angle)
-        self.screen.blit(compass,(1200*args.SF-compass.get_size()[0]/2,100*args.SF-compass.get_size()[1]/2))
-        self.screen.blit(needle, (1200*args.SF- needle.get_size()[0]/2,100*args.SF- needle.get_size()[1]/2))
+        compass = pygame.transform.scale_by(self.sprites["compass"], 0.3*glob.SF)
+        needle  = pygame.transform.rotate(pygame.transform.scale_by(self.sprites["needle"], 0.3*glob.SF),angle)
+        self.screen.blit(compass,(1200*glob.SF-compass.get_size()[0]/2,100*glob.SF-compass.get_size()[1]/2))
+        self.screen.blit(needle, (1200*glob.SF- needle.get_size()[0]/2,100*glob.SF- needle.get_size()[1]/2))
         self.player.render(self.screen)
         self.score_cell.render(self.screen)
         pygame.display.update()

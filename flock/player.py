@@ -1,10 +1,10 @@
+from .config import glob, args, opts
 import pygame, math
 
 class Player:
 
-    def __init__(self, args, x: float, y: float, sprite: pygame.Surface) -> None:
+    def __init__(self, x: float, y: float, sprite: pygame.Surface) -> None:
 
-        self.args = args
         self.r = args.r_player
         self.sprite = pygame.transform.scale_by(sprite, 0.0029*self.r)
         
@@ -30,8 +30,8 @@ class Player:
 
     def render(self, screen: pygame.Surface) -> None:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle) 
-        pygame.draw.circle(screen, (255,117,20), (self.x*self.args.SF,self.y*self.args.SF), self.args.r*self.args.SF, width=3)
-        screen.blit(pygame.transform.scale_by(rot_surf, self.args.SF), ((self.x-rot_surf.get_size()[0]/2)*self.args.SF, (self.y-rot_surf.get_size()[1]/2)*self.args.SF))
+        pygame.draw.circle(screen, (255,117,20), (self.x*glob.SF,self.y*glob.SF), args.r*glob.SF, width=3)
+        screen.blit(pygame.transform.scale_by(rot_surf, glob.SF), ((self.x-rot_surf.get_size()[0]/2)*glob.SF, (self.y-rot_surf.get_size()[1]/2)*glob.SF))
 
     def set_direction(self, direction):
         if   direction == "S": self.tar_angle = +math.pi/2
@@ -57,7 +57,7 @@ class Player:
 
         self.x += self.vx * dt
         self.y += self.vy * dt
-        self.x = self.x%self.args.SW
-        self.y = self.y%self.args.SH
+        self.x = self.x%glob.SW
+        self.y = self.y%glob.SH
 
         self.dir_angle = (math.atan2(-self.vy,self.vx)*360/(2*math.pi))%(360)

@@ -1,4 +1,4 @@
-from flock import args, options
+from flock import glob, args, opts
 from flock import SceneManager, MenuScene, GameScene, OptiScene, Tracker, ObstScene
 import pygame, time
 
@@ -9,8 +9,8 @@ class Game:
 
         pygame.init()
         self.running = True
-        self.screen  = pygame.display.set_mode((int(args.SW*args.SF), int(args.SH*args.SF)))
-        self.tracker = Tracker() if args.TRACKER_FLAG else None
+        self.screen  = pygame.display.set_mode((int(glob.SW*glob.SF), int(glob.SH*glob.SF)))
+        self.tracker = Tracker() if glob.TRACKER_FLAG else None
         self.sprites = self.load_sprites()
         self.load_scenes()
 
@@ -21,7 +21,7 @@ class Game:
                   "opti": OptiScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "obst": ObstScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   }
-        self.scene_manager.initialize(scenes, "opti") # DI BASE ANDREBBE MENU
+        self.scene_manager.initialize(scenes, "menu") # DI BASE ANDREBBE MENU
 
 
     def load_sprites(self) -> dict: 
@@ -42,9 +42,9 @@ class Game:
         sprites["1obs"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
 
         # PECORE
-        sprites["2led"] = pygame.transform.flip(pygame.image.load("gfx/nemo.png").convert_alpha(),flip_x=True, flip_y=False)
-        sprites["2npc"] = pygame.transform.rotate(pygame.image.load("gfx/dory.png").convert_alpha(),0)
-        sprites["2scr"] = pygame.transform.scale_by(pygame.image.load("gfx/ocean.jpg"),1).convert_alpha()
+        sprites["2led"] = pygame.transform.scale_by(pygame.image.load("gfx/doggo.png").convert_alpha(),1.4)
+        sprites["2npc"] = pygame.transform.flip(pygame.transform.scale_by(pygame.image.load("gfx/dolly.png").convert_alpha(),1.4), flip_x=True, flip_y=False)
+        sprites["2scr"] = pygame.transform.scale_by(pygame.image.load("gfx/grass.jpg"),1).convert_alpha()
         sprites["2obs"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
 
         # GENERAL

@@ -1,6 +1,6 @@
+from .config import glob, args, opts
 from .utils import Scene, SceneManager, Button
 import pygame, time
-from .config import args, options
 
 
 class MenuScene(Scene):
@@ -18,7 +18,7 @@ class MenuScene(Scene):
 
         # Create button events
         def newg_button():
-            if options.obst == 1:
+            if opts.obst == 1:
                 self.manager.set_scene("obst")
                 self.manager.scenes["obst"].reader.open()
                 self.manager.scenes["obst"].reader.detect()
@@ -43,8 +43,8 @@ class MenuScene(Scene):
         mouse_x, mouse_y = pygame.mouse.get_pos() # DA CAMBIARE CON MANO
 
         for b in self.buttons:
-            if b.hovered == False and     b.rect.collidepoint(mouse_x/args.SF+b.surface.get_size()[0]/2, mouse_y/args.SF+b.surface.get_size()[1]/2): b.hovered = True
-            if b.hovered == True  and not b.rect.collidepoint(mouse_x/args.SF+b.surface.get_size()[0]/2, mouse_y/args.SF+b.surface.get_size()[1]/2): b.hovered = False
+            if b.hovered == False and     b.rect.collidepoint(mouse_x/glob.SF+b.surface.get_size()[0]/2, mouse_y/glob.SF+b.surface.get_size()[1]/2): b.hovered = True
+            if b.hovered == True  and not b.rect.collidepoint(mouse_x/glob.SF+b.surface.get_size()[0]/2, mouse_y/glob.SF+b.surface.get_size()[1]/2): b.hovered = False
             b.update(dt)
 
     def render(self) -> None:
