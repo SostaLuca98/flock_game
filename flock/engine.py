@@ -1,5 +1,4 @@
 import numpy as np
-from config import Params
 
 class Engine:
 

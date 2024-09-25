@@ -1,6 +1,4 @@
 import pygame, math
-from .utils import SW, SH, SF
-from config import Params
 
 class Player:
 
@@ -11,12 +9,12 @@ class Player:
         self.sprite = pygame.transform.scale_by(sprite, 0.0029*self.r)
         
         self.spe_c = args.speed
-        self.acc_c = 300
+        self.acc_c = args.acc
+        self.rot_c = args.rot
 
         self.x , self.y  = x, y
         self.vx, self.vy = self.spe_c, 0
 
-        self.rot_speed = 5
         self.tar_angle = 0
         self.dir_angle = 0
 
@@ -32,8 +30,8 @@ class Player:
 
     def render(self, screen: pygame.Surface) -> None:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle) 
-        pygame.draw.circle(screen, (255,117,20), (self.x*SF,self.y*SF), self.args.r*SF, width=3)
-        screen.blit(pygame.transform.scale_by(rot_surf, SF), ((self.x-rot_surf.get_size()[0]/2)*SF, (self.y-rot_surf.get_size()[1]/2)*SF))
+        pygame.draw.circle(screen, (255,117,20), (self.x*self.args.SF,self.y*self.args.SF), self.args.r*self.args.SF, width=3)
+        screen.blit(pygame.transform.scale_by(rot_surf, self.args.SF), ((self.x-rot_surf.get_size()[0]/2)*self.args.SF, (self.y-rot_surf.get_size()[1]/2)*self.args.SF))
 
     def set_direction(self, direction):
         if   direction == "S": self.tar_angle = +math.pi/2
@@ -51,15 +49,15 @@ class Player:
         self.speed += self.accel*dt
         self.speed = min(10*self.spe_c,max(self.spe_c/10, self.speed))
         
-        self.vx += self.rot_speed*self.speed*math.cos(self.tar_angle)*dt
-        self.vy += self.rot_speed*self.speed*math.sin(self.tar_angle)*dt
+        self.vx += self.rot_c * self.speed * math.cos(self.tar_angle) * dt
+        self.vy += self.rot_c * self.speed * math.sin(self.tar_angle) * dt
         vmod = math.sqrt(self.vx**2+self.vy**2)
         self.vx = self.vx/vmod*self.speed
         self.vy = self.vy/vmod*self.speed
 
         self.x += self.vx * dt
         self.y += self.vy * dt
-        self.x = self.x%SW
-        self.y = self.y%SH
+        self.x = self.x%self.args.SW
+        self.y = self.y%self.args.SH
 
         self.dir_angle = (math.atan2(-self.vy,self.vx)*360/(2*math.pi))%(360)

@@ -1,16 +1,13 @@
 import pygame, time, random
-from config import Params
-FPS = 30
-SW = 1280
-SH = 720
-SF = 1
+from .config import args
+
 
 class Button:
     def __init__(self,
                  x, y,
                  text: str) -> None:
-        self.x = x*SF
-        self.y = y*SF
+        self.x = x*args.SF
+        self.y = y*args.SF
         
         self.font = pygame.font.SysFont("Calibri", 36)
         self.color = "white"
@@ -40,7 +37,7 @@ class Button:
         self.event = func
 
     def render(self, screen: pygame.Surface):
-        screen.blit(pygame.transform.scale_by(self.text_surface, SF), (self.x, self.y))
+        screen.blit(pygame.transform.scale_by(self.text_surface, args.SF), (self.x, self.y))
 
 class SceneManager:
 
@@ -53,6 +50,7 @@ class SceneManager:
         self.current_scene = self.scenes[starting_scene]
 
     def set_scene(self, new_scene: str) -> None:
+        self.scenes[new_scene].previous_time = None
         self.current_scene = self.scenes[new_scene]
 
     def get_scene(self) -> None:
@@ -75,7 +73,7 @@ class Scene:
             self.previous_time = time.time()
         now = time.time()
         dt = now - self.previous_time
-        while(dt<1/FPS):
+        while(dt<1/args.FPS):
             now = time.time()
             dt = now - self.previous_time
         self.previous_time = now

@@ -1,8 +1,8 @@
+from flock import args
 from flock import SceneManager, MenuScene, GameScene, Tracker
-from flock import SW, SH, SF
 import pygame, time
 
-TRACKER_FLAG = False
+
 
 class Game:
 
@@ -11,8 +11,8 @@ class Game:
 
         pygame.init()
         self.running = True
-        self.screen  = pygame.display.set_mode((int(SW*SF), int(SH*SF)))
-        self.tracker = Tracker() if TRACKER_FLAG else None
+        self.screen  = pygame.display.set_mode((int(args.SW*args.SF), int(args.SH*args.SF)))
+        self.tracker = Tracker() if args.TRACKER_FLAG else None
         self.sprites = self.load_sprites()
         self.load_scenes()
 
@@ -27,10 +27,11 @@ class Game:
         """ Load sprite textures into pygame as surfaces and returns a dictionary of names to surfaces. """
         
         sprites = {}
-        sprites["birdL"] = pygame.transform.rotate(pygame.image.load("gfx/birdL.png").convert_alpha(),225)
-        sprites["birdN"] = pygame.transform.rotate(pygame.image.load("gfx/birdN.png").convert_alpha(),225)
+
         sprites["birdN"] = pygame.transform.rotate(pygame.image.load("gfx/dory.png").convert_alpha(),0)
         sprites["birdL"] = pygame.transform.flip(pygame.image.load("gfx/nemo.png").convert_alpha(),flip_x=True, flip_y=False)
+        sprites["birdL"] = pygame.transform.rotate(pygame.image.load("gfx/birdL.png").convert_alpha(), 225)
+        sprites["birdN"] = pygame.transform.rotate(pygame.image.load("gfx/birdN.png").convert_alpha(), 225)
         sprites["obst"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
         sprites["compass"] = pygame.transform.rotate(pygame.image.load("gfx/compass.png").convert_alpha(),0)
         sprites["needle"] = pygame.transform.rotate(pygame.image.load("gfx/needle.png").convert_alpha(),270)
