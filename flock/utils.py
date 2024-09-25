@@ -1,4 +1,5 @@
 import pygame, time, random
+from config import Params
 FPS = 30
 SW = 1280
 SH = 720

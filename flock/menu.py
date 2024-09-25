@@ -1,5 +1,6 @@
 from flock.utils import Scene, SceneManager, Button
 import pygame, time
+from config import Params
 
 
 class MenuScene(Scene):

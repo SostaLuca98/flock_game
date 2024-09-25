@@ -1,5 +1,6 @@
 import pygame, math, random
 from .utils import SF
+from config import Params
 
 class Block:
 

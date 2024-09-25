@@ -1,5 +1,6 @@
 import pygame, math
 from .utils import SW, SH, SF
+from config import Params
 
 class Player:
 

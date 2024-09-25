@@ -4,18 +4,9 @@ from .npc import NPC
 from .block import Block
 from .engine import Engine
 import pygame, time, numpy
-from dataclasses import dataclass
+from config import Params
 
 class GameScene(Scene):
-
-    @dataclass
-    class Params:
-        n = 200   # Numero di elementi dello stormo
-        w = 1000  # Numero di leader
-        r = 150    # Raggio legame di vicinanza
-        r_player = 25
-        r_npc    = 20
-        speed    = 50
 
     def __init__(self, manager: SceneManager, screen: pygame.Surface, tracker, sprites: dict, level: str) -> None:
 
