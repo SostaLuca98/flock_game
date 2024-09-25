@@ -21,7 +21,7 @@ class Game:
                   "opti": OptiScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "obst": ObstScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   }
-        self.scene_manager.initialize(scenes, "menu") # DI BASE ANDREBBE MENU
+        self.scene_manager.initialize(scenes, "opti") # DI BASE ANDREBBE MENU
 
 
     def load_sprites(self) -> dict: 
@@ -50,6 +50,20 @@ class Game:
         # GENERAL
         sprites["compass"] = pygame.transform.rotate(pygame.image.load("gfx/compass.png").convert_alpha(),0)
         sprites["needle"] = pygame.transform.rotate(pygame.image.load("gfx/needle.png").convert_alpha(),270)
+
+        sprites["diff0"] = pygame.transform.scale_by(pygame.image.load("gfx/diff_0.png"),1).convert_alpha()
+        sprites["diff1"] = pygame.transform.scale_by(pygame.image.load("gfx/diff_1.png"),1).convert_alpha()
+        sprites["diff2"] = pygame.transform.scale_by(pygame.image.load("gfx/diff_2.png"),1).convert_alpha()
+
+        sprites["scen0"] = pygame.transform.scale_by(pygame.image.load("gfx/scen_0.png"),1).convert_alpha()
+        sprites["scen1"] = pygame.transform.scale_by(pygame.image.load("gfx/scen_1.png"),1).convert_alpha()
+        sprites["scen2"] = pygame.transform.scale_by(pygame.image.load("gfx/scen_2.png"),1).convert_alpha()
+
+        sprites["obst0"] = pygame.transform.scale_by(pygame.image.load("gfx/obst_0.png"),1).convert_alpha()
+        sprites["obst1"] = pygame.transform.scale_by(pygame.image.load("gfx/obst_1.png"),1).convert_alpha()
+
+        sprites["mode0"] = pygame.transform.scale_by(pygame.image.load("gfx/mode_0.png"),1).convert_alpha()
+        sprites["mode1"] = pygame.transform.scale_by(pygame.image.load("gfx/mode_1.png"),1).convert_alpha()
 
         return sprites
 
