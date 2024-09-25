@@ -1,6 +1,6 @@
 from .utils import Scene, SceneManager, Button
 import pygame, time
-from .config import args
+from .config import args, options
 
 
 class MenuScene(Scene):
@@ -11,20 +11,25 @@ class MenuScene(Scene):
         self.previous_time = None
 
         # Create buttons
-        self.quit_button  = Button(500, 400, "Quit Game")
-        self.start_button = Button(500, 300, "Start Game")
+        self.newg_button = Button(640, 144, "Nuovo Gioco")
+        self.cont_button = Button(640, 288, "Continua Gioco")
+        self.opti_button = Button(640, 432, "Opzioni")
+        self.quit_button = Button(640, 576, "Esci")
 
         # Create button events
-        def quit_button():  self.manager.quit = True
-        #def start_button(): self.manager.set_scene("game")
-        def start_button():
+        def newg_button():
             self.manager.scenes["game"].build_level()
             self.manager.set_scene("game")
+        def cont_button(): self.manager.set_scene("game")
+        def opti_button(): self.manager.set_scene("opti")
+        def quit_button():  self.manager.quit = True
 
+        self.newg_button.register_event(newg_button)
+        self.cont_button.register_event(cont_button)
+        self.opti_button.register_event(opti_button)
         self.quit_button.register_event(quit_button)
-        self.start_button.register_event(start_button)
 
-        self.buttons = [self.quit_button, self.start_button]
+        self.buttons = [self.newg_button, self.cont_button, self.opti_button, self.quit_button]
 
     def update(self) -> None:
         
@@ -32,18 +37,16 @@ class MenuScene(Scene):
         mouse_x, mouse_y = pygame.mouse.get_pos() # DA CAMBIARE CON MANO
 
         for b in self.buttons:
-            if b.hovered == False and     b.rect.collidepoint(mouse_x, mouse_y): b.hovered = True
-            if b.hovered == True  and not b.rect.collidepoint(mouse_x, mouse_y): b.hovered = False
-
-        self.quit_button.update(dt)
-        self.start_button.update(dt)
+            if b.hovered == False and     b.rect.collidepoint(mouse_x/args.SF+b.surface.get_size()[0]/2, mouse_y/args.SF+b.surface.get_size()[1]/2): b.hovered = True
+            if b.hovered == True  and not b.rect.collidepoint(mouse_x/args.SF+b.surface.get_size()[0]/2, mouse_y/args.SF+b.surface.get_size()[1]/2): b.hovered = False
+            b.update(dt)
 
     def render(self) -> None:
 
         self.screen.fill("black")
 
-        self.quit_button.render(self.screen)
-        self.start_button.render(self.screen)
+        for b in self.buttons:
+            b.render(self.screen)
 
         pygame.display.update()
 

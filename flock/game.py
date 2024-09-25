@@ -4,7 +4,7 @@ from .npc import NPC
 from .block import Block
 from .engine import Engine
 import pygame, numpy
-from .config import args
+from .config import args, options
 
 class GameScene(Scene):
 

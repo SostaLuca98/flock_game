@@ -18,7 +18,7 @@ class NPC:
         self.vx, self.vy = math.cos(self.tar_angle), math.sin(self.tar_angle)
 
 
-        self.spe_c = 50
+        self.spe_c = args.speed
         self.acc_c = 300
 
         self.speed = self.spe_c

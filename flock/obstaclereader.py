@@ -1,7 +1,7 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-from .config import args
+from .config import args, options
 
 VERTICAL_CAMERA = 204
 

@@ -2,8 +2,14 @@ from dataclasses import dataclass
 
 @dataclass
 class Params:
-    TRACKER_FLAG = True
-    CAMERA_FLAG  = True
+    TRACKER_FLAG = False
+    CAMERA_FLAG  = False
+
+    # Parametri per rendering - modificare solo SF
+    FPS = 30
+    SW = 1280
+    SH = 720
+    SF = 1.2
 
     n = 200  # Numero di elementi dello stormo
     w = 1000  # Numero di leader
@@ -12,17 +18,17 @@ class Params:
     r_npc = 20
 
     # Movement params
-    speed = 50
+    speed = 60
     acc = 300
     rot = 5
 
 
-    # Parametri per rendering - modificare solo SF
-    FPS = 30
-    SW = 1280
-    SH = 720
-    SF = 1.2
-
-# Params va usato per indicare lo scenario? (Mare, Rondini, ecc)
+@dataclass
+class Options:
+    scen = 0
+    diff = 0
+    obst = 0
+    mode = 0
 
 args = Params()
+options = Options()

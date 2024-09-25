@@ -1,43 +1,49 @@
 import pygame, time, random
-from .config import args
+from .config import args, options
 
 
 class Button:
     def __init__(self,
                  x, y,
-                 text: str) -> None:
-        self.x = x*args.SF
-        self.y = y*args.SF
-        
-        self.font = pygame.font.SysFont("Calibri", 36)
-        self.color = "white"
+                 text: str,
+                 img: pygame.surface=None) -> None:
+        self.x = x
+        self.y = y
         self.text = text
+        self.hovered = False
+        self.event = lambda: print("Default button")
+        self.text_button = img is None
 
-        self.text_surface = self.font.render(self.text, True, self.color)
-        self.rect = self.text_surface.get_rect()
+        if img is None: self.build_text()
+        else: self.build_image(img)
+
+        self.rect = self.surface.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
 
-        self.hovered = False
-
-        self.event = lambda: print("Default button")
+    def build_text(self):
+        self.font = pygame.font.SysFont("Calibri", 72)
+        self.color = "white"
+        self.surface = self.font.render(self.text, True, self.color)
+    def build_image(self, img):
+        self.surface = img
 
     def update(self, dt):
-        if self.hovered is True:
-            self.color = "blue"
-        else:
-            self.color = "white"
-
-        self.text_surface = self.font.render(self.text, True, self.color)
+        if self.text_button:
+            if self.hovered: self.color = "blue"
+            else: self.color = "white"
+            self.surface = self.font.render(self.text, True, self.color)
 
     def set_hover(self, hovered: bool):
         self.hovered = hovered
 
     def register_event(self, func):
         self.event = func
+        return self
 
     def render(self, screen: pygame.Surface):
-        screen.blit(pygame.transform.scale_by(self.text_surface, args.SF), (self.x, self.y))
+        new_surface = pygame.transform.scale_by(self.surface, args.SF)
+        screen.blit(new_surface, (self.x * args.SF - new_surface.get_size()[0]/2, self.y * args.SF - new_surface.get_size()[1]/2))
 
 class SceneManager:
 
@@ -69,7 +75,7 @@ class Scene:
         self.previous_time = None
 
     def update_time(self):
-        if self.previous_time is None: 
+        if self.previous_time is None:
             self.previous_time = time.time()
         now = time.time()
         dt = now - self.previous_time
