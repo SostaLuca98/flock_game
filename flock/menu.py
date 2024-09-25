@@ -28,7 +28,7 @@ class MenuScene(Scene):
                 
         def cont_button(): self.manager.set_scene("game")
         def opti_button(): self.manager.set_scene("opti")
-        def quit_button():  self.manager.quit = True
+        def quit_button(): self.manager.quit = True
 
         self.newg_button.register_event(newg_button)
         self.cont_button.register_event(cont_button)
