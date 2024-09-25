@@ -18,8 +18,11 @@ class MenuScene(Scene):
 
         # Create button events
         def newg_button():
-            self.manager.scenes["game"].build_level()
-            self.manager.set_scene("game")
+            if options.obst == 1:
+                self.manager.set_scene("obst")
+            else:
+                self.manager.scenes["game"].build_level()
+                self.manager.set_scene("game")
         def cont_button(): self.manager.set_scene("game")
         def opti_button(): self.manager.set_scene("opti")
         def quit_button():  self.manager.quit = True

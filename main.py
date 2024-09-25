@@ -1,5 +1,5 @@
 from flock import args, options
-from flock import SceneManager, MenuScene, GameScene, OptiScene, Tracker
+from flock import SceneManager, MenuScene, GameScene, OptiScene, Tracker, ObstScene
 import pygame, time
 
 class Game:
@@ -18,7 +18,9 @@ class Game:
         self.scene_manager = SceneManager()
         scenes = {"game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "menu": MenuScene(self.scene_manager, self.screen, self.tracker, self.sprites),
-                  "opti": OptiScene(self.scene_manager, self.screen, self.tracker, self.sprites)}
+                  "opti": OptiScene(self.scene_manager, self.screen, self.tracker, self.sprites),
+                  "obst": ObstScene(self.scene_manager, self.screen, self.tracker, self.sprites),
+                  }
         self.scene_manager.initialize(scenes, "menu") # DI BASE ANDREBBE MENU
 
 

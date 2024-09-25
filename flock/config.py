@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Params:
-    TRACKER_FLAG = True
+    TRACKER_FLAG = False
     CAMERA_FLAG  = False
 
     # Parametri per rendering - modificare solo SF
@@ -27,7 +27,7 @@ class Params:
 class Options:
     scen = 0
     diff = 0
-    obst = 0
+    obst = 1
     mode = 0
 
 args = Params()
