@@ -1,7 +1,7 @@
 from .utils import Scene, SceneManager, Button
 import pygame, time
 from .config import args, options
-from dataclasses import dataclass
+
 
 class OptiScene(Scene):
 
@@ -17,22 +17,22 @@ class OptiScene(Scene):
         self.mode_text = Button(240, 576, "Modalità")
 
         # Scenarios
-        self.scen_1 = Button(550, 144, "", pygame.transform.scale_by(sprites["screen"], 0.05)).register_event(lambda : setattr(options, 'scen', 0))
-        self.scen_2 = Button(750, 144, "", pygame.transform.scale_by(sprites["screen"], 0.05)).register_event(lambda : setattr(options, 'scen', 1))
-        self.scen_3 = Button(950, 144, "", pygame.transform.scale_by(sprites["screen"], 0.05)).register_event(lambda : setattr(options, 'scen', 2))
+        self.scen_1 = Button(550, 144, "", pygame.transform.scale_by(sprites[f"1scr"], 0.05)).register_event(lambda : setattr(options, 'scen', 0))
+        self.scen_2 = Button(750, 144, "", pygame.transform.scale_by(sprites[f"1scr"], 0.05)).register_event(lambda : setattr(options, 'scen', 1))
+        self.scen_3 = Button(950, 144, "", pygame.transform.scale_by(sprites[f"1scr"], 0.05)).register_event(lambda : setattr(options, 'scen', 2))
 
         # Difficulties
-        self.diff_1 = Button(550, 288, "", pygame.transform.scale_by(sprites["screen"], 0.05)).register_event(lambda : setattr(options, 'diff', 0))
-        self.diff_2 = Button(750, 288, "", pygame.transform.scale_by(sprites["screen"], 0.05)).register_event(lambda : setattr(options, 'diff', 1))
-        self.diff_3 = Button(950, 288, "", pygame.transform.scale_by(sprites["screen"], 0.05)).register_event(lambda : setattr(options, 'diff', 2))
+        self.diff_1 = Button(550, 288, "", pygame.transform.scale_by(sprites[f"1scr"], 0.05)).register_event(lambda : setattr(options, 'diff', 0))
+        self.diff_2 = Button(750, 288, "", pygame.transform.scale_by(sprites[f"1scr"], 0.05)).register_event(lambda : setattr(options, 'diff', 1))
+        self.diff_3 = Button(950, 288, "", pygame.transform.scale_by(sprites[f"1scr"], 0.05)).register_event(lambda : setattr(options, 'diff', 2))
 
         # Obstacles
-        self.obst_1 = Button(550, 432, "", pygame.transform.scale_by(sprites["screen"], 0.05)).register_event(lambda : setattr(options, 'obst', 0))
-        self.obst_2 = Button(750, 432, "", pygame.transform.scale_by(sprites["screen"], 0.05)).register_event(lambda : setattr(options, 'obst', 1))
+        self.obst_1 = Button(550, 432, "", pygame.transform.scale_by(sprites[f"1scr"], 0.05)).register_event(lambda : setattr(options, 'obst', 0))
+        self.obst_2 = Button(750, 432, "", pygame.transform.scale_by(sprites[f"1scr"], 0.05)).register_event(lambda : setattr(options, 'obst', 1))
 
         # Modality
-        self.mode_1 = Button(550, 576, "", pygame.transform.scale_by(sprites["screen"], 0.05)).register_event(lambda : setattr(options, 'mode', 0))
-        self.mode_2 = Button(750, 576, "", pygame.transform.scale_by(sprites["screen"], 0.05)).register_event(lambda : setattr(options, 'mode', 1))
+        self.mode_1 = Button(550, 576, "", pygame.transform.scale_by(sprites[f"1scr"], 0.05)).register_event(lambda : setattr(options, 'mode', 0))
+        self.mode_2 = Button(750, 576, "", pygame.transform.scale_by(sprites[f"1scr"], 0.05)).register_event(lambda : setattr(options, 'mode', 1))
 
         self.menu_button = Button(1150, 650, "Menu")
         def menu_button(): self.manager.set_scene("menu")
@@ -60,6 +60,7 @@ class OptiScene(Scene):
                                                              mouse_y / args.SF + b.surface.get_size()[
                                                                  1] / 2): b.hovered = False
             b.update(dt)
+            self.change_scenario()
 
     def render(self) -> None:
 
@@ -92,3 +93,11 @@ class OptiScene(Scene):
                 for b in self.buttons:
                     if b.hovered:
                         b.event()
+
+    def change_scenario(self):
+        if options.scen == 0:
+            args.SF = 1
+        elif options.scen == 1:
+            args.SF = 1
+        elif options.scen == 2:
+            pass

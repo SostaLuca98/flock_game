@@ -8,7 +8,7 @@ from .config import args, options
 
 class GameScene(Scene):
 
-    def __init__(self, manager: SceneManager, screen: pygame.Surface, tracker, sprites: dict, level: str) -> None:
+    def __init__(self, manager: SceneManager, screen: pygame.Surface, tracker, sprites: dict) -> None:
 
         super().__init__(manager, screen, tracker, sprites)
 
@@ -25,14 +25,13 @@ class GameScene(Scene):
         self.curr_key_spe = None
 
         self.score_cell = Button(1100, 680, "")
-
-        self.level = level
         self.build_level()
 
     def build_level(self):
-        self.blocks = [Block(self.args, 500, 200, 50, self.sprites["obst"])]
-        self.npcs   = [NPC(self.args,self.sprites["birdN"]) for _ in range(self.args.n)]
-        self.player = Player(self.args, 100,200,self.sprites["birdL"])
+        self.scenario = options.scen
+        self.blocks = [Block(self.args, 500, 200, 50, self.sprites[f"{self.scenario}obs"])]
+        self.npcs   = [NPC(self.args,self.sprites[f"{self.scenario}npc"]) for _ in range(self.args.n)]
+        self.player = Player(self.args, 100,200,self.sprites[f"{self.scenario}led"])
         self.engine = Engine(self.args, self.player, self.npcs, self.blocks)
 
     def update(self) -> None:
@@ -46,7 +45,7 @@ class GameScene(Scene):
 
     def render(self) -> None:
         self.screen.fill("black")
-        self.screen.blit(pygame.transform.scale_by(self.sprites["screen"], args.SF),(0,0))
+        self.screen.blit(pygame.transform.scale_by(self.sprites[f"{self.scenario}scr"], args.SF),(0,0))
         for block in self.blocks: block.render(self.screen)
         for npc in self.npcs: npc.render(self.screen)
         angle = -self.player.tar_angle*360/(2*numpy.pi)

@@ -1,4 +1,5 @@
 import numpy as np
+from .config import args, options
 
 class Engine:
 
@@ -42,6 +43,22 @@ class Engine:
 			for f in self.flock:
 				self.colision(b,f)
 			self.colision(b,self.player, r=1.0, angle=False)
+
+		if options.scen == 1: # PESCI
+			if self.player.y < self.player.sprite.get_size()[1]/2 :
+				self.player.vy *= -1
+				self.player.y = self.player.sprite.get_size()[1]/2*1.1
+			if self.player.y > args.SH - self.player.sprite.get_size()[1]/2:
+				self.player.vy *= -1
+				self.player.y = args.SH - self.player.sprite.get_size()[1] / 2 * 1.1
+			for f in self.flock:
+				if f.y < f.sprite.get_size()[1] / 2:
+					f.vy *= -1
+					f.y = f.sprite.get_size()[1] / 2 * 1.1
+				if f.y > args.SH - f.sprite.get_size()[1] / 2:
+					f.vy *= -1
+					f.y = args.SH - f.sprite.get_size()[1] / 2 * 1.1
+
 
 		self.player.update(dt)
 		for i,f in enumerate(self.flock):
@@ -90,6 +107,3 @@ class Engine:
 
 		noise = (np.random.rand(self.N, 1) - 0.5) * np.pi/2
 		return theta + noise*3
-
-#D = np.diag(np.sum(A, axis=1))
-#F = np.linalg.solve(D, A)

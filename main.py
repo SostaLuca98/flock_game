@@ -16,7 +16,7 @@ class Game:
 
     def load_scenes(self) -> None:
         self.scene_manager = SceneManager()
-        scenes = {"game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites, "birds"),
+        scenes = {"game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "menu": MenuScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "opti": OptiScene(self.scene_manager, self.screen, self.tracker, self.sprites)}
         self.scene_manager.initialize(scenes, "menu") # DI BASE ANDREBBE MENU
@@ -27,23 +27,27 @@ class Game:
         
         sprites = {}
 
-        # UCCELLO
-        sprites["birdN"] = pygame.transform.rotate(pygame.image.load("gfx/dory.png").convert_alpha(),0)
-        sprites["birdL"] = pygame.transform.flip(pygame.image.load("gfx/nemo.png").convert_alpha(),flip_x=True, flip_y=False)
-        sprites["screen"] = pygame.transform.scale_by(pygame.image.load("gfx/screen.jpg"),1).convert_alpha()
-        sprites["obst"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
+        # UCCELLI
+        sprites["0led"] = pygame.transform.rotate(pygame.image.load("gfx/birdL.png").convert_alpha(), 225)
+        sprites["0npc"] = pygame.transform.rotate(pygame.image.load("gfx/birdN.png").convert_alpha(), 225)
+        sprites["0scr"] = pygame.transform.scale_by(pygame.image.load("gfx/screen.jpg"),1).convert_alpha()
+        sprites["0obs"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
 
-        # PESCE
-        sprites["birdL"] = pygame.transform.rotate(pygame.image.load("gfx/birdL.png").convert_alpha(), 225)
-        sprites["birdN"] = pygame.transform.rotate(pygame.image.load("gfx/birdN.png").convert_alpha(), 225)
-        sprites["screen"] = pygame.transform.scale_by(pygame.image.load("gfx/ocean.jpg"),1).convert_alpha()
+        # PESCI
+        sprites["1led"] = pygame.transform.flip(pygame.image.load("gfx/nemo.png").convert_alpha(),flip_x=True, flip_y=False)
+        sprites["1npc"] = pygame.transform.rotate(pygame.image.load("gfx/dory.png").convert_alpha(),0)
+        sprites["1scr"] = pygame.transform.scale_by(pygame.image.load("gfx/ocean.jpg"),1).convert_alpha()
+        sprites["1obs"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
+
+        # PECORE
+        sprites["2led"] = pygame.transform.flip(pygame.image.load("gfx/nemo.png").convert_alpha(),flip_x=True, flip_y=False)
+        sprites["2npc"] = pygame.transform.rotate(pygame.image.load("gfx/dory.png").convert_alpha(),0)
+        sprites["2scr"] = pygame.transform.scale_by(pygame.image.load("gfx/ocean.jpg"),1).convert_alpha()
+        sprites["2obs"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
 
         # GENERAL
         sprites["compass"] = pygame.transform.rotate(pygame.image.load("gfx/compass.png").convert_alpha(),0)
         sprites["needle"] = pygame.transform.rotate(pygame.image.load("gfx/needle.png").convert_alpha(),270)
-
-        # PECORA
-        # PESCE
 
         return sprites
 

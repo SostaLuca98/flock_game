@@ -2,14 +2,14 @@ from dataclasses import dataclass
 
 @dataclass
 class Params:
-    TRACKER_FLAG = False
+    TRACKER_FLAG = True
     CAMERA_FLAG  = False
 
     # Parametri per rendering - modificare solo SF
     FPS = 30
     SW = 1280
     SH = 720
-    SF = 1.2
+    SF = 1
 
     n = 200  # Numero di elementi dello stormo
     w = 1000  # Numero di leader
