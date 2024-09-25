@@ -1,26 +1,22 @@
 import cv2
-import mediapipe as mp
 import numpy as np
-#from .config import args, options
+from .config import args, options
 
-VERTICAL_CAMERA = 204
-
-class ObstacleReader:
+class Reader:
 
     def __init__(self):
         self.x_centers = []
         self.y_centers = []
         self.radii = []
 
-        self.cap = cv2.VideoCapture(1)
+    def open(self):
+        self.cap = cv2.VideoCapture(args.VERTICAL_CAMERA)
 
     def quit(self):
         self.cap.release()
         cv2.destroyAllWindows()
 
     def detect(self):
-
-        detected_circles = None
 
         while (self.cap.isOpened()):
             success, image = self.cap.read()
@@ -30,7 +26,6 @@ class ObstacleReader:
         
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)   
             gray_blurred = cv2.blur(gray, (3, 3))
-            print(gray.shape)
     
             detected_circles = cv2.HoughCircles(gray_blurred,  
                        cv2.HOUGH_GRADIENT, 1, 20, param1 = 50, 
@@ -44,7 +39,6 @@ class ObstacleReader:
       
                 for pt in detected_circles[0, :]: 
                     a, b, r = pt[0], pt[1], pt[2]
-                    print(a, b, r)
 
 
                     # Draw the circumference of the circle. 
@@ -60,10 +54,10 @@ class ObstacleReader:
                     self.x_centers.append(a)
                     self.y_centers.append(b)
                     self.radii.append(r)
-                    print(a, b, r)
         
             cv2.imshow("Detected Circles", image)
             return
+
             #if cv2.waitKey(0):
             #    cv2.destroyWindow("Detected Circles")
             #    break

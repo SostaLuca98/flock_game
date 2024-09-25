@@ -1,6 +1,7 @@
 from .utils import Scene, SceneManager, Button
 import pygame, time
 from .config import args, options
+from .reader import Reader
 
 
 class ObstScene(Scene):
@@ -9,14 +10,19 @@ class ObstScene(Scene):
 
         super().__init__(manager, screen, tracker, sprites)
         self.previous_time = None
+        self.reader = Reader()
+        self.read_flag = False
 
         # Create buttons
         def newg():
+            self.reader.quit()
             self.manager.scenes["game"].build_level()
             self.manager.set_scene("game")
+        def detect():
+            self.read_flag = False
 
         self.conf_butt = Button(180, 650, "Conferma").register_event(newg)
-        self.ripr_butt = Button(1100, 650, "Riprova" ).register_event(lambda : print('Ripr'))
+        self.ripr_butt = Button(1100, 650, "Riprova" ).register_event(detect)
 
         # Create button events
         self.texts   = []
@@ -36,6 +42,10 @@ class ObstScene(Scene):
                                                                  1] / 2): b.hovered = False
             b.update(dt)
 
+        if not self.read_flag:
+            self.read_flag = True
+            self.reader.detect()
+
     def render(self) -> None:
 
         self.screen.fill("black")
@@ -51,10 +61,13 @@ class ObstScene(Scene):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.reader.quit()
                 self.manager.quit_game()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                self.reader.quit()
                 self.manager.quit_game()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                self.reader.quit()
                 self.manager.set_scene("game")
 
             # Mouse detection DA CAMBIARE CON MANO

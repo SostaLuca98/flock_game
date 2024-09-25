@@ -19,6 +19,7 @@ class MenuScene(Scene):
         # Create button events
         def newg_button():
             if options.obst == 1:
+                self.manager.scenes["obst"].reader.open()
                 self.manager.set_scene("obst")
             else:
                 self.manager.scenes["game"].build_level()

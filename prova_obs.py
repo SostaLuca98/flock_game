@@ -1,4 +1,4 @@
-from flock.obstaclereader import ObstacleReader
+from flock.reader import Reader
 import cv2
 
 def list_cameras(max_tested=10):
@@ -12,7 +12,7 @@ def list_cameras(max_tested=10):
     print(available_cameras)
 
 #list_cameras()
-obs = ObstacleReader()
+obs = Reader()
 obs.detect()
 if cv2.waitKey(0):
     cv2.destroyWindow("Detected Circles")
