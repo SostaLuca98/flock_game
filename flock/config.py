@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Params:
-    VERTICAL_CAMERA = 1
+    VERTICAL_CAMERA = 0
     TRACKER_FLAG = False
     CAMERA_FLAG  = False
 
