@@ -51,11 +51,11 @@ class ObstScene(Scene):
         self.screen.fill("black")
 
         for x,y,r in zip(self.reader.x_centers, self.reader.y_centers, self.reader.radii):
-            pygame.draw.circle(self.screen, (0,255,0), (x, y), r)
-            pygame.draw.circle(self.screen, (255,0,0), (x, y), 7)
+            pygame.draw.circle(self.screen, (0,255,0), (x*glob.SF, y*glob.SF), r*glob.SF)
+            pygame.draw.circle(self.screen, (255,0,0), (x*glob.SF, y*glob.SF), 7*glob.SF)
         if opts.mode == 1:
             target = self.manager.scenes["game"].target
-            pygame.draw.circle(self.screen, (0, 0, 255), (target.x, target.y), target.r)
+            pygame.draw.circle(self.screen, (0, 0, 255), (target.x*glob.SF, target.y*glob.SF), target.r*glob.SF)
 
         for b in self.buttons:
             b.render(self.screen)

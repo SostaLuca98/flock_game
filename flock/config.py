@@ -11,7 +11,7 @@ class Globals:
     FPS = 30
     SW = 1280
     SH = 720
-    SF = 1
+    SF = 0.7
 
 @dataclass
 class Params:
@@ -29,7 +29,6 @@ class Params:
     acc: float = 300.0
     rot: float = 5.0
     noise: float = 1.0
-
 
 @dataclass
 class Options:

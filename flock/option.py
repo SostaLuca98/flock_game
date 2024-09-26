@@ -107,5 +107,9 @@ class OptiScene(Scene):
             pass
         if opts.diff == 1:
             args.speed *= 2
+            args.rot   *= 0.9
+            args.t_max *= 0.75
         if opts.diff == 2:
-            args.speed *= 5
+            args.speed *= 4
+            args.rot   *= 0.7
+            args.t_max *= 0.5

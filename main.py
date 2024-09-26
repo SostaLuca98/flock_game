@@ -19,10 +19,10 @@ class Game:
 
     def load_scenes(self) -> None:
         self.scene_manager = SceneManager()
-        scenes = {"obst": ObstScene(self.scene_manager, self.screen, self.tracker, self.sprites),
+        scenes = {"game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites),
+                  "obst": ObstScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "menu": MenuScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "opti": OptiScene(self.scene_manager, self.screen, self.tracker, self.sprites),
-                  "game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites)
                   }
         self.scene_manager.initialize(scenes, "menu") # DI BASE ANDREBBE MENU
         self.scene_manager.scenes["opti"].change_settings()
