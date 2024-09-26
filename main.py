@@ -38,7 +38,7 @@ class Game:
         sprites["0npc"] = pygame.transform.rotate(pygame.image.load("gfx/birdN.png").convert_alpha(), 225)
         sprites["0scr"] = pygame.transform.scale_by(pygame.image.load("gfx/screen.jpg"),1).convert_alpha()
         sprites["0obs"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
-        sprites["0tar"] = pygame.transform.scale_by(pygame.image.load("gfx/obst.png").convert_alpha(), 1)
+        sprites["0tar"] = pygame.transform.scale_by(pygame.image.load("gfx/flock_target.png").convert_alpha(), 1)
 
         # PESCI
         sprites["1led"] = pygame.transform.flip(pygame.image.load("gfx/nemo.png").convert_alpha(),flip_x=True, flip_y=False)
@@ -51,9 +51,9 @@ class Game:
         sprites["2led"] = pygame.transform.scale_by(pygame.image.load("gfx/doggo.png").convert_alpha(),1.8)
         sprites["2npc"] = pygame.transform.flip(pygame.transform.scale_by(pygame.image.load("gfx/dolly.png").convert_alpha(),1.8), flip_x=True, flip_y=False)
         #sprites["2npc"] = pygame.transform.scale_by(pygame.image.load("gfx/zirli_ovini_target.png").convert_alpha(), 1.8)
-        sprites["2scr"] = pygame.transform.scale_by(pygame.image.load("gfx/grass.jpg"),1).convert_alpha()
+        sprites["2scr"] = pygame.transform.scale_by(pygame.image.load("gfx/grass_2.jpg"),1).convert_alpha()
         sprites["2obs"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
-        sprites["2tar"] = pygame.transform.scale_by(pygame.image.load("gfx/zirli_ovini_target.png").convert_alpha(), 1)
+        sprites["2tar"] = pygame.transform.scale_by(pygame.image.load("gfx/dolly_target.png").convert_alpha(), 1)
 
         # Easter Egg 1
         sprites["3led"] = pygame.transform.rotate(pygame.transform.scale_by(pygame.image.load("gfx_2/miki_langelo.png").convert_alpha(),6), -90)

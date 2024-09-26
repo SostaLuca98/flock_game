@@ -4,8 +4,8 @@ from dataclasses import dataclass
 class Globals:
 
     VERTICAL_CAMERA = 1
-    TRACKER_FLAG = True
-    CAMERA_FLAG  = True
+    TRACKER_FLAG = False
+    CAMERA_FLAG  = False
 
     # Parametri per rendering - modificare solo SF
     FPS = 30
