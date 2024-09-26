@@ -1,4 +1,6 @@
-from .config import glob, args, opts
+import copy
+
+from .config import glob, args, opts, default_bird, default_fish, default_sheep
 from .utils import Scene, SceneManager, Button
 import pygame, time
 
@@ -91,17 +93,16 @@ class OptiScene(Scene):
                 for b in self.buttons:
                     if b.hovered:
                         b.event()
+    @staticmethod
+    def set_values(sender, receiver):
+        for campo in sender.__dataclass_fields__:
+            setattr(receiver, campo, getattr(sender, campo))
 
-    def change_settings(self):
-        if opts.scen == 0:
-            args.n = 100
-            args.speed = 60
-        elif opts.scen == 1:
-            args.n = 10
-            args.speed = 60
-        elif opts.scen == 2:
-            args.n = 1
-            args.speed = 60
+    @staticmethod
+    def change_settings():
+        if   opts.scen == 0: OptiScene.set_values(default_bird,  args)
+        elif opts.scen == 1: OptiScene.set_values(default_fish,  args)
+        elif opts.scen == 2: OptiScene.set_values(default_sheep, args)
         if opts.diff == 0:
             pass
         if opts.diff == 1:

@@ -43,7 +43,7 @@ class GameScene(Scene):
                                  self.sprites[f"{self.scenario}obs"]) for i,_ in enumerate(reader.x_centers)]
 
         if opts.mode == 1:
-            self.target = Block(args, 100, 500, 50, self.sprites[f"{self.scenario}led"])
+            self.target = Block(args, 100, 500, 50, self.sprites[f"{self.scenario}tar"])
 
         self.npcs   = [NPC(args, self.sprites[f"{self.scenario}npc"]) for _ in range(args.n)]
         self.player = Player(args, 100,200,self.sprites[f"{self.scenario}led"])
