@@ -33,7 +33,10 @@ class Reader:
     
             detected_circles = cv2.HoughCircles(gray_blurred,  
                        cv2.HOUGH_GRADIENT, 1, 20, param1 = 50, 
-                       param2 = 30, minRadius = 1, maxRadius = 40) 
+                       param2 = 30, minRadius = 1, maxRadius = 40)
+
+            shape = image.shape
+            cv2.rectangle(image, (int(shape[1] * 0.05), int(shape[0] * 0.05)), (int(shape[1] * 0.95), int(shape[0] * 0.95)), 0)
       
             # Draw circles that are detected. 
             if detected_circles is not None: 
@@ -53,7 +56,7 @@ class Reader:
                     # conversion in screen format
                     a *=2
                     b *= 3/2
-                    r *= np.sqrt(3)
+                    r *= 3/2 #np.sqrt(3)
 
                     self.x_centers.append(a)
                     self.y_centers.append(b)

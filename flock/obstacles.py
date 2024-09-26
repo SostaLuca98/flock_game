@@ -50,6 +50,10 @@ class ObstScene(Scene):
 
         self.screen.fill("black")
 
+        for x,y,r in zip(self.reader.x_centers, self.reader.y_centers, self.reader.radii):
+            pygame.draw.circle(self.screen, (0,255,0), (x, y), r)
+            pygame.draw.circle(self.screen, (255,0,0), (x, y), 7)
+
         for b in self.buttons:
             b.render(self.screen)
         for t in self.texts:

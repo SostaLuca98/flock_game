@@ -68,8 +68,8 @@ class Engine:
 		new_angle = 2*np.atan2(b.y-f.y,b.x-f.x)-f.dir_angle/360*(2*np.pi)
 		if angle: f.tar_angle = -new_angle
 		vmod = np.sqrt((f.x-b.x)**2+(f.y-b.y)**2)
-		f.x = b.x + 1.5*(f.x-b.x)/vmod*b.r
-		f.y = b.y + 1.5*(f.y-b.y)/vmod*b.r
+		f.x = b.x + (f.x-b.x)/vmod*max(b.r+25, b.r*1.3)
+		f.y = b.y + (f.y-b.y)/vmod*max(b.r+25, b.r*1.3)
 
 	def connect(self):
 		A = np.zeros((args.n+1,args.n+1))

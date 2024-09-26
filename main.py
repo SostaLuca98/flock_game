@@ -2,6 +2,9 @@ from flock import glob, args, opts
 from flock import SceneManager, MenuScene, GameScene, OptiScene, Tracker, ObstScene
 import pygame, time
 
+import warnings
+warnings.simplefilter('error', RuntimeWarning)
+
 class Game:
 
     def __init__(self) -> None:
@@ -16,10 +19,10 @@ class Game:
 
     def load_scenes(self) -> None:
         self.scene_manager = SceneManager()
-        scenes = {"game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites),
+        scenes = {"obst": ObstScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "menu": MenuScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "opti": OptiScene(self.scene_manager, self.screen, self.tracker, self.sprites),
-                  "obst": ObstScene(self.scene_manager, self.screen, self.tracker, self.sprites),
+                  "game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites)
                   }
         self.scene_manager.initialize(scenes, "menu") # DI BASE ANDREBBE MENU
 
@@ -59,8 +62,8 @@ class Game:
         sprites["scen1"] = pygame.transform.scale_by(pygame.image.load("gfx/scen_1.png"),1).convert_alpha()
         sprites["scen2"] = pygame.transform.scale_by(pygame.image.load("gfx/scen_2.png"),1).convert_alpha()
 
-        sprites["obst0"] = pygame.transform.scale_by(pygame.image.load("gfx/obst_0.png"),1).convert_alpha()
-        sprites["obst1"] = pygame.transform.scale_by(pygame.image.load("gfx/obst_1.png"),1).convert_alpha()
+        sprites["obst0"] = pygame.transform.scale_by(pygame.image.load("gfx/obst_0.png"), 1).convert_alpha()
+        sprites["obst1"] = pygame.transform.scale_by(pygame.image.load("gfx/obst_1.png"), 1).convert_alpha()
 
         sprites["mode0"] = pygame.transform.scale_by(pygame.image.load("gfx/mode_0.png"),1).convert_alpha()
         sprites["mode1"] = pygame.transform.scale_by(pygame.image.load("gfx/mode_1.png"),1).convert_alpha()

@@ -24,24 +24,30 @@ class GameScene(Scene):
         self.curr_key_spe = None
 
         self.score_cell = Button(1100, 680, "")
-        self.build_level()
+        self.build_flag = False
 
     def build_level(self):
-        self.scenario = opts.scen
+        self.scenario  = opts.scen
         self.obstacles = opts.obst
 
         if self.obstacles == 0:
             self.blocks = [Block(500, 200, 50, self.sprites[f"{self.scenario}obs"])]
         elif self.obstacles == 1:
             reader = self.manager.scenes['obst'].reader
-            self.blocks = [Block(reader.x_centers[i], reader.y_centers[i], reader.radii[i],
-                                 self.sprites[f"{self.scenario}obs"]) for i in range(len(reader.x_centers))]
+            self.blocks = [Block(reader.x_centers[i]+0.5,
+                                 reader.y_centers[i]+0.5,
+                                 reader.radii[i],
+                                 self.sprites[f"{self.scenario}obs"]) for i,_ in enumerate(reader.x_centers)]
 
         self.npcs   = [NPC(self.sprites[f"{self.scenario}npc"]) for _ in range(args.n)]
         self.player = Player(100,200,self.sprites[f"{self.scenario}led"])
         self.engine = Engine(self.player, self.npcs, self.blocks)
 
     def update(self) -> None:
+
+        if not self.build_flag:
+            self.build_flag = True
+            self.build_level()
 
         dt = self.update_time()
         self.engine.update(dt)
