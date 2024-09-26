@@ -28,7 +28,15 @@ class GameScene(Scene):
 
     def build_level(self):
         self.scenario = opts.scen
-        self.blocks = [Block(500, 200, 50, self.sprites[f"{self.scenario}obs"])]
+        self.obstacles = opts.obst
+
+        if self.obstacles == 0:
+            self.blocks = [Block(500, 200, 50, self.sprites[f"{self.scenario}obs"])]
+        elif self.obstacles == 1:
+            reader = self.manager.scenes['obst'].reader
+            self.blocks = [Block(reader.x_centers[i], reader.y_centers[i], reader.radii[i],
+                                 self.sprites[f"{self.scenario}obs"]) for i in range(len(reader.x_centers))]
+
         self.npcs   = [NPC(self.sprites[f"{self.scenario}npc"]) for _ in range(args.n)]
         self.player = Player(100,200,self.sprites[f"{self.scenario}led"])
         self.engine = Engine(self.player, self.npcs, self.blocks)

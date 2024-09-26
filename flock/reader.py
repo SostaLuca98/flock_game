@@ -18,6 +18,10 @@ class Reader:
 
     def detect(self):
 
+        self.x_centers.clear()
+        self.y_centers.clear()
+        self.radii.clear()
+
         while (self.cap.isOpened()):
             success, image = self.cap.read()
             if not success:
