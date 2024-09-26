@@ -27,6 +27,9 @@ class GameScene(Scene):
         self.time_cell  = Button(200, 680, "")
         self.build_flag = False
 
+        self.scenario  = opts.scen
+        self.target = Block(args, 100, 500, 50, self.sprites[f"{self.scenario}tar"])
+
     def build_level(self):
 
         self.scenario  = opts.scen

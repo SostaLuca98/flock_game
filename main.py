@@ -20,9 +20,9 @@ class Game:
     def load_scenes(self) -> None:
         self.scene_manager = SceneManager()
         scenes = {"game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites),
-                  "obst": ObstScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "menu": MenuScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "opti": OptiScene(self.scene_manager, self.screen, self.tracker, self.sprites),
+                  "obst": ObstScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   }
         self.scene_manager.initialize(scenes, "menu") # DI BASE ANDREBBE MENU
         self.scene_manager.scenes["opti"].change_settings()
@@ -56,16 +56,16 @@ class Game:
         sprites["2tar"] = pygame.transform.scale_by(pygame.image.load("gfx/zirli_ovini_target.png").convert_alpha(), 1)
 
         # Easter Egg 1
-        sprites["3led"] = pygame.transform.scale_by(pygame.image.load("gfx_2/miki_langelo.png").convert_alpha(),6)
-        sprites["3npc"] = pygame.transform.flip(pygame.transform.scale_by(pygame.image.load("gfx_2/giogio.png").convert_alpha(),1), flip_x=True, flip_y=False)
+        sprites["3led"] = pygame.transform.rotate(pygame.transform.scale_by(pygame.image.load("gfx_2/miki_langelo.png").convert_alpha(),6), -90)
+        sprites["3npc"] = pygame.transform.rotate(pygame.transform.scale_by(pygame.image.load("gfx_2/giogio.png").convert_alpha(),1), -90)
         #sprites["2npc"] = pygame.transform.scale_by(pygame.image.load("gfx/zirli_ovini_target.png").convert_alpha(), 1.8)
         sprites["3scr"] = pygame.transform.scale_by(pygame.image.load("gfx/grass.jpg"),1).convert_alpha()
         sprites["3obs"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
         sprites["3tar"] = pygame.transform.scale_by(pygame.image.load("gfx/zirli_ovini_target.png").convert_alpha(), 1)
 
         # Easter Egg 2
-        sprites["4led"] = pygame.transform.scale_by(pygame.image.load("gfx_2/stetuned.png").convert_alpha(),2.5)
-        sprites["4npc"] = pygame.transform.flip(pygame.transform.scale_by(pygame.image.load("gfx_2/instarega.png").convert_alpha(),2.5), flip_x=True, flip_y=False)
+        sprites["4led"] = pygame.transform.rotate(pygame.transform.scale_by(pygame.image.load( "gfx_2/stetuned.png").convert_alpha(),2.5),-90)
+        sprites["4npc"] = pygame.transform.rotate(pygame.transform.scale_by(pygame.image.load("gfx_2/instarega.png").convert_alpha(),2.5),-90)
         #sprites["2npc"] = pygame.transform.scale_by(pygame.image.load("gfx/zirli_ovini_target.png").convert_alpha(), 1.8)
         sprites["4scr"] = pygame.transform.scale_by(pygame.image.load("gfx/ocean.jpg"),1).convert_alpha()
         sprites["4obs"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)

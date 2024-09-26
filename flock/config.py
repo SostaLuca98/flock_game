@@ -4,21 +4,21 @@ from dataclasses import dataclass
 class Globals:
 
     VERTICAL_CAMERA = 1
-    TRACKER_FLAG = False
-    CAMERA_FLAG  = False
+    TRACKER_FLAG = True
+    CAMERA_FLAG  = True
 
     # Parametri per rendering - modificare solo SF
     FPS = 30
     SW = 1280
     SH = 720
-    SF = 0.7
+    SF = 0.8
 
 @dataclass
 class Params:
 
-    t_max: int = 30
+    t_max: int = 60
 
-    n: int = 300  # Numero di elementi dello stormo
+    n: int = 100  # Numero di elementi dello stormo
     w: int = 1000  # Numero di leader
     r: int = 100  # Raggio legame di vicinanza
     r_player: float = 25.0
