@@ -16,6 +16,8 @@ class Globals:
 @dataclass
 class Params:
 
+    t_max = 30
+
     n = 200  # Numero di elementi dello stormo
     w = 1000  # Numero di leader
     r = 100  # Raggio legame di vicinanza

@@ -59,7 +59,6 @@ class OptiScene(Scene):
                                                              mouse_y / glob.SF + b.surface.get_size()[
                                                                  1] / 2): b.hovered = False
             b.update(dt)
-            self.change_scenario()
 
     def render(self) -> None:
 
@@ -93,10 +92,19 @@ class OptiScene(Scene):
                     if b.hovered:
                         b.event()
 
-    def change_scenario(self):
+    def change_settings(self):
         if opts.scen == 0:
-            pass
+            args.n = 100
+            args.speed = 60
         elif opts.scen == 1:
-            pass
+            args.n = 10
+            args.speed = 60
         elif opts.scen == 2:
+            args.n = 1
+            args.speed = 60
+        if opts.diff == 0:
             pass
+        if opts.diff == 1:
+            args.speed *= 2
+        if opts.diff == 2:
+            args.speed *= 5

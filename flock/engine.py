@@ -1,18 +1,28 @@
 import numpy as np
 from .config import glob, args, opts
+import copy
 
 class Engine:
 
-	def __init__(self, player, flock, blocks):
+	def __init__(self, args, game):
 
-		self.player = player
-		self.flock  = flock
-		self.blocks = blocks
+		self.args = copy.deepcopy(args)
+		self.game = game
+		self.player = game.player
+		self.flock  = game.npcs
+		self.blocks = game.blocks
 		self.build_flock()
 
 	def build_flock(self):
-		self.x = np.zeros((args.n+1),dtype=float)
-		self.y = np.zeros((args.n+1),dtype=float)
+		self.x = np.zeros((self.args.n+1),dtype=float)
+		self.y = np.zeros((self.args.n+1),dtype=float)
+
+	def reach_target(self, target):
+		for f in self.flock:
+			if self.close3(f,target,target.r):
+				if self.close3(self.player,target,2*self.args.r):
+					f.arrived = True
+					self.game.score += 1
 		
 	def update(self, dt):
 
@@ -26,7 +36,6 @@ class Engine:
 		vx = [f.vx for f in self.flock] + [self.player.vx]
 		vy = [f.vy for f in self.flock] + [self.player.vy]
 
-		theta = [(f.dir_angle/(360)*2*np.pi)%2*np.pi for f in self.flock] + [self.player.tar_angle%(2*np.pi)]
 		theta = self.move_step(vx, vy) % (2*np.pi)
 		for i,f in enumerate(self.flock):
 			f.tar_angle = float(theta[i,0])
@@ -51,17 +60,26 @@ class Engine:
 					f.vy *= -1
 					f.y = glob.SH - f.sprite.get_size()[1] / 2 * 1.1
 
+		if opts.mode == 1:
+			target = self.game.target
+			self.reach_target(target)
+
 		self.player.update(dt)
 		for i,f in enumerate(self.flock):
 			f.update(dt)
 
-	def close(self,ii,jj):
+	def close(self,ii,jj,r=None):
+		if r is None: r=self.args.r
 		dist = np.sqrt((self.x[ii] - self.x[jj])**2 + (self.y[ii] - self.y[jj])**2)
-		return dist < args.r
+		return dist < r
 	
 	def close2(self,p1,p2,r):
 		dist = np.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
 		return dist < (p1.r+p2.r)*r
+
+	def close3(self,p1,p2,r):
+		dist = np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
+		return dist < r
 
 	def colision(self, b, f, r=1.1, angle=True):
 		if not self.close2(b, f, r): return
@@ -72,15 +90,15 @@ class Engine:
 		f.y = b.y + (f.y-b.y)/vmod*max(b.r+25, b.r*1.3)
 
 	def connect(self):
-		A = np.zeros((args.n+1,args.n+1))
-		for ii in range(args.n+1):
+		A = np.zeros((self.args.n+1,self.args.n+1))
+		for ii in range(self.args.n+1):
 			A[ii,ii] = 1
-			for jj in range(ii + 1, args.n+1):
+			for jj in range(ii + 1, self.args.n+1):
 				if self.close(ii,jj):
 					A[ii, jj] = 1
 					A[jj, ii] = 1
-		A[-1,:] *= args.w
-		A[:,-1] *= args.w
+		A[-1,:] *= self.args.w
+		A[:,-1] *= self.args.w
 		A[-1,-1] = 1
 
 		D = np.sum(A, axis=1).reshape(-1,1)
@@ -93,7 +111,7 @@ class Engine:
 		
 		vx = np.dot(F, np.array(vx)[...,None])
 		vy = np.dot(F, np.array(vy)[...,None])
-		theta = np.atan2(vy,vx)
 
-		noise = (np.random.rand(args.n+1, 1) - 0.5) * np.pi/2
-		return theta + noise*args.noise
+		theta = np.atan2(vy,vx)
+		noise = (np.random.rand(self.args.n+1, 1) - 0.5) * np.pi/2
+		return theta + noise*self.args.noise

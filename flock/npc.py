@@ -1,24 +1,26 @@
 from .config import glob, args, opts
-import pygame, math, random
+import pygame, math, random, copy
 
 class NPC:
 
-    def __init__(self, sprite: pygame.Surface) -> None:
+    def __init__(self, args, sprite: pygame.Surface) -> None:
 
-        self.r = args.r_npc
+        self.args = copy.deepcopy(args)
+        self.r = self.args.r_npc
         self.sprite = pygame.transform.scale_by(sprite, 0.0029*self.r)
         
         self.rot_speed = 5
         self.tar_angle = random.random()*2*math.pi
         self.dir_angle = 0
 
+        self.arrived = False
 
         self.x = random.randint(int(self.sprite.get_size()[0]/2),int(glob.SW-self.sprite.get_size()[0]/2))
         self.y = random.randint(int(self.sprite.get_size()[1]/2),int(glob.SH-self.sprite.get_size()[1]/2))
         self.vx, self.vy = math.cos(self.tar_angle), math.sin(self.tar_angle)
 
 
-        self.spe_c = args.speed
+        self.spe_c = self.args.speed
         self.acc_c = 300
 
         self.speed = self.spe_c
@@ -52,5 +54,8 @@ class NPC:
         self.x = self.x%glob.SW
         self.y = self.y%glob.SH
 
+        if self.arrived:
+            self.x = 1e4
+            self.y = 1e4
 
         self.dir_angle = (math.atan2(-self.vy,self.vx)*360/(2*math.pi))%(360)

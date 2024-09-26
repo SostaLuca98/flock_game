@@ -25,6 +25,7 @@ class Game:
                   "game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites)
                   }
         self.scene_manager.initialize(scenes, "menu") # DI BASE ANDREBBE MENU
+        self.scene_manager.scenes["opti"].change_settings()
 
 
     def load_sprites(self) -> dict: 
@@ -45,8 +46,8 @@ class Game:
         sprites["1obs"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
 
         # PECORE
-        sprites["2led"] = pygame.transform.scale_by(pygame.image.load("gfx/doggo.png").convert_alpha(),1.4)
-        sprites["2npc"] = pygame.transform.flip(pygame.transform.scale_by(pygame.image.load("gfx/dolly.png").convert_alpha(),1.4), flip_x=True, flip_y=False)
+        sprites["2led"] = pygame.transform.scale_by(pygame.image.load("gfx/doggo.png").convert_alpha(),1.8)
+        sprites["2npc"] = pygame.transform.flip(pygame.transform.scale_by(pygame.image.load("gfx/dolly.png").convert_alpha(),1.8), flip_x=True, flip_y=False)
         sprites["2scr"] = pygame.transform.scale_by(pygame.image.load("gfx/grass.jpg"),1).convert_alpha()
         sprites["2obs"] = pygame.transform.rotate(pygame.image.load("gfx/obst.png").convert_alpha(),0)
 

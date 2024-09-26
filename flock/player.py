@@ -1,16 +1,17 @@
 from .config import glob, args, opts
-import pygame, math
+import pygame, math, copy
 
 class Player:
 
-    def __init__(self, x: float, y: float, sprite: pygame.Surface) -> None:
+    def __init__(self, args, x: float, y: float, sprite: pygame.Surface) -> None:
 
-        self.r = args.r_player
+        self.args = copy.deepcopy(args)
+        self.r = self.args.r_player
         self.sprite = pygame.transform.scale_by(sprite, 0.0029*self.r)
         
-        self.spe_c = args.speed
-        self.acc_c = args.acc
-        self.rot_c = args.rot
+        self.spe_c = self.args.speed
+        self.acc_c = self.args.acc
+        self.rot_c = self.args.rot
 
         self.x , self.y  = x, y
         self.vx, self.vy = self.spe_c, 0
@@ -30,7 +31,7 @@ class Player:
 
     def render(self, screen: pygame.Surface) -> None:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle) 
-        pygame.draw.circle(screen, (255,117,20), (self.x*glob.SF,self.y*glob.SF), args.r*glob.SF, width=3)
+        pygame.draw.circle(screen, (255,117,20), (self.x*glob.SF,self.y*glob.SF), self.args.r*glob.SF, width=3)
         screen.blit(pygame.transform.scale_by(rot_surf, glob.SF), ((self.x-rot_surf.get_size()[0]/2)*glob.SF, (self.y-rot_surf.get_size()[1]/2)*glob.SF))
 
     def set_direction(self, direction):
