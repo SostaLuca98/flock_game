@@ -7,6 +7,9 @@ class Globals:
     TRACKER_FLAG = False
     CAMERA_FLAG  = False
 
+
+    MAIN_CAMERA = 0
+
     # Parametri per rendering - modificare solo SF
     FPS = 30
     SW = 1280

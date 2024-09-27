@@ -9,7 +9,7 @@ class Tracker:
         self.mp_hands = mp.solutions.hands
         self.hands    = self.mp_hands.Hands()
         self.mp_drawing = mp.solutions.drawing_utils
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(glob.MAIN_CAMERA)
 
     def quit(self):
         self.cap.release()
