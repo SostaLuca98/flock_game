@@ -3,18 +3,18 @@ from dataclasses import dataclass
 @dataclass
 class Globals:
 
-    VERTICAL_CAMERA = 1
-    TRACKER_FLAG = False
-    CAMERA_FLAG  = False
-
+    # PARAMETRI DA IMPOSTARE
+    VERTICAL_CAMERA = 1     # ID della camera come letto da check_camera.py
+    TRACKER_FLAG = True     # accende le webcam in INPUT (NECESSARIO per usare la mano)
+    CAMERA_FLAG  = True     # accende le finestre per MOSTRARE QUANTO VISTO DALLA WEBCAM (se si vuole)
+    SF = 1                  # scaling della finestra
 
     MAIN_CAMERA = 0
 
-    # Parametri per rendering - modificare solo SF
+    # Parametri per rendering - NON modificare
     FPS = 30
     SW = 1280
     SH = 720
-    SF = 1
 
 @dataclass
 class Params:
