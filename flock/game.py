@@ -28,12 +28,12 @@ class GameScene(Scene):
         self.build_flag = False
 
         self.scenario  = opts.scen
-        self.target = Block(args, 100, 500, 50, self.sprites[f"{self.scenario}tar"])
+        self.target = Block(args, 100, 500, 75, self.sprites[f"{self.scenario}tar"])
 
     def build_level(self):
 
         self.scenario  = opts.scen
-        self.target = Block(args, 100, 500, 50, self.sprites[f"{self.scenario}tar"])
+        self.target.sprite = self.sprites[f"{self.scenario}tar"]
         self.manager.scenes["opti"].change_settings()
 
         if opts.obst == 0:

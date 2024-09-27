@@ -7,7 +7,7 @@ class Player:
 
         self.args = copy.deepcopy(args)
         self.r = self.args.r_player
-        self.sprite = pygame.transform.scale_by(sprite, 0.0029*self.r)
+        self.sprite = pygame.transform.scale_by(sprite, self.r/300)
         
         self.spe_c = self.args.speed
         self.acc_c = self.args.acc

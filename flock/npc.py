@@ -7,7 +7,7 @@ class NPC:
 
         self.args = copy.deepcopy(args)
         self.r = self.args.r_npc
-        self.sprite = pygame.transform.scale_by(sprite, 0.0029*self.r)
+        self.sprite = pygame.transform.scale_by(sprite, self.r/300)
         
         self.rot_speed = 5
         self.tar_angle = random.random()*2*math.pi
@@ -34,11 +34,6 @@ class NPC:
     def render(self, screen: pygame.Surface) -> None:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle)
         screen.blit(pygame.transform.scale_by(rot_surf, glob.SF), ((self.x-rot_surf.get_size()[0]/2)*glob.SF, (self.y-rot_surf.get_size()[1]/2)*glob.SF))
-
-    # def set_direction(self, player):
-    #     dx = player.x-self.x
-    #     dy = player.y-self.y
-    #     self.tar_angle = (math.atan2(dy,dx)*360/(2*math.pi))%(360)
 
     def move(self, dt) -> None:
         

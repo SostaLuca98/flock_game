@@ -33,15 +33,15 @@ class Params:
 @dataclass
 class Options:
 
-    scen = 0
-    diff = 0
+    scen = 2
+    diff = 1
     obst = 0
-    mode = 0
+    mode = 1
 
 glob = Globals()
 args = Params()
 opts = Options()
 
 default_bird  = Params(n=200, w=500,  r=150, r_npc=20, r_player=1.25*20, speed=75, rot=5, noise=2)
-default_fish  = Params(n=150, w=1000, r=50,  r_npc=15, r_player=1.25*15, speed=50, rot=8, noise=3)
-default_sheep = Params(n=50,  w=2000, r=100, r_npc=30, r_player=1.25*30, speed=25, rot=3, noise=1)
+default_fish  = Params(n=150, w=1000, r=100, r_npc=15, r_player=1.25*15, speed=50, rot=8, noise=3)
+default_sheep = Params(n=50,  w=2000, r=150, r_npc=30, r_player=1.25*30, speed=50, rot=3, noise=1)

@@ -12,10 +12,8 @@ class Block:
         self.x = x
         self.y = y
         self.r = r
-        self.sprite = pygame.transform.scale_by(sprite, 0.0042*self.r)
+        self.sprite = pygame.transform.scale_by(sprite, self.r/100)
 
     def render(self, screen: pygame.Surface) -> None:
         screen.blit(pygame.transform.scale_by(self.sprite, glob.SF), ((self.x-self.sprite.get_size()[0]/2)*glob.SF, (self.y-self.sprite.get_size()[1]/2)*glob.SF))
-        #pygame.draw.circle(screen, self.color, (self.x,self.y), 3)
-        #pygame.draw.circle(screen, self.color, (self.x+self.r,self.y), 3)
 
