@@ -5,13 +5,15 @@ class Button:
     def __init__(self,
                  x, y,
                  text: str,
-                 img: pygame.surface=None) -> None:
+                 img: pygame.surface=None,
+                 color = None) -> None:
         self.x = x
         self.y = y
         self.text = text
         self.hovered = False
         self.event = lambda: print("Default button")
         self.text_button = img is None
+        self.fix_color = color
 
         if img is None: self.build_text()
         else: self.build_image(img)
@@ -22,7 +24,7 @@ class Button:
 
     def build_text(self):
         self.font = pygame.font.SysFont("Calibri", 72)
-        self.color = "white"
+        self.color = "white" if self.fix_color is None else self.fix_color
         self.surface = self.font.render(self.text, True, self.color)
     def build_image(self, img):
         self.surface = img
@@ -31,6 +33,7 @@ class Button:
         if self.text_button:
             if self.hovered: self.color = "blue"
             else: self.color = "white"
+            self.color = "white" if self.fix_color is None else self.fix_color
             self.surface = self.font.render(self.text, True, self.color)
 
     def set_hover(self, hovered: bool):

@@ -23,8 +23,8 @@ class GameScene(Scene):
         self.keystack_spe = []
         self.curr_key_spe = None
 
-        self.score_cell = Button(1100, 680, "")
-        self.time_cell  = Button(200, 680, "")
+        self.score_cell = Button(1100, 680, "", color="blue")
+        self.time_cell  = Button(200, 680, "", color="blue")
         self.build_flag = False
 
         self.scenario  = opts.scen
