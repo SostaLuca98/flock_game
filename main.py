@@ -70,11 +70,11 @@ class Game:
         sprites["3tar"] = pt.scale_by(pil("gfx/zirli_ovini_target.png").convert_alpha(), 0.0042)
 
         # Easter Egg 2
-        sprites["4led"] = pt.rotate(pt.scale_by(pil( "gfx_2/stetuned.png").convert_alpha(),2.5),-90)
-        sprites["4npc"] = pt.rotate(pt.scale_by(pil("gfx_2/instarega.png").convert_alpha(),2.5),-90)
+        sprites["4led"] = pt.rotate(pt.scale_by(pil( "gfx_2/stetuned.png").convert_alpha(),2.),-90)
+        sprites["4npc"] = pt.rotate(pt.scale_by(pil("gfx_2/instarega.png").convert_alpha(),2.),-90)
         sprites["4scr"] = pt.scale_by(pil("gfx/ocean.jpg"),1).convert_alpha()
-        sprites["4obs"] = pt.rotate(pil("gfx/obst.png").convert_alpha(),0)
-        sprites["4tar"] = pt.scale_by(pil("gfx_2/mox_target.png").convert_alpha(), 2*0.0042)
+        sprites["4obs"] = self.load_image("gfx/flock_obst.png",   0.7, 0)
+        sprites["4tar"] = self.load_image("gfx_2/mox_target.png", 0.6, 0)#pt.scale_by(pil("gfx_2/mox_target.png").convert_alpha(), 2*0.0042)
 
         # GENERAL
         sprites["compass"] = pt.rotate(pil("gfx/compass.png").convert_alpha(),0)
