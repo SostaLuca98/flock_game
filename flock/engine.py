@@ -1,6 +1,7 @@
 import numpy as np
 from .config import glob, args, opts
 import copy
+import pygame
 
 class Engine:
 
@@ -12,6 +13,7 @@ class Engine:
 		self.flock  = game.npcs
 		self.blocks = game.blocks
 		self.build_flock()
+		self.A = None
 
 	def build_flock(self):
 		self.x = np.zeros((self.args.n+1),dtype=float)
@@ -97,6 +99,7 @@ class Engine:
 				if self.close(ii,jj):
 					A[ii, jj] = 1
 					A[jj, ii] = 1
+		self.A = A
 		A[-1,:] *= self.args.w
 		A[:,-1] *= self.args.w
 		A[-1,-1] = 1
@@ -115,3 +118,14 @@ class Engine:
 		theta = np.atan2(vy,vx)
 		noise = (np.random.rand(self.args.n+1, 1) - 0.5) * np.pi/2
 		return theta + noise*self.args.noise
+
+	def render(self, screen: pygame.Surface) -> None:
+		if opts.mode != 2: return
+		for i in range(self.A.shape[0]-1):
+			for j in range(i):
+				if self.A[i, j] == 0: continue
+				pygame.draw.line(screen, (127, 127, 127), (self.x[i]*glob.SF, self.y[i]*glob.SF), (self.x[j]*glob.SF, self.y[j]*glob.SF), 1)
+		for i in range(self.A.shape[0]-1):
+			if self.A[i, -1] == 0: continue
+			#pygame.draw.line(screen, (255,117,20), (self.x[i]*glob.SF, self.y[i]*glob.SF), (self.x[-1]*glob.SF, self.y[-1]*glob.SF), 2)
+			pygame.draw.line(screen, (255,117,20), (self.x[i]*glob.SF, self.y[i]*glob.SF), (self.x[-1]*glob.SF, self.y[-1]*glob.SF), 1)

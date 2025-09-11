@@ -28,12 +28,39 @@ class NPC:
         self.moving = True
         self.rect = self.sprite.get_rect()
 
+    def draw_fullarrow(self, angle: float, screen: pygame.Surface, color: tuple = (0, 0, 0)) -> None:
+        arrow_length = self.args.r * 0.15 * glob.SF
+        angle_rad = math.radians(-angle)
+        start_pos = (self.x * glob.SF, self.y * glob.SF)
+        end_pos = (
+            start_pos[0] + arrow_length * math.cos(angle_rad),
+            start_pos[1] + arrow_length * math.sin(angle_rad)
+        )
+        # Corpo della freccia (linea)
+        pygame.draw.line(screen, color, start_pos, end_pos, 4)
+
+        # Punta piena
+        head_length = 10 * glob.SF
+        head_width = 15 * glob.SF
+        # Calcola i tre punti della punta
+        tip = end_pos
+        left = (
+            tip[0] - head_length * math.cos(angle_rad) + head_width * math.sin(angle_rad) / 2,
+            tip[1] - head_length * math.sin(angle_rad) - head_width * math.cos(angle_rad) / 2
+        )
+        right = (
+            tip[0] - head_length * math.cos(angle_rad) - head_width * math.sin(angle_rad) / 2,
+            tip[1] - head_length * math.sin(angle_rad) + head_width * math.cos(angle_rad) / 2
+        )
+        pygame.draw.polygon(screen, color, [tip, left, right])
+
     def update(self, dt) -> None:
         if self.moving: self.move(dt)
 
     def render(self, screen: pygame.Surface) -> None:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle)
         screen.blit(pygame.transform.scale_by(rot_surf, glob.SF), ((self.x-rot_surf.get_size()[0]/2)*glob.SF, (self.y-rot_surf.get_size()[1]/2)*glob.SF))
+        if opts.mode == 2: self.draw_fullarrow(self.dir_angle, screen)
 
     def move(self, dt) -> None:
         

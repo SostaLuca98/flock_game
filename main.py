@@ -55,36 +55,40 @@ class Game:
         sprites["1obs"] = self.load_image("gfx/fish_obst_2.png", 0.4, 0)
         sprites["1tar"] = self.load_image("gfx/fish_target.png", 0.5, 0)
 
-        # PECORE
+        # HUMANS
         # sprites["2led"] = self.load_image("gfx/doggo.png", 1.4, 0)
         # sprites["2npc"] = self.load_image("gfx/dolly.png", 1.4, 0, flip_x=True, flip_y=False)
         # sprites["2scr"] = self.load_image("gfx/grass_3.jpg", 1, 0)
         # sprites["2obs"] = self.load_image("gfx/dolly_obst.png",   0.65, 0)
         # sprites["2tar"] = self.load_image("gfx/dolly_target.png", 0.6, 0)
 
-        # HUMANS
-
         # ABSTRACT
-        sprites["2led"] = self.load_image("gfx/abstract_leader.png", 0.3, 0)
-        sprites["2npc"] = self.load_image("gfx/abstract_flock.png", 0.1, 0, flip_x=True, flip_y=False)
+        sprites["2led"] = self.load_image("gfx/orange_dot.png", 0.20, 0)
+        sprites["2npc"] = self.load_image("gfx/black_dot.png", 0.16, 0, flip_x=True, flip_y=False)
         sprites["2scr"] = self.load_image("gfx/abstract_bckg.png", 1.4, 0)
         sprites["2obs"] = self.load_image("gfx/abstract_obst.png", 0.4, 0)
         sprites["2tar"] = self.load_image("gfx/abstract_target.png", 0.1, 0)
 
+        # ABSTRACT
+        sprites["3led"] = self.load_image("gfx/orange_dot.png", 0.20, 0)
+        sprites["3npc"] = self.load_image("gfx/black_dot.png", 0.16, 0, flip_x=True, flip_y=False)
+        sprites["3scr"] = self.load_image("gfx/abstract_bckg.png", 1.4, 0)
+        sprites["3obs"] = self.load_image("gfx/abstract_obst.png", 0.4, 0)
+        sprites["3tar"] = self.load_image("gfx/abstract_target.png", 0.1, 0)
 
         # Easter Egg 1
-        sprites["3led"] = pt.rotate(pt.scale_by(pil("gfx_2/miki_langelo.png").convert_alpha(),6), -90)
-        sprites["3npc"] = pt.rotate(pt.scale_by(pil("gfx_2/giogio.png").convert_alpha(),1), -90)
-        sprites["3scr"] = pt.scale_by(pil("gfx/grass_3.jpg"),1).convert_alpha()
-        sprites["3obs"] = pt.rotate(pil("gfx/obst.png").convert_alpha(),0)
-        sprites["3tar"] = pt.scale_by(pil("gfx/zirli_ovini_target.png").convert_alpha(), 0.0042)
+        sprites["4led"] = pt.rotate(pt.scale_by(pil("gfx_2/miki_langelo.png").convert_alpha(),6), -90)
+        sprites["4npc"] = pt.rotate(pt.scale_by(pil("gfx_2/giogio.png").convert_alpha(),1), -90)
+        sprites["4scr"] = pt.scale_by(pil("gfx/grass_3.jpg"),1).convert_alpha()
+        sprites["4obs"] = pt.rotate(pil("gfx/obst.png").convert_alpha(),0)
+        sprites["4tar"] = pt.scale_by(pil("gfx/zirli_ovini_target.png").convert_alpha(), 0.0042)
 
         # Easter Egg 2
-        sprites["4led"] = pt.rotate(pt.scale_by(pil( "gfx_2/stetuned.png").convert_alpha(),2.),-90)
-        sprites["4npc"] = pt.rotate(pt.scale_by(pil("gfx_2/instarega.png").convert_alpha(),2.),-90)
-        sprites["4scr"] = pt.scale_by(pil("gfx/ocean.jpg"),1).convert_alpha()
-        sprites["4obs"] = self.load_image("gfx/flock_obst.png",   0.7, 0)
-        sprites["4tar"] = self.load_image("gfx_2/mox_target.png", 0.6, 0)#pt.scale_by(pil("gfx_2/mox_target.png").convert_alpha(), 2*0.0042)
+        sprites["5led"] = pt.rotate(pt.scale_by(pil( "gfx_2/stetuned.png").convert_alpha(),2.),-90)
+        sprites["5npc"] = pt.rotate(pt.scale_by(pil("gfx_2/instarega.png").convert_alpha(),2.),-90)
+        sprites["5scr"] = pt.scale_by(pil("gfx/ocean.jpg"),1).convert_alpha()
+        sprites["5obs"] = self.load_image("gfx/flock_obst.png",   0.7, 0)
+        sprites["5tar"] = self.load_image("gfx_2/mox_target.png", 0.6, 0)#pt.scale_by(pil("gfx_2/mox_target.png").convert_alpha(), 2*0.0042)
 
         # GENERAL
         sprites["compass"] = pt.rotate(pil("gfx/compass.png").convert_alpha(),0)

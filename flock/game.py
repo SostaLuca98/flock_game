@@ -46,6 +46,8 @@ class GameScene(Scene):
                                  reader.y_centers[i]+0.5,
                                  reader.radii[i],
                                  self.sprites[f"{self.scenario}obs"]) for i,_ in enumerate(reader.x_centers)]
+        elif opts.obst == 2:
+            self.blocks = list()
 
         self.npcs   = [NPC(args, self.sprites[f"{self.scenario}npc"]) for _ in range(args.n)]
         self.player = Player(args, 100,200,self.sprites[f"{self.scenario}led"])
@@ -72,9 +74,10 @@ class GameScene(Scene):
             self.time_cell.update(dt)
 
     def render(self) -> None:
-        if opts.mode==0 or (opts.mode==1 and self.time>=0):
+        if opts.mode==0 or (opts.mode==1 and self.time>=0) or opts.mode==2:
             self.screen.fill("black")
             self.screen.blit(pygame.transform.scale_by(self.sprites[f"{self.scenario}scr"], glob.SF),(0,0))
+            self.engine.render(self.screen)
             for block in self.blocks: block.render(self.screen)
             for npc in self.npcs: npc.render(self.screen)
             if opts.mode == 1:
