@@ -1,5 +1,5 @@
 from flock import glob, args, opts
-from flock import SceneManager, MenuScene, GameScene, OptiScene, Tracker, ObstScene
+from flock import SceneManager, MenuScene, GameScene, OptiScene, Tracker, ObstScene, CredScene
 import pygame, time
 import pygame.transform as pt
 from pygame.image import load as pil
@@ -21,12 +21,15 @@ class Game:
 
     def load_scenes(self) -> None:
         self.scene_manager = SceneManager()
-        scenes = {"game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites),
+        scenes = {"opti": OptiScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "menu": MenuScene(self.scene_manager, self.screen, self.tracker, self.sprites),
-                  "opti": OptiScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "obst": ObstScene(self.scene_manager, self.screen, self.tracker, self.sprites),
+                  "cred": CredScene(self.scene_manager, self.screen, self.tracker, self.sprites),
+                  "game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites)
                   }
-        self.scene_manager.initialize(scenes, "menu") # DI BASE ANDREBBE MENU
+        starting_scene = "menu"
+        self.scene_manager.initialize(scenes, starting_scene)
+        if starting_scene == "game": scenes["game"].build_level()
         self.scene_manager.scenes["opti"].change_settings()
 
     def load_image(self, image, scale, rot, flip_x=False, flip_y=False):
@@ -55,23 +58,22 @@ class Game:
         sprites["1obs"] = self.load_image("gfx/fish_obst_2.png", 0.4, 0)
         sprites["1tar"] = self.load_image("gfx/fish_target.png", 0.5, 0)
 
-        # HUMANS
-        # sprites["2led"] = self.load_image("gfx/doggo.png", 1.4, 0)
-        # sprites["2npc"] = self.load_image("gfx/dolly.png", 1.4, 0, flip_x=True, flip_y=False)
-        # sprites["2scr"] = self.load_image("gfx/grass_3.jpg", 1, 0)
-        # sprites["2obs"] = self.load_image("gfx/dolly_obst.png",   0.65, 0)
-        # sprites["2tar"] = self.load_image("gfx/dolly_target.png", 0.6, 0)
-
         # ABSTRACT
-        sprites["2led"] = self.load_image("gfx/orange_dot.png", 0.20, 0)
-        sprites["2npc"] = self.load_image("gfx/black_dot.png", 0.16, 0, flip_x=True, flip_y=False)
-        sprites["2scr"] = self.load_image("gfx/abstract_bckg.png", 1.4, 0)
-        sprites["2obs"] = self.load_image("gfx/abstract_obst.png", 0.4, 0)
-        sprites["2tar"] = self.load_image("gfx/abstract_target.png", 0.1, 0)
+        sprites["2led_1"] = self.load_image("gfx/f1.png", 0.25, 90)
+        sprites["2led_2"] = self.load_image("gfx/f2.png", 0.25, 90)
+        sprites["2led_3"] = self.load_image("gfx/f3.png", 0.25, 90)
+        sprites["2led_4"] = self.load_image("gfx/f2.png", 0.25, 90)
+        sprites["2npc_1"] = self.load_image("gfx/m1.png", 0.20, 90)
+        sprites["2npc_2"] = self.load_image("gfx/m2.png", 0.20, 90)
+        sprites["2npc_3"] = self.load_image("gfx/m3.png", 0.20, 90)
+        sprites["2npc_4"] = self.load_image("gfx/m2.png", 0.20, 90)
+        sprites["2scr"]   = self.load_image("gfx/abstract_bckg.png", 1.4, 0)
+        sprites["2obs"]   = self.load_image("gfx/abstract_obst.png", 0.4, 0)
+        sprites["2tar"]   = self.load_image("gfx/abstract_target.png", 0.1, 0)
 
         # ABSTRACT
         sprites["3led"] = self.load_image("gfx/orange_dot.png", 0.20, 0)
-        sprites["3npc"] = self.load_image("gfx/black_dot.png", 0.16, 0, flip_x=True, flip_y=False)
+        sprites["3npc"] = self.load_image("gfx/black_dot.png", 0.16, 0)
         sprites["3scr"] = self.load_image("gfx/abstract_bckg.png", 1.4, 0)
         sprites["3obs"] = self.load_image("gfx/abstract_obst.png", 0.4, 0)
         sprites["3tar"] = self.load_image("gfx/abstract_target.png", 0.1, 0)
@@ -93,6 +95,7 @@ class Game:
         # GENERAL
         sprites["compass"] = pt.rotate(pil("gfx/compass.png").convert_alpha(),0)
         sprites["needle"] = pt.rotate(pil("gfx/needle.png").convert_alpha(),270)
+        sprites["logo"] = self.load_image("gfx/logo.png", 0.5, 0)
 
         sprites["diff0"] = pt.scale_by(pil("gfx/diff_0.png"),1).convert_alpha()
         sprites["diff1"] = pt.scale_by(pil("gfx/diff_1.png"),1).convert_alpha()

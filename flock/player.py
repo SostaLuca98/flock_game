@@ -3,11 +3,16 @@ import pygame, math, copy
 
 class Player:
 
-    def __init__(self, args, x: float, y: float, sprite: pygame.Surface) -> None:
+    def __init__(self, args, x: float, y: float, sprite_list) -> None:
 
         self.args = copy.deepcopy(args)
         self.r = self.args.r_player
-        self.sprite = pygame.transform.scale_by(sprite, self.r/300)
+
+        if type(sprite_list) is not list: sprite_list = [sprite_list]
+        self.sprite_list = [pygame.transform.scale_by(sprite, self.r/300) for sprite in sprite_list]
+        self.sprite = self.sprite_list[0]
+        self.sprite_index = 0
+        self.sprite_count = 0
         
         self.spe_c = self.args.speed
         self.acc_c = self.args.acc
@@ -52,14 +57,23 @@ class Player:
         )
         pygame.draw.polygon(screen, color, [tip, left, right])
 
+    def change_sprite(self):
+        self.sprite_count += 1
+        if self.sprite_count > 4:
+            self.sprite_count = 0
+            self.sprite_index = (self.sprite_index + 1) % len(self.sprite_list)
+            self.sprite = self.sprite_list[self.sprite_index]
+
     def update(self, dt) -> None:
-        if self.moving: self.move(dt)
+        if self.moving: 
+            self.change_sprite()
+            self.move(dt)
 
     def render(self, screen: pygame.Surface) -> None:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle) 
         pygame.draw.circle(screen, (255,117,20), (self.x*glob.SF,self.y*glob.SF), self.args.r*glob.SF, width=(1 if opts.mode==2 else 3))
         screen.blit(pygame.transform.scale_by(rot_surf, glob.SF), ((self.x-rot_surf.get_size()[0]/2)*glob.SF, (self.y-rot_surf.get_size()[1]/2)*glob.SF))
-        if opts.mode == 2: self.draw_fullarrow(self.dir_angle, screen, color=(255,117,20))
+        if opts.scen == 3: self.draw_fullarrow(self.dir_angle, screen, color=(255,117,20))
 
     def set_direction(self, direction):
         if   direction == "S": self.tar_angle = +math.pi/2

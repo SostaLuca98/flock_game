@@ -49,8 +49,11 @@ class GameScene(Scene):
         elif opts.obst == 2:
             self.blocks = list()
 
-        self.npcs   = [NPC(args, self.sprites[f"{self.scenario}npc"]) for _ in range(args.n)]
-        self.player = Player(args, 100,200,self.sprites[f"{self.scenario}led"])
+        sprite_player = [s for n,s in self.sprites.items() if n.startswith(f"{self.scenario}led")]
+        sprite_npc    = [s for n,s in self.sprites.items() if n.startswith(f"{self.scenario}npc")]
+
+        self.npcs   = [NPC(args, sprite_npc) for _ in range(args.n)]
+        self.player = Player(args,100,200,sprite_player)
         self.engine = Engine(args, self.manager.scenes["game"])
 
         self.score = 0

@@ -3,11 +3,15 @@ import pygame, math, random, copy
 
 class NPC:
 
-    def __init__(self, args, sprite: pygame.Surface) -> None:
+    def __init__(self, args, sprite_list: pygame.Surface) -> None:
 
         self.args = copy.deepcopy(args)
         self.r = self.args.r_npc
-        self.sprite = pygame.transform.scale_by(sprite, self.r/300)
+        if type(sprite_list) is not list: sprite_list = [sprite_list]
+        self.sprite_list = [pygame.transform.scale_by(sprite, self.r/300) for sprite in sprite_list]
+        self.sprite = self.sprite_list[0]
+        self.sprite_index = 0
+        self.sprite_count = 0
         
         self.rot_speed = 5
         self.tar_angle = random.random()*2*math.pi
@@ -27,6 +31,13 @@ class NPC:
         self.accel = self.acc_c
         self.moving = True
         self.rect = self.sprite.get_rect()
+
+    def change_sprite(self):
+        self.sprite_count += 1
+        if self.sprite_count > random.randint(4,8):
+            self.sprite_count = 0
+            self.sprite_index = (self.sprite_index + 1) % len(self.sprite_list)
+            self.sprite = self.sprite_list[self.sprite_index]
 
     def draw_fullarrow(self, angle: float, screen: pygame.Surface, color: tuple = (0, 0, 0)) -> None:
         arrow_length = self.args.r * 0.15 * glob.SF
@@ -55,12 +66,14 @@ class NPC:
         pygame.draw.polygon(screen, color, [tip, left, right])
 
     def update(self, dt) -> None:
-        if self.moving: self.move(dt)
+        if self.moving: 
+            self.change_sprite()
+            self.move(dt)
 
     def render(self, screen: pygame.Surface) -> None:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle)
         screen.blit(pygame.transform.scale_by(rot_surf, glob.SF), ((self.x-rot_surf.get_size()[0]/2)*glob.SF, (self.y-rot_surf.get_size()[1]/2)*glob.SF))
-        if opts.mode == 2: self.draw_fullarrow(self.dir_angle, screen)
+        if opts.scen == 3: self.draw_fullarrow(self.dir_angle, screen)
 
     def move(self, dt) -> None:
         

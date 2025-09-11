@@ -5,3 +5,4 @@ from .game import GameScene
 from .option import OptiScene
 from .tracker import Tracker
 from .obstacles import ObstScene
+from .credits import CreditScene as CredScene

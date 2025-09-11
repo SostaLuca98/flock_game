@@ -83,7 +83,7 @@ class OptiScene(Scene):
         if opts.scen == 3:
             pygame.draw.rect(self.screen, (0, 0, 0), ((550 + 200 * opts.scen)*glob.SF - W / 2, 144*glob.SF - H / 2, W, H))
 
-        if opts.mode == 2:
+        if opts.mode == 2 and opts.scen == 3:
             w, h = 50*glob.SF, 80*glob.SF
 
             thick = 1.4
@@ -96,7 +96,6 @@ class OptiScene(Scene):
                 pygame.draw.rect(self.screen, color, (1150*glob.SF - w / 2, 144*glob.SF - h / 2 + (4-i)*h, w, h))
             for i in range(1,5):
                 pygame.draw.rect(self.screen, (0, 0, 0), (1150*glob.SF, 144*glob.SF - h / 2 + i*h - h/15, w/2, h/15))
-
             pygame.draw.circle(self.screen, (255, 0, 0), (1150*glob.SF, 144*glob.SF + 5*h-r/2+10*glob.SF), r)
 
         for b in self.buttons:
@@ -104,8 +103,7 @@ class OptiScene(Scene):
         for t in self.texts:
             t.render(self.screen)
         for t in self.temps:
-            if opts.mode == 2:
-                t.render(self.screen)
+            if opts.mode == 2 and opts.scen == 3: t.render(self.screen)
 
         pygame.display.update()
 
@@ -145,7 +143,7 @@ class OptiScene(Scene):
             args.speed *= 4
             args.rot   *= 0.7
             args.t_max *= 0.5
-        if opts.mode == 2:
+        if opts.mode == 2 and opts.scen == 3:
             if opts.temp == 0: args.n = 10
             if opts.temp == 1: args.n = 25
             if opts.temp == 2: args.n = 50
