@@ -30,10 +30,12 @@ class OptiScene(Scene):
         # Obstacles
         self.obst_1 = Button(550, 432, "", pygame.transform.scale_by(sprites[f"obst0"], 0.12)).register_event(lambda : setattr(opts, 'obst', 0))
         self.obst_2 = Button(750, 432, "", pygame.transform.scale_by(sprites[f"obst1"], 0.12)).register_event(lambda : setattr(opts, 'obst', 1))
+        self.obst_3 = Button(950, 432, "", pygame.transform.scale_by(sprites[f"obst2"], 0.12)).register_event(lambda : setattr(opts, 'obst', 2))
 
         # Modality
         self.mode_1 = Button(550, 576, "", pygame.transform.scale_by(sprites[f"mode0"], 0.12)).register_event(lambda : setattr(opts, 'mode', 0))
         self.mode_2 = Button(750, 576, "", pygame.transform.scale_by(sprites[f"mode1"], 0.12)).register_event(lambda : setattr(opts, 'mode', 1))
+        self.mode_3 = Button(950, 576, "", pygame.transform.scale_by(sprites[f"mode2"], 0.12)).register_event(lambda : setattr(opts, 'mode', 2))
 
         self.menu_button = Button(1150, 650, "Menu")
         def menu_button(): self.manager.set_scene("menu")
@@ -45,8 +47,8 @@ class OptiScene(Scene):
         self.buttons = [self.menu_button,
                         self.scen_1, self.scen_2, self.scen_3,
                         self.diff_1, self.diff_2, self.diff_3,
-                        self.obst_1, self.obst_2,
-                        self.mode_1, self.mode_2]
+                        self.obst_1, self.obst_2, self.obst_3,
+                        self.mode_1, self.mode_2, self.mode_3]
 
     def update(self) -> None:
 

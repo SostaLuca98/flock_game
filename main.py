@@ -88,11 +88,13 @@ class Game:
         sprites["scen1"] = pt.scale_by(pil("gfx/scen_1.png"),1).convert_alpha()
         sprites["scen2"] = pt.scale_by(pil("gfx/scen_2.png"),1).convert_alpha()
 
-        sprites["obst0"] = pt.scale_by(pil("gfx/obst_0.png"), 1).convert_alpha()
-        sprites["obst1"] = pt.scale_by(pil("gfx/obst_1.png"), 1).convert_alpha()
+        sprites["obst0"] = pt.scale_by(pil("gfx/obst_0.png"),1).convert_alpha()
+        sprites["obst1"] = pt.scale_by(pil("gfx/obst_1.png"),1).convert_alpha()
+        sprites["obst2"] = pt.scale_by(pil("gfx/obst_2.png"),1).convert_alpha()
 
         sprites["mode0"] = pt.scale_by(pil("gfx/mode_0.png"),1).convert_alpha()
         sprites["mode1"] = pt.scale_by(pil("gfx/mode_1.png"),1).convert_alpha()
+        sprites["mode2"] = pt.scale_by(pil("gfx/mode_2.png"),1).convert_alpha()
 
         return sprites
 
