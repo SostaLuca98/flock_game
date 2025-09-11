@@ -56,11 +56,21 @@ class Game:
         sprites["1tar"] = self.load_image("gfx/fish_target.png", 0.5, 0)
 
         # PECORE
-        sprites["2led"] = self.load_image("gfx/doggo.png", 1.4, 0)
-        sprites["2npc"] = self.load_image("gfx/dolly.png", 1.4, 0, flip_x=True, flip_y=False)
-        sprites["2scr"] = self.load_image("gfx/grass_3.jpg", 1, 0)
-        sprites["2obs"] = self.load_image("gfx/dolly_obst.png",   0.65, 0)
-        sprites["2tar"] = self.load_image("gfx/dolly_target.png", 0.6, 0)
+        # sprites["2led"] = self.load_image("gfx/doggo.png", 1.4, 0)
+        # sprites["2npc"] = self.load_image("gfx/dolly.png", 1.4, 0, flip_x=True, flip_y=False)
+        # sprites["2scr"] = self.load_image("gfx/grass_3.jpg", 1, 0)
+        # sprites["2obs"] = self.load_image("gfx/dolly_obst.png",   0.65, 0)
+        # sprites["2tar"] = self.load_image("gfx/dolly_target.png", 0.6, 0)
+
+        # HUMANS
+
+        # ABSTRACT
+        sprites["2led"] = self.load_image("gfx/abstract_leader.png", 0.3, 0)
+        sprites["2npc"] = self.load_image("gfx/abstract_flock.png", 0.1, 0, flip_x=True, flip_y=False)
+        sprites["2scr"] = self.load_image("gfx/abstract_bckg.png", 1.4, 0)
+        sprites["2obs"] = self.load_image("gfx/abstract_obst.png", 0.4, 0)
+        sprites["2tar"] = self.load_image("gfx/abstract_target.png", 0.1, 0)
+
 
         # Easter Egg 1
         sprites["3led"] = pt.rotate(pt.scale_by(pil("gfx_2/miki_langelo.png").convert_alpha(),6), -90)
@@ -88,13 +98,13 @@ class Game:
         sprites["scen1"] = pt.scale_by(pil("gfx/scen_1.png"),1).convert_alpha()
         sprites["scen2"] = pt.scale_by(pil("gfx/scen_2.png"),1).convert_alpha()
 
-        sprites["obst0"] = pt.scale_by(pil("gfx/obst_0.png"),1).convert_alpha()
-        sprites["obst1"] = pt.scale_by(pil("gfx/obst_1.png"),1).convert_alpha()
-        sprites["obst2"] = pt.scale_by(pil("gfx/obst_2.png"),1).convert_alpha()
+        sprites["obst0"] = pt.scale_by(pil("gfx/obst_0.png"), 1).convert_alpha()
+        sprites["obst1"] = pt.scale_by(pil("gfx/obst_1.png"), 1).convert_alpha()
+        sprites["obst2"] = pt.scale_by(pil("gfx/obst_1.png"), 1).convert_alpha()
 
         sprites["mode0"] = pt.scale_by(pil("gfx/mode_0.png"),1).convert_alpha()
         sprites["mode1"] = pt.scale_by(pil("gfx/mode_1.png"),1).convert_alpha()
-        sprites["mode2"] = pt.scale_by(pil("gfx/mode_2.png"),1).convert_alpha()
+        sprites["mode2"] = pt.scale_by(pil("gfx/mode_1.png"),1).convert_alpha()
 
         return sprites
 
