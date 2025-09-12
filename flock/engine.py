@@ -80,21 +80,23 @@ class Engine:
 
 	def _move_step(self, vx, vy):
 
-		def build_influence_matrix():
+		def build_influence_matrix(mode="smoothing"):
+			def smoothing_function(d, r, coeff=0.25):
+				return np.exp(-(1/coeff) * (d / (1.5*r)) ** 2)
 
-			def smoothing_function(d, r):
-				return np.exp(-(1/0.5)*(d/r)**2)
 			def binary_function(d, r):
-				return 1 if d<r else 0
-			
-			for ii in range(self.args.n+1):
-				self.A[ii,ii] = smoothing_function(0, self.args.r)
-				for jj in range(ii):
-					influence = smoothing_function(np.sqrt(self.Dx[ii,jj]**2+self.Dy[ii,jj]**2), self.args.r)
-					self.A[ii, jj] = influence
-					self.A[jj, ii] = influence 
+				return (d < r).astype(float)
 
-			return
+			# Precompute distance matrix once
+			self.R = np.sqrt(self.Dx**2 + self.Dy**2)
+
+			# Select influence rule
+			if mode == "smoothing":
+				self.A = smoothing_function(self.R, self.args.r)
+			elif mode == "binary":
+				self.A = binary_function(self.R, self.args.r)
+			else:
+				raise ValueError(f"Unknown mode: {mode}")
 
 		def connect():			
 
@@ -173,16 +175,44 @@ class Engine:
 
 		if not self.render_graph: return
 
+		max_influence = self.args.w
+
+		def clamp_color(c):
+			"""Ensure color channel is in [0,255]."""
+			return tuple(max(0, min(255, int(v))) for v in c)
+		
+		def influence_to_color(value, is_last_node=False):
+			if is_last_node:
+				# Color gradient from strong orange to faint orange
+				strong_orange = np.array([254, 117, 20], dtype=float)
+				faint_orange  = np.array([255, 200, 140], dtype=float)  # pale orange
+
+				# Normalize value to [0,1]
+				t = np.clip(value / max_influence, 0, 1)
+
+				# Interpolate between strong → faint
+				color = t * strong_orange + (1 - t) * faint_orange
+				return tuple(color.astype(int))
+			
+			else:
+				# Grayscale with a lower bound = light grey
+				strong_grey = np.array([0, 0, 0], dtype=float)  # dark grey
+				faint_grey = np.array([240, 240, 240], dtype=float)  # light grey
+
+				# Normalize value to [0,1]
+				t = np.clip(value, 0, 1)
+
+				color = t * strong_grey + (1 - t) * faint_grey
+				return tuple(color.astype(int))
+
 		def draw_line(p1,p2,color=(127,127,127),width=1):
 			pygame.draw.line(screen, color, (p1[0]*glob.SF,p1[1]*glob.SF), (p2[0]*glob.SF,p2[1]*glob.SF), width)
 
 		dim_flock = self.A.shape[0]-1
 		for i in range(dim_flock+1):
 			for j in range(i):
-				if self.A[i, j] == 0: continue
+				if self.A[i, j] < 1e-4 * self.args.n: continue
 	
-				color = (254*(1-2*self.A[i, j]/self.args.w), 117*(1-2*self.A[i, j]/self.args.w), 20*(1-2*self.A[i, j]/self.args.w)) if i==dim_flock else (127*(2-self.A[i, j]),127*(2-self.A[i, j]),127*(2-self.A[i, j]))
-				if i == dim_flock:
-					print(color)
+				color = influence_to_color(self.A[i, j], is_last_node=(i == dim_flock))
 				draw_line((self.x[i], self.y[i]), (self.x[i]+self.Dx[i,j], self.y[i]+self.Dy[i,j]), color=color)
 				draw_line((self.x[j], self.y[j]), (self.x[j]+self.Dx[j,i], self.y[j]+self.Dy[j,i]), color=color)
