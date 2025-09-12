@@ -21,9 +21,9 @@ class Params:
 
     t_max: int = 60
 
-    n: int = 100  # Numero di elementi dello stormo
+    n: int = 100   # Numero di elementi dello stormo
     w: int = 1000  # Numero di leader
-    r: int = 100  # Raggio legame di vicinanza
+    r: int = 100   # Raggio legame di vicinanza
     r_player: float = 25.0
     r_npc: int = 20
 
@@ -31,12 +31,12 @@ class Params:
     speed: float = 60.0
     acc: float = 300.0
     rot: float = 5.0
-    noise: float = 1.0
+    noise: float = 0.8
 
 @dataclass
 class Options:
 
-    scen = 2
+    scen = 0
     diff = 1
     obst = 0
     mode = 0

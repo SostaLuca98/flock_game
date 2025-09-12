@@ -30,7 +30,9 @@ class NPC:
         self.speed = self.spe_c
         self.accel = self.acc_c
         self.moving = True
-        self.rect = self.sprite.get_rect()
+
+        self.cx = 0
+        self.cy = 0
 
     def change_sprite(self):
         self.sprite_count += 1
@@ -74,6 +76,8 @@ class NPC:
         rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle)
         screen.blit(pygame.transform.scale_by(rot_surf, glob.SF), ((self.x-rot_surf.get_size()[0]/2)*glob.SF, (self.y-rot_surf.get_size()[1]/2)*glob.SF))
         if opts.scen == 3: self.draw_fullarrow(self.dir_angle, screen)
+        self.cx = self.x-rot_surf.get_size()[0]/2
+        self.cy = self.y-rot_surf.get_size()[1]/2
 
     def move(self, dt) -> None:
         

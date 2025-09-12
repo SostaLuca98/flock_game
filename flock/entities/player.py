@@ -1,4 +1,4 @@
-from ..config import glob, args, opts
+from ..config import glob, opts
 import pygame, math, copy
 
 class Player:
@@ -29,7 +29,9 @@ class Player:
 
         self.set_direction("E")
         self.moving = True
-        self.rect = self.sprite.get_rect()
+
+        self.cx = 0
+        self.cy = 0
 
     def draw_fullarrow(self, angle: float, screen: pygame.Surface, color: tuple = (0, 0, 0)) -> None:
         arrow_length = self.args.r * 0.3 * glob.SF * self.speed/self.spe_c
@@ -70,10 +72,20 @@ class Player:
             self.move(dt)
 
     def render(self, screen: pygame.Surface) -> None:
-        rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle) 
-        pygame.draw.circle(screen, (255,117,20), (self.x*glob.SF,self.y*glob.SF), self.args.r*glob.SF, width=(1 if opts.mode==2 else 3))
-        screen.blit(pygame.transform.scale_by(rot_surf, glob.SF), ((self.x-rot_surf.get_size()[0]/2)*glob.SF, (self.y-rot_surf.get_size()[1]/2)*glob.SF))
+        
+        rot_surf = pygame.transform.rotate(self.sprite,self.dir_angle)
+        screen.blit(pygame.transform.scale_by(rot_surf, glob.SF), 
+                     ((self.x-rot_surf.get_size()[0]/2)*glob.SF, 
+                      (self.y-rot_surf.get_size()[1]/2)*glob.SF))
+        self.cx = self.x
+        self.cy = self.y
+        
         if opts.scen == 3: self.draw_fullarrow(self.dir_angle, screen, color=(255,117,20))
+        for i in range(-1,2):
+            for j in range(-1,2):
+                cx, cy = self.x + i*glob.SW, self.y + j*glob.SH 
+                r, w   = self.args.r, (1 if opts.mode==2 else 3)
+                pygame.draw.circle(screen, (255,117,20), (cx*glob.SF,cy*glob.SF), r*glob.SF, w)
 
     def set_direction(self, direction):
         if   direction == "S": self.tar_angle = +math.pi/2
