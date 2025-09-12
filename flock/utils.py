@@ -7,7 +7,7 @@ class Button:
                  text: str,
                  img: pygame.surface=None,
                  color = None, 
-                 font = ("manrope", 72)) -> None:
+                 font = ("Manrope", 72)) -> None:
         self.x = x
         self.y = y
         self.text = text
