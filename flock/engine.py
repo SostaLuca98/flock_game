@@ -17,6 +17,7 @@ class Engine:
 		self.pacman_x = True
 		self.pacman_y = (opts.scen != 1) # PESCI
 		self.render_graph = (opts.mode == 2)
+		self.connectivity_mode = "smoothing" # "binary"
 
 	def _build_flock(self):
 
@@ -80,7 +81,7 @@ class Engine:
 
 	def _move_step(self, vx, vy):
 
-		def build_influence_matrix(mode="smoothing"):
+		def build_influence_matrix():
 			def smoothing_function(d, r, coeff=0.25):
 				return np.exp(-(1/coeff) * (d / (1.5*r)) ** 2)
 
@@ -91,12 +92,12 @@ class Engine:
 			self.R = np.sqrt(self.Dx**2 + self.Dy**2)
 
 			# Select influence rule
-			if mode == "smoothing":
+			if self.connectivity_mode == "smoothing":
 				self.A = smoothing_function(self.R, self.args.r)
-			elif mode == "binary":
+			elif self.connectivity_mode == "binary":
 				self.A = binary_function(self.R, self.args.r)
 			else:
-				raise ValueError(f"Unknown mode: {mode}")
+				raise ValueError(f"Unknown mode: {self.connectivity_mode}")
 
 		def connect():			
 
