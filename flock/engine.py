@@ -141,10 +141,8 @@ class Engine:
 	def update(self, dt):
 
 		# Retrieve Player coordinates
-		self.x[-1] = self.player.x
-		self.y[-1] = self.player.y
-		self.x[:-1] = np.array([f.x for f in self.flock])
-		self.y[:-1] = np.array([f.y for f in self.flock])
+		self.x = np.array([f.x for f in self.flock]+[self.player.x])
+		self.y = np.array([f.y for f in self.flock]+[self.player.y])
 
 		# Compute new angle 
 		vx = [f.vx for f in self.flock] + [self.player.vx]
@@ -173,7 +171,7 @@ class Engine:
 
 		if not self.render_graph: return
 
-		def draw_line(p1,p2,color=(127,127,127),width=1):
+		def draw_line(p1, p2, color=(127,127,127), width=1):
 			pygame.draw.line(screen, color, (p1[0]*glob.SF,p1[1]*glob.SF), (p2[0]*glob.SF,p2[1]*glob.SF), width)
 
 		dim_flock = self.A.shape[0]-1
@@ -184,5 +182,6 @@ class Engine:
 				color = (254*(1-2*self.A[i, j]/self.args.w), 117*(1-2*self.A[i, j]/self.args.w), 20*(1-2*self.A[i, j]/self.args.w)) if i==dim_flock else (127*(2-self.A[i, j]),127*(2-self.A[i, j]),127*(2-self.A[i, j]))
 				if i == dim_flock:
 					print(color)
+				color=(0,0,0)
 				draw_line((self.x[i], self.y[i]), (self.x[i]+self.Dx[i,j], self.y[i]+self.Dy[i,j]), color=color)
 				draw_line((self.x[j], self.y[j]), (self.x[j]+self.Dx[j,i], self.y[j]+self.Dy[j,i]), color=color)

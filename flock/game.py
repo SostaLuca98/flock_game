@@ -52,8 +52,8 @@ class GameScene(Scene):
         sprite_player = [s for n,s in self.sprites.items() if n.startswith(f"{self.scenario}led")]
         sprite_npc    = [s for n,s in self.sprites.items() if n.startswith(f"{self.scenario}npc")]
 
-        self.npcs   = [NPC(args, sprite_npc) for _ in range(args.n)]
-        self.player = Player(args,100,200,sprite_player)
+        self.npcs   = [NPC(args,sprite_npc,args.r_npc) for _ in range(args.n)]
+        self.player = Player(args,100,200,sprite_player,args.r_player)
         self.engine = Engine(args, self.manager.scenes["game"])
 
         self.score = 0
