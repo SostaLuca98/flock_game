@@ -24,6 +24,7 @@ class Engine:
 		self.x  = np.zeros((dim), dtype=float)
 		self.y  = np.zeros((dim), dtype=float)
 		self.A  = np.zeros((dim,dim), dtype=float)
+		self.Dnorm = np.zeros((dim,dim), dtype=float)
 		self.Dx = np.zeros((dim,dim), dtype=float)
 		self.Dy = np.zeros((dim,dim), dtype=float)
 
@@ -80,6 +81,28 @@ class Engine:
 
 	def _move_step(self, vx, vy):
 
+		def connect_by_distance():
+
+			def smoothing_function(d, r):
+				return np.exp(-(1/8)*(d/r)**2)
+			
+			for ii in range(self.args.n+1):
+				for jj in range(ii):
+					influence = smoothing_function(np.sqrt(self.Dx[ii,jj]**2+self.Dy[ii,jj]**2), self.args.r)
+					self.Dnorm[ii, jj] = influence
+					self.Dnorm[jj, ii] = influence
+
+			for ii in range(self.args.n+1): 
+				self.Dnorm[ii,ii] = smoothing_function(0, self.args.r)
+			self.Dnorm[-1,:] *= self.args.w
+			self.Dnorm[:,-1] *= self.args.w
+			self.Dnorm[-1,-1] = smoothing_function(0, self.args.r)
+
+			normalizer = np.sum(self.Dnorm, axis=1).reshape(-1,1)
+			F = (1/normalizer)*self.Dnorm
+			
+			return F
+
 		def connect():			
 
 			for ii in range(self.args.n+1):
@@ -99,7 +122,7 @@ class Engine:
 
 			return F
 
-		F = connect()
+		F = connect_by_distance()
 		
 		vx = np.dot(F, np.array(vx)[...,None])
 		vy = np.dot(F, np.array(vy)[...,None])
