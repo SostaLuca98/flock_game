@@ -177,34 +177,25 @@ class Engine:
 		if not self.render_graph: return
 
 		max_influence = self.args.w
-
-		def clamp_color(c):
-			"""Ensure color channel is in [0,255]."""
-			return tuple(max(0, min(255, int(v))) for v in c)
 		
 		def influence_to_color(value, is_last_node=False):
 			if is_last_node:
 				# Color gradient from strong orange to faint orange
-				strong_orange = np.array([254, 117, 20], dtype=float)
-				faint_orange  = np.array([255, 200, 140], dtype=float)  # pale orange
-
+				strong_color = np.array([254, 117, 20], dtype=float)
+				faint_color  = np.array([255, 200, 140], dtype=float)  # pale orange
 				# Normalize value to [0,1]
 				t = np.clip(value / max_influence, 0, 1)
-
-				# Interpolate between strong → faint
-				color = t * strong_orange + (1 - t) * faint_orange
-				return tuple(color.astype(int))
 			
 			else:
 				# Grayscale with a lower bound = light grey
-				strong_grey = np.array([0, 0, 0], dtype=float)  # dark grey
-				faint_grey = np.array([240, 240, 240], dtype=float)  # light grey
-
+				strong_color = np.array([0, 0, 0], dtype=float)  # dark grey
+				faint_color = np.array([240, 240, 240], dtype=float)  # light grey
 				# Normalize value to [0,1]
 				t = np.clip(value, 0, 1)
 
-				color = t * strong_grey + (1 - t) * faint_grey
-				return tuple(color.astype(int))
+			# Interpolate color
+			color = t * strong_color + (1 - t) * faint_color
+			return tuple(color.astype(int))
 
 		def draw_line(p1,p2,color=(127,127,127),width=1):
 			pygame.draw.line(screen, color, (p1[0]*glob.SF,p1[1]*glob.SF), (p2[0]*glob.SF,p2[1]*glob.SF), width)
