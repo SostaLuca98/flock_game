@@ -24,7 +24,6 @@ class Engine:
 		self.x  = np.zeros((dim), dtype=float)
 		self.y  = np.zeros((dim), dtype=float)
 		self.A  = np.zeros((dim,dim), dtype=float)
-		self.Dnorm = np.zeros((dim,dim), dtype=float)
 		self.Dx = np.zeros((dim,dim), dtype=float)
 		self.Dy = np.zeros((dim,dim), dtype=float)
 
@@ -81,38 +80,26 @@ class Engine:
 
 	def _move_step(self, vx, vy):
 
-		def connect_by_distance():
+		def build_influence_matrix():
 
 			def smoothing_function(d, r):
-				return np.exp(-(1/8)*(d/r)**2)
+				return np.exp(-(1/0.5)*(d/r)**2)
+			def binary_function(d, r):
+				return 1 if d<r else 0
 			
 			for ii in range(self.args.n+1):
+				self.A[ii,ii] = smoothing_function(0, self.args.r)
 				for jj in range(ii):
 					influence = smoothing_function(np.sqrt(self.Dx[ii,jj]**2+self.Dy[ii,jj]**2), self.args.r)
-					self.Dnorm[ii, jj] = influence
-					self.Dnorm[jj, ii] = influence
+					self.A[ii, jj] = influence
+					self.A[jj, ii] = influence 
 
-			for ii in range(self.args.n+1): 
-				self.Dnorm[ii,ii] = smoothing_function(0, self.args.r)
-			self.Dnorm[-1,:] *= self.args.w
-			self.Dnorm[:,-1] *= self.args.w
-			self.Dnorm[-1,-1] = smoothing_function(0, self.args.r)
-
-			normalizer = np.sum(self.Dnorm, axis=1).reshape(-1,1)
-			F = (1/normalizer)*self.Dnorm
-			
-			return F
+			return
 
 		def connect():			
 
-			for ii in range(self.args.n+1):
-				for jj in range(ii):
-					close_bool = (np.sqrt(self.Dx[ii,jj]**2+self.Dy[ii,jj]**2) < self.args.r) 
-					self.A[ii, jj] = 1 if close_bool else 0
-					self.A[jj, ii] = 1 if close_bool else 0
+			build_influence_matrix()
 
-			for ii in range(self.args.n+1): 
-				self.A[ii,ii] = 1
 			self.A[-1,:] *= self.args.w
 			self.A[:,-1] *= self.args.w
 			self.A[-1,-1] = 1
@@ -122,7 +109,7 @@ class Engine:
 
 			return F
 
-		F = connect_by_distance()
+		F = connect()
 		
 		vx = np.dot(F, np.array(vx)[...,None])
 		vy = np.dot(F, np.array(vy)[...,None])
@@ -193,6 +180,9 @@ class Engine:
 		for i in range(dim_flock+1):
 			for j in range(i):
 				if self.A[i, j] == 0: continue
-				color = (255,117,20) if i==dim_flock else (127,127,127)
+	
+				color = (254*(1-2*self.A[i, j]/self.args.w), 117*(1-2*self.A[i, j]/self.args.w), 20*(1-2*self.A[i, j]/self.args.w)) if i==dim_flock else (127*(2-self.A[i, j]),127*(2-self.A[i, j]),127*(2-self.A[i, j]))
+				if i == dim_flock:
+					print(color)
 				draw_line((self.x[i], self.y[i]), (self.x[i]+self.Dx[i,j], self.y[i]+self.Dy[i,j]), color=color)
 				draw_line((self.x[j], self.y[j]), (self.x[j]+self.Dx[j,i], self.y[j]+self.Dy[j,i]), color=color)
