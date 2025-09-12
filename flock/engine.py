@@ -72,7 +72,11 @@ class Engine:
 
 	def close(self,ii,jj,r=None):
 		if r is None: r=self.args.r
-		dist = np.sqrt((self.x[ii] - self.x[jj])**2 + (self.y[ii] - self.y[jj])**2)
+		dx, dy = abs(self.x[ii] - self.x[jj]), abs(self.y[ii] - self.y[jj])
+		dx, dy = min(dx, glob.SW - dx), min(dy, glob.SH - dy)
+		
+		dist = np.sqrt(dx**2+ dy**2)
+		#dist = np.sqrt((self.x[ii] - self.x[jj])**2 + (self.y[ii] - self.y[jj])**2)
 		return dist < r
 	
 	def close2(self,p1,p2,r):
@@ -85,7 +89,7 @@ class Engine:
 
 	def colision(self, b, f, r=1.1, angle=True):
 		if not self.close2(b, f, r): return
-		new_angle = 2*np.atan2(b.y-f.y,b.x-f.x)-f.dir_angle/360*(2*np.pi)
+		new_angle = 2*np.arctan2(b.y-f.y,b.x-f.x)-f.dir_angle/360*(2*np.pi)
 		if angle: f.tar_angle = -new_angle
 		vmod = np.sqrt((f.x-b.x)**2+(f.y-b.y)**2)
 		f.x = b.x + (f.x-b.x)/vmod*max(b.r+f.r+10, 0*b.r*1.5)
@@ -115,7 +119,7 @@ class Engine:
 		vx = np.dot(F, np.array(vx)[...,None])
 		vy = np.dot(F, np.array(vy)[...,None])
 
-		theta = np.atan2(vy,vx)
+		theta = np.arctan2(vy,vx)
 		noise = (np.random.rand(self.args.n+1, 1) - 0.5) * np.pi/2
 		return theta + noise*self.args.noise
 
