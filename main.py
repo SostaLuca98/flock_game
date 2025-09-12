@@ -45,38 +45,38 @@ class Game:
         sprites = {}
 
         # UCCELLI
-        sprites["0led"] = self.load_image("gfx/birdL.png", 1, 235)
-        sprites["0npc"] = self.load_image("gfx/birdN.png", 1, 235)
-        sprites["0scr"] = self.load_image("gfx/sky.jpg", 1, 0)
-        sprites["0obs"] = self.load_image("gfx/flock_obst.png",   0.7, 0)
-        sprites["0tar"] = self.load_image("gfx/flock_target.png", 0.7, 0)
+        sprites["0led"] = self.load_image("gfx/scen0/birdL.png", 1, 235)
+        sprites["0npc"] = self.load_image("gfx/scen0/birdN.png", 1, 235)
+        sprites["0scr"] = self.load_image("gfx/scen0/sky.jpg", 1, 0)
+        sprites["0obs"] = self.load_image("gfx/scen0/flock_obst.png",   0.7, 0)
+        sprites["0tar"] = self.load_image("gfx/scen0/flock_target.png", 0.7, 0)
 
         # PESCI
-        sprites["1led"] = self.load_image("gfx/nemo.png", 1.3, 0, flip_x=True, flip_y=False)
-        sprites["1npc"] = self.load_image("gfx/dory.png", 1.3, 0) 
-        sprites["1scr"] = self.load_image("gfx/ocean.jpg", 1, 0)
-        sprites["1obs"] = self.load_image("gfx/fish_obst_2.png", 0.4, 0)
-        sprites["1tar"] = self.load_image("gfx/fish_target.png", 0.5, 0)
+        sprites["1led"] = self.load_image("gfx/scen1/nemo.png", 1.3, 0, flip_x=True, flip_y=False)
+        sprites["1npc"] = self.load_image("gfx/scen1/dory.png", 1.3, 0) 
+        sprites["1scr"] = self.load_image("gfx/scen1/ocean.jpg", 1, 0)
+        sprites["1obs"] = self.load_image("gfx/scen1/fish_obst_2.png", 0.4, 0)
+        sprites["1tar"] = self.load_image("gfx/scen1/fish_target.png", 0.5, 0)
 
         # ABSTRACT
-        sprites["2led_1"] = self.load_image("gfx/f1.png", 0.25, 90)
-        sprites["2led_2"] = self.load_image("gfx/f2.png", 0.25, 90)
-        sprites["2led_3"] = self.load_image("gfx/f3.png", 0.25, 90)
-        sprites["2led_4"] = self.load_image("gfx/f2.png", 0.25, 90)
-        sprites["2npc_1"] = self.load_image("gfx/m1.png", 0.20, 90)
-        sprites["2npc_2"] = self.load_image("gfx/m2.png", 0.20, 90)
-        sprites["2npc_3"] = self.load_image("gfx/m3.png", 0.20, 90)
-        sprites["2npc_4"] = self.load_image("gfx/m2.png", 0.20, 90)
-        sprites["2scr"]   = self.load_image("gfx/abstract_bckg.png", 1.4, 0)
-        sprites["2obs"]   = self.load_image("gfx/abstract_obst.png", 0.4, 0)
-        sprites["2tar"]   = self.load_image("gfx/abstract_target.png", 0.1, 0)
+        sprites["2led_1"] = self.load_image("gfx/scen2/f1.png", 0.25, 90)
+        sprites["2led_2"] = self.load_image("gfx/scen2/f2.png", 0.25, 90)
+        sprites["2led_3"] = self.load_image("gfx/scen2/f3.png", 0.25, 90)
+        sprites["2led_4"] = self.load_image("gfx/scen2/f2.png", 0.25, 90)
+        sprites["2npc_1"] = self.load_image("gfx/scen2/m1.png", 0.20, 90)
+        sprites["2npc_2"] = self.load_image("gfx/scen2/m2.png", 0.20, 90)
+        sprites["2npc_3"] = self.load_image("gfx/scen2/m3.png", 0.20, 90)
+        sprites["2npc_4"] = self.load_image("gfx/scen2/m2.png", 0.20, 90)
+        sprites["2scr"]   = self.load_image("gfx/scen2/abstract_bckg.png", 1.4, 0)
+        sprites["2obs"]   = self.load_image("gfx/scen2/abstract_obst.png", 0.4, 0)
+        sprites["2tar"]   = self.load_image("gfx/scen2/abstract_target.png", 0.1, 0)
 
         # ABSTRACT
-        sprites["3led"] = self.load_image("gfx/orange_dot.png", 0.20, 0)
-        sprites["3npc"] = self.load_image("gfx/black_dot.png", 0.16, 0)
-        sprites["3scr"] = self.load_image("gfx/abstract_bckg.png", 1.4, 0)
-        sprites["3obs"] = self.load_image("gfx/abstract_obst.png", 0.4, 0)
-        sprites["3tar"] = self.load_image("gfx/abstract_target.png", 0.1, 0)
+        sprites["3led"] = self.load_image("gfx/scen3/orange_dot.png", 0.20, 0)
+        sprites["3npc"] = self.load_image("gfx/scen3/black_dot.png", 0.16, 0)
+        sprites["3scr"] = self.load_image("gfx/scen3/abstract_bckg.png", 1.4, 0)
+        sprites["3obs"] = self.load_image("gfx/scen3/abstract_obst.png", 0.4, 0)
+        sprites["3tar"] = self.load_image("gfx/scen3/abstract_target.png", 0.1, 0)
 
         # Easter Egg 1
         sprites["4led"] = pt.rotate(pt.scale_by(pil("gfx_2/miki_langelo.png").convert_alpha(),6), -90)
@@ -94,24 +94,24 @@ class Game:
 
         # GENERAL
         sprites["compass"] = pt.rotate(pil("gfx/compass.png").convert_alpha(),0)
-        sprites["needle"] = pt.rotate(pil("gfx/needle.png").convert_alpha(),270)
-        sprites["logo"] = self.load_image("gfx/logo.png", 0.5, 0)
+        sprites["needle"]  = pt.rotate(pil("gfx/needle.png").convert_alpha(),270)
+        sprites["logo"]    = self.load_image("gfx/logo.png", 0.5, 0)
 
-        sprites["diff0"] = pt.scale_by(pil("gfx/diff_0.png"),1).convert_alpha()
-        sprites["diff1"] = pt.scale_by(pil("gfx/diff_1.png"),1).convert_alpha()
-        sprites["diff2"] = pt.scale_by(pil("gfx/diff_2.png"),1).convert_alpha()
+        sprites["diff0"] = pt.scale_by(pil("gfx/icons/diff_0.png"),1).convert_alpha()
+        sprites["diff1"] = pt.scale_by(pil("gfx/icons/diff_1.png"),1).convert_alpha()
+        sprites["diff2"] = pt.scale_by(pil("gfx/icons/diff_2.png"),1).convert_alpha()
 
-        sprites["scen0"] = pt.scale_by(pil("gfx/scen_0.png"),1).convert_alpha()
-        sprites["scen1"] = pt.scale_by(pil("gfx/scen_1.png"),1).convert_alpha()
-        sprites["scen2"] = pt.scale_by(pil("gfx/scen_2.png"),1).convert_alpha()
+        sprites["scen0"] = pt.scale_by(pil("gfx/icons/scen_0.png"),1).convert_alpha()
+        sprites["scen1"] = pt.scale_by(pil("gfx/icons/scen_1.png"),1).convert_alpha()
+        sprites["scen2"] = pt.scale_by(pil("gfx/icons/scen_2.png"),1).convert_alpha()
 
-        sprites["obst0"] = pt.scale_by(pil("gfx/obst_0.png"), 1).convert_alpha()
-        sprites["obst1"] = pt.scale_by(pil("gfx/obst_1.png"), 1).convert_alpha()
-        sprites["obst2"] = pt.scale_by(pil("gfx/obst_1.png"), 1).convert_alpha()
+        sprites["obst0"] = pt.scale_by(pil("gfx/icons/obst_0.png"), 1).convert_alpha()
+        sprites["obst1"] = pt.scale_by(pil("gfx/icons/obst_1.png"), 1).convert_alpha()
+        sprites["obst2"] = pt.scale_by(pil("gfx/icons/obst_1.png"), 1).convert_alpha()
 
-        sprites["mode0"] = pt.scale_by(pil("gfx/mode_0.png"),1).convert_alpha()
-        sprites["mode1"] = pt.scale_by(pil("gfx/mode_1.png"),1).convert_alpha()
-        sprites["mode2"] = pt.scale_by(pil("gfx/mode_1.png"),1).convert_alpha()
+        sprites["mode0"] = pt.scale_by(pil("gfx/icons/mode_0.png"),1).convert_alpha()
+        sprites["mode1"] = pt.scale_by(pil("gfx/icons/mode_1.png"),1).convert_alpha()
+        sprites["mode2"] = pt.scale_by(pil("gfx/icons/mode_1.png"),1).convert_alpha()
 
         return sprites
 
