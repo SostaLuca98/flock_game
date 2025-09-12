@@ -30,8 +30,7 @@ class CreditScene(Scene):
         self.screen.fill("black")
 
 
-        SW = 1280
-        SH = 720
+        SW, SH = glob.SW, glob.SH
         logo = pygame.transform.scale_by(self.sprites["logo"], glob.SF)
         self.screen.blit(logo,(SW/2*glob.SF-logo.get_rect().width/2,SH/2*glob.SF-logo.get_rect().height/2))
 

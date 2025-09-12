@@ -12,36 +12,22 @@ class Engine:
 		self.player = game.player
 		self.flock  = game.npcs
 		self.blocks = game.blocks
-		self.build_flock()
-		#self.distance_function
-		self.A = None
+		self._build_flock()
 
-	def build_flock(self):
-		self.x = np.zeros((self.args.n+1),dtype=float)
-		self.y = np.zeros((self.args.n+1),dtype=float)
+		self.pacman_x = True
+		self.pacman_y = (opts.scen != 1) # PESCI
+		self.render_graph = (opts.mode == 2)
 
-	@property
-	def close(self):
+	def _build_flock(self):
 
-		def close_plane(ii,jj,r=None):
+		dim = self.args.n+1
+		self.x  = np.zeros((dim), dtype=float)
+		self.y  = np.zeros((dim), dtype=float)
+		self.A  = np.zeros((dim,dim), dtype=float)
+		self.Dx = np.zeros((dim,dim), dtype=float)
+		self.Dy = np.zeros((dim,dim), dtype=float)
 
-			if r is None: r=self.args.r
-			dist = np.sqrt((self.x[ii] - self.x[jj])**2 + (self.y[ii] - self.y[jj])**2)
-
-			return dist < r
-
-		def close_spherical(ii,jj,r=None):
-			
-			if r is None: r=self.args.r
-			dx, dy = abs(self.x[ii] - self.x[jj]), abs(self.y[ii] - self.y[jj])
-			dx, dy = min(dx, glob.SW - dx), min(dy, glob.SH - dy)
-			
-			dist = np.sqrt(dx**2+ dy**2)
-			
-			return dist < r
-		
-		if opts.scen == 1: return close_plane
-		else: return close_spherical
+		return
 
 	def _reach_target(self, target):
 
@@ -80,6 +66,7 @@ class Engine:
 		if self.player.y > glob.SH - self.player.sprite.get_size()[1]/2:
 			self.player.vy *= -1
 			self.player.y = glob.SH - self.player.sprite.get_size()[1] / 2 * 1.1
+
 		for f in self.flock:
 			if f.y < f.sprite.get_size()[1] / 2:
 				f.vy *= -1
@@ -87,8 +74,60 @@ class Engine:
 			if f.y > glob.SH - f.sprite.get_size()[1] / 2:
 				f.vy *= -1
 				f.y = glob.SH - f.sprite.get_size()[1] / 2 * 1.1
+		
 		return
 
+
+	def _move_step(self, vx, vy):
+
+		def connect():			
+
+			for ii in range(self.args.n+1):
+				for jj in range(ii):
+					close_bool = (np.sqrt(self.Dx[ii,jj]**2+self.Dy[ii,jj]**2) < self.args.r) 
+					self.A[ii, jj] = 1 if close_bool else 0
+					self.A[jj, ii] = 1 if close_bool else 0
+
+			for ii in range(self.args.n+1): 
+				self.A[ii,ii] = 1
+			self.A[-1,:] *= self.args.w
+			self.A[:,-1] *= self.args.w
+			self.A[-1,-1] = 1
+
+			D = np.sum(self.A, axis=1).reshape(-1,1)
+			F = (1/D)*self.A
+
+			return F
+
+		F = connect()
+		
+		vx = np.dot(F, np.array(vx)[...,None])
+		vy = np.dot(F, np.array(vy)[...,None])
+
+		theta = np.arctan2(vy,vx)
+		noise = (np.random.rand(self.args.n+1, 1) - 0.5) * np.pi/2
+
+		return theta + noise*self.args.noise
+	
+	def _compute_delta(self):
+
+		def toroidal_delta(i, j):
+
+			dx, dy = (self.x[j] - self.x[i], self.y[j] - self.y[i])
+			if self.pacman_x: dx = (dx + glob.SW/2) % glob.SW - glob.SW/2
+			if self.pacman_y: dy = (dy + glob.SH/2) % glob.SH - glob.SH/2
+			
+			return dx, dy
+
+		dim_flock = self.args.n
+		for ii in range(dim_flock+1):
+			self.Dx[ii, ii], self.Dy[ii, ii] = 0, 0
+			for jj in range(dim_flock+1):
+				dx, dy = toroidal_delta(ii, jj)
+				self.Dx[ii, jj], self.Dy[ii, jj] = dx, dy
+
+		return
+		
 	def update(self, dt):
 
 		# Retrieve Player coordinates
@@ -101,7 +140,8 @@ class Engine:
 		vx = [f.vx for f in self.flock] + [self.player.vx]
 		vy = [f.vy for f in self.flock] + [self.player.vy]
 
-		theta = self.move_step(vx, vy) % (2*np.pi)
+		self._compute_delta()
+		theta = self._move_step(vx, vy) % (2*np.pi)
 		for i,f in enumerate(self.flock):
 			f.tar_angle = float(theta[i,0])
 
@@ -112,58 +152,24 @@ class Engine:
 
 		if opts.scen == 1: # PESCI
 			self._collision_boundary()
-
-		if opts.mode == 1:
+		if opts.mode == 1: # COMPETITIVA
 			target = self.game.target
 			self._reach_target(target)
 
 		self.player.update(dt)
 		for i,f in enumerate(self.flock): f.update(dt)
 
-
-
-
-
-	# def correct_distance():
-	# 	if opts.scen == 1:
-	# 		return
-
-
-	def connect(self):
-		
-		A = np.zeros((self.args.n+1,self.args.n+1))
-		for ii in range(self.args.n+1):
-			A[ii,ii] = 1
-			for jj in range(ii + 1, self.args.n+1):
-				if self.close(ii,jj):
-					A[ii, jj] = 1
-					A[jj, ii] = 1
-		self.A = A
-		A[-1,:] *= self.args.w
-		A[:,-1] *= self.args.w
-		A[-1,-1] = 1
-
-		D = np.sum(A, axis=1).reshape(-1,1)
-		F = (1/D)*A
-		return F
-
-	def move_step(self, vx, vy):
-
-		F = self.connect()
-		
-		vx = np.dot(F, np.array(vx)[...,None])
-		vy = np.dot(F, np.array(vy)[...,None])
-
-		theta = np.arctan2(vy,vx)
-		noise = (np.random.rand(self.args.n+1, 1) - 0.5) * np.pi/2
-		return theta + noise*self.args.noise
-
 	def render(self, screen: pygame.Surface) -> None:
-		if opts.mode != 2: return
-		for i in range(self.A.shape[0]-1):
+
+		if not self.render_graph: return
+
+		def draw_line(p1,p2,color=(127,127,127),width=1):
+			pygame.draw.line(screen, color, (p1[0]*glob.SF,p1[1]*glob.SF), (p2[0]*glob.SF,p2[1]*glob.SF), width)
+
+		dim_flock = self.A.shape[0]-1
+		for i in range(dim_flock+1):
 			for j in range(i):
 				if self.A[i, j] == 0: continue
-				pygame.draw.line(screen, (127, 127, 127), (self.x[i]*glob.SF, self.y[i]*glob.SF), (self.x[j]*glob.SF, self.y[j]*glob.SF), 1)
-		for i in range(self.A.shape[0]-1):
-			if self.A[i, -1] == 0: continue
-			pygame.draw.line(screen, (255,117,20), (self.x[i]*glob.SF, self.y[i]*glob.SF), (self.x[-1]*glob.SF, self.y[-1]*glob.SF), 1)
+				color = (255,117,20) if i==dim_flock else (127,127,127)
+				draw_line((self.x[i], self.y[i]), (self.x[i]+self.Dx[i,j], self.y[i]+self.Dy[i,j]), color=color)
+				draw_line((self.x[j], self.y[j]), (self.x[j]+self.Dx[j,i], self.y[j]+self.Dy[j,i]), color=color)

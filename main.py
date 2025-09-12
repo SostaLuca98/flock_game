@@ -27,7 +27,7 @@ class Game:
                   "cred": CredScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites)
                   }
-        starting_scene = "game"
+        starting_scene = "menu"
         self.scene_manager.initialize(scenes, starting_scene)
         if starting_scene == "game": scenes["game"].build_level()
         self.scene_manager.scenes["opti"].change_settings()
@@ -126,7 +126,8 @@ class Game:
             self.scene_manager.current_scene.render()
 
             if self.scene_manager.quit == True:
-                self.running = False    
+                self.running = False
+                
         pygame.quit()
         if self.tracker is not None:
             self.tracker.quit()
