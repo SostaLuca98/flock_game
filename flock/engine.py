@@ -13,19 +13,74 @@ class Engine:
 		self.flock  = game.npcs
 		self.blocks = game.blocks
 		self.build_flock()
+		#self.distance_function
 		self.A = None
 
 	def build_flock(self):
 		self.x = np.zeros((self.args.n+1),dtype=float)
 		self.y = np.zeros((self.args.n+1),dtype=float)
 
-	def reach_target(self, target):
+	@property
+	def close(self):
+
+		def close_spherical(ii,jj,r=None):
+			if r is None: r=self.args.r
+			dx, dy = abs(self.x[ii] - self.x[jj]), abs(self.y[ii] - self.y[jj])
+			dx, dy = min(dx, glob.SW - dx), min(dy, glob.SH - dy)
+			
+			dist = np.sqrt(dx**2+ dy**2)
+			#dist = np.sqrt((self.x[ii] - self.x[jj])**2 + (self.y[ii] - self.y[jj])**2)
+			return dist < r
+		
+		if opts.scen == 1: return close_spherical
+		else: return close_spherical
+
+	def _reach_target(self, target):
+
+		def dist_target(p1,p2,r):
+			dist = np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
+			return dist < r
+		
 		for f in self.flock:
-			if self.close3(f,target,target.r):
-				if self.close3(self.player,target,2*self.args.r):
+			if dist_target(f,target,target.r):
+				if dist_target(self.player,target,2*self.args.r):
 					f.arrived = True
 					self.game.score += 1
 		
+		return
+	
+	def _collision_obstacle(self, b, f, r=1.1, angle=True):
+
+		def dist_obstacle(p1,p2,r):
+			dist = np.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
+			return dist < (p1.r+p2.r)*r
+
+		if not dist_obstacle(b, f, r): return
+		new_angle = 2*np.arctan2(b.y-f.y,b.x-f.x)-f.dir_angle/360*(2*np.pi)
+		if angle: f.tar_angle = -new_angle
+		vmod = np.sqrt((f.x-b.x)**2+(f.y-b.y)**2)
+		f.x = b.x + (f.x-b.x)/vmod*max(b.r+f.r+10, 0*b.r*1.5)
+		f.y = b.y + (f.y-b.y)/vmod*max(b.r+f.r+10, 0*b.r*1.5)
+
+		return
+		
+	def _collision_boundary(self):
+
+		if self.player.y < self.player.sprite.get_size()[1]/2 :
+			self.player.vy *= -1
+			self.player.y = self.player.sprite.get_size()[1]/2*1.1
+		if self.player.y > glob.SH - self.player.sprite.get_size()[1]/2:
+			self.player.vy *= -1
+			self.player.y = glob.SH - self.player.sprite.get_size()[1] / 2 * 1.1
+		for f in self.flock:
+			if f.y < f.sprite.get_size()[1] / 2:
+				f.vy *= -1
+				f.y = f.sprite.get_size()[1] / 2 * 1.1
+			if f.y > glob.SH - f.sprite.get_size()[1] / 2:
+				f.vy *= -1
+				f.y = glob.SH - f.sprite.get_size()[1] / 2 * 1.1
+		return
+
 	def update(self, dt):
 
 		# Retrieve Player coordinates
@@ -44,58 +99,30 @@ class Engine:
 
 		for b in self.blocks:
 			for f in self.flock:
-				self.colision(b,f)
-			self.colision(b,self.player, r=1.0, angle=False)
+				self._collision_obstacle(b,f)
+			self._collision_obstacle(b,self.player, r=1.0, angle=False)
 
 		if opts.scen == 1: # PESCI
-			if self.player.y < self.player.sprite.get_size()[1]/2 :
-				self.player.vy *= -1
-				self.player.y = self.player.sprite.get_size()[1]/2*1.1
-			if self.player.y > glob.SH - self.player.sprite.get_size()[1]/2:
-				self.player.vy *= -1
-				self.player.y = glob.SH - self.player.sprite.get_size()[1] / 2 * 1.1
-			for f in self.flock:
-				if f.y < f.sprite.get_size()[1] / 2:
-					f.vy *= -1
-					f.y = f.sprite.get_size()[1] / 2 * 1.1
-				if f.y > glob.SH - f.sprite.get_size()[1] / 2:
-					f.vy *= -1
-					f.y = glob.SH - f.sprite.get_size()[1] / 2 * 1.1
+			self._collision_boundary()
 
 		if opts.mode == 1:
 			target = self.game.target
-			self.reach_target(target)
+			self._reach_target(target)
 
 		self.player.update(dt)
-		for i,f in enumerate(self.flock):
-			f.update(dt)
+		for i,f in enumerate(self.flock): f.update(dt)
 
-	def close(self,ii,jj,r=None):
-		if r is None: r=self.args.r
-		dx, dy = abs(self.x[ii] - self.x[jj]), abs(self.y[ii] - self.y[jj])
-		dx, dy = min(dx, glob.SW - dx), min(dy, glob.SH - dy)
-		
-		dist = np.sqrt(dx**2+ dy**2)
-		#dist = np.sqrt((self.x[ii] - self.x[jj])**2 + (self.y[ii] - self.y[jj])**2)
-		return dist < r
-	
-	def close2(self,p1,p2,r):
-		dist = np.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
-		return dist < (p1.r+p2.r)*r
 
-	def close3(self,p1,p2,r):
-		dist = np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
-		return dist < r
 
-	def colision(self, b, f, r=1.1, angle=True):
-		if not self.close2(b, f, r): return
-		new_angle = 2*np.arctan2(b.y-f.y,b.x-f.x)-f.dir_angle/360*(2*np.pi)
-		if angle: f.tar_angle = -new_angle
-		vmod = np.sqrt((f.x-b.x)**2+(f.y-b.y)**2)
-		f.x = b.x + (f.x-b.x)/vmod*max(b.r+f.r+10, 0*b.r*1.5)
-		f.y = b.y + (f.y-b.y)/vmod*max(b.r+f.r+10, 0*b.r*1.5)
+
+
+	# def correct_distance():
+	# 	if opts.scen == 1:
+	# 		return
+
 
 	def connect(self):
+		
 		A = np.zeros((self.args.n+1,self.args.n+1))
 		for ii in range(self.args.n+1):
 			A[ii,ii] = 1
@@ -131,5 +158,4 @@ class Engine:
 				pygame.draw.line(screen, (127, 127, 127), (self.x[i]*glob.SF, self.y[i]*glob.SF), (self.x[j]*glob.SF, self.y[j]*glob.SF), 1)
 		for i in range(self.A.shape[0]-1):
 			if self.A[i, -1] == 0: continue
-			#pygame.draw.line(screen, (255,117,20), (self.x[i]*glob.SF, self.y[i]*glob.SF), (self.x[-1]*glob.SF, self.y[-1]*glob.SF), 2)
 			pygame.draw.line(screen, (255,117,20), (self.x[i]*glob.SF, self.y[i]*glob.SF), (self.x[-1]*glob.SF, self.y[-1]*glob.SF), 1)
