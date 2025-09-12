@@ -1,4 +1,4 @@
-from .config import glob, args, opts
+from ..config import glob, args, opts
 import cv2
 import mediapipe as mp
 import numpy as np

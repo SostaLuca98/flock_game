@@ -1,9 +1,9 @@
-from .config import glob, args, opts
-from .utils import Scene, SceneManager, Button
+from ..config import glob, args, opts
+from ..utils import Scene, SceneManager, Button
 import pygame, time
 
 
-class MenuScene(Scene):
+class CreditScene(Scene):
 
     def __init__(self, manager: SceneManager, screen: pygame.Surface, tracker, sprites: dict) -> None:
         
@@ -11,34 +11,9 @@ class MenuScene(Scene):
         self.previous_time = None
 
         # Create buttons
-        self.newg_button = Button(640, 144, "Nuovo Gioco")
-        self.cont_button = Button(640, 288, "Continua Gioco")
-        self.opti_button = Button(640, 432, "Opzioni")
-        self.cred_button = Button(1150, 650, "Crediti")
-        self.quit_button = Button(640, 576, "Esci")
+        self.menu_button = Button(1150, 650, "Menu").register_event(lambda : self.manager.set_scene("menu"))
 
-        # Create button events
-        def newg_button():
-            if opts.obst == 1:
-                self.manager.set_scene("obst")
-                self.manager.scenes["obst"].reader.open()
-                self.manager.scenes["obst"].reader.detect()
-            else:
-                self.manager.scenes["game"].build_level()
-                self.manager.set_scene("game")
-                
-        def cont_button(): self.manager.set_scene("game")
-        def opti_button(): self.manager.set_scene("opti")
-        def cred_button(): self.manager.set_scene("cred")
-        def quit_button(): self.manager.quit = True
-
-        self.newg_button.register_event(newg_button)
-        self.cont_button.register_event(cont_button)
-        self.opti_button.register_event(opti_button)
-        self.cred_button.register_event(cred_button)
-        self.quit_button.register_event(quit_button)
-
-        self.buttons = [self.newg_button, self.cont_button, self.opti_button, self.cred_button, self.quit_button]
+        self.buttons = [self.menu_button]
 
     def update(self) -> None:
         
@@ -53,6 +28,12 @@ class MenuScene(Scene):
     def render(self) -> None:
 
         self.screen.fill("black")
+
+
+        SW = 1280
+        SH = 720
+        logo = pygame.transform.scale_by(self.sprites["logo"], glob.SF)
+        self.screen.blit(logo,(SW/2*glob.SF-logo.get_rect().width/2,SH/2*glob.SF-logo.get_rect().height/2))
 
         for b in self.buttons:
             b.render(self.screen)

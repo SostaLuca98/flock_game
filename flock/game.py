@@ -1,8 +1,8 @@
 from .config import glob, args, opts
 from .utils import Scene, SceneManager, Button
-from .player import Player
-from .npc import NPC
-from .block import Block
+from .entities.player import Player
+from .entities.npc import NPC
+from .entities.block import Block
 from .engine import Engine
 import pygame, numpy, time
 
@@ -23,8 +23,8 @@ class GameScene(Scene):
         self.keystack_spe = []
         self.curr_key_spe = None
 
-        self.score_cell = Button(1100, 680, "", color="blue")
-        self.time_cell  = Button(200, 680, "", color="blue")
+        self.score_cell = Button(1100, 680, "", color1="blue")
+        self.time_cell  = Button( 200, 680, "", color1="blue")
         self.build_flag = False
 
         self.scenario  = opts.scen

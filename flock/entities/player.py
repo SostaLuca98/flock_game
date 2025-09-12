@@ -1,4 +1,4 @@
-from .config import glob, args, opts
+from ..config import glob, args, opts
 import pygame, math, copy
 
 class Player:

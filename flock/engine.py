@@ -23,16 +23,24 @@ class Engine:
 	@property
 	def close(self):
 
+		def close_plane(ii,jj,r=None):
+
+			if r is None: r=self.args.r
+			dist = np.sqrt((self.x[ii] - self.x[jj])**2 + (self.y[ii] - self.y[jj])**2)
+
+			return dist < r
+
 		def close_spherical(ii,jj,r=None):
+			
 			if r is None: r=self.args.r
 			dx, dy = abs(self.x[ii] - self.x[jj]), abs(self.y[ii] - self.y[jj])
 			dx, dy = min(dx, glob.SW - dx), min(dy, glob.SH - dy)
 			
 			dist = np.sqrt(dx**2+ dy**2)
-			#dist = np.sqrt((self.x[ii] - self.x[jj])**2 + (self.y[ii] - self.y[jj])**2)
+			
 			return dist < r
 		
-		if opts.scen == 1: return close_spherical
+		if opts.scen == 1: return close_plane
 		else: return close_spherical
 
 	def _reach_target(self, target):

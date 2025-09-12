@@ -2,19 +2,18 @@ from .config import glob, args, opts
 import pygame, time, random
 
 class Button:
-    def __init__(self,
-                 x, y,
-                 text: str,
-                 img: pygame.surface=None,
-                 color = None, 
-                 font = ("Manrope", 72)) -> None:
+    def __init__(self, x, y, text: str, img = None, font = ("Manrope", 72), color1 = "white", color2 = "blue") -> None:
+        
         self.x = x
         self.y = y
         self.text = text
+        self.font = font
+        self.color1 = color1
+        self.color2 = color2
+
+        self.text_button = img is None
         self.hovered = False
         self.event = lambda: print("Default button")
-        self.text_button = img is None
-        self.font=font
 
         if img is None: self.build_text()
         else: self.build_image(img)
@@ -24,15 +23,16 @@ class Button:
         self.rect.y = self.y
 
     def build_text(self):
+        self.color = self.color1
         self.font = pygame.font.SysFont(self.font[0], self.font[1])
-        self.color = "white"
         self.surface = self.font.render(self.text, True, self.color)
+
     def build_image(self, img):
         self.surface = img
 
     def update(self, dt):
         if self.text_button:
-            self.color = "blue" if self.hovered else "white"
+            self.color = self.color2 if self.hovered else self.color1
             self.surface = self.font.render(self.text, True, self.color)
 
     def set_hover(self, hovered: bool):

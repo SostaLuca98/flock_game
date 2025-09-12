@@ -27,7 +27,7 @@ class Game:
                   "cred": CredScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites)
                   }
-        starting_scene = "menu"
+        starting_scene = "game"
         self.scene_manager.initialize(scenes, starting_scene)
         if starting_scene == "game": scenes["game"].build_level()
         self.scene_manager.scenes["opti"].change_settings()
@@ -79,39 +79,39 @@ class Game:
         sprites["3tar"] = self.load_image("gfx/scen3/abstract_target.png", 0.1, 0)
 
         # Easter Egg 1
-        sprites["4led"] = pt.rotate(pt.scale_by(pil("gfx_2/miki_langelo.png").convert_alpha(),6), -90)
-        sprites["4npc"] = pt.rotate(pt.scale_by(pil("gfx_2/giogio.png").convert_alpha(),1), -90)
-        sprites["4scr"] = pt.scale_by(pil("gfx/grass_3.jpg"),1).convert_alpha()
-        sprites["4obs"] = pt.rotate(pil("gfx/obst.png").convert_alpha(),0)
-        sprites["4tar"] = pt.scale_by(pil("gfx/zirli_ovini_target.png").convert_alpha(), 0.0042)
+        sprites["4led"] = self.load_image("gfx/ee1/miki_langelo.png", 6, -90)
+        sprites["4npc"] = self.load_image("gfx/ee1/giogio.png", 1, -90)
+        sprites["4scr"] = self.load_image("gfx/ee1/grass.jpg", 1, 0)
+        sprites["4obs"] = self.load_image("gfx/ee1/obst.png", 0.3, 0)
+        sprites["4tar"] = self.load_image("gfx/ee1/zirli_ovini_target.png", 0.0042, 0)
 
         # Easter Egg 2
-        sprites["5led"] = pt.rotate(pt.scale_by(pil( "gfx_2/stetuned.png").convert_alpha(),2.),-90)
-        sprites["5npc"] = pt.rotate(pt.scale_by(pil("gfx_2/instarega.png").convert_alpha(),2.),-90)
-        sprites["5scr"] = pt.scale_by(pil("gfx/ocean.jpg"),1).convert_alpha()
-        sprites["5obs"] = self.load_image("gfx/flock_obst.png",   0.7, 0)
-        sprites["5tar"] = self.load_image("gfx_2/mox_target.png", 0.6, 0)#pt.scale_by(pil("gfx_2/mox_target.png").convert_alpha(), 2*0.0042)
+        sprites["5led"] = self.load_image("gfx/ee2/stetuned.png",  2., -90)
+        sprites["5npc"] = self.load_image("gfx/ee2/instarega.png", 2., -90)
+        sprites["5scr"] = self.load_image("gfx/ee2/ocean.jpg", 1, 0)
+        sprites["5obs"] = self.load_image("gfx/ee2/flock_obst.png", 0.7, 0)
+        sprites["5tar"] = self.load_image("gfx/ee2/mox_target.png", 0.6, 0)
 
         # GENERAL
-        sprites["compass"] = pt.rotate(pil("gfx/compass.png").convert_alpha(),0)
-        sprites["needle"]  = pt.rotate(pil("gfx/needle.png").convert_alpha(),270)
-        sprites["logo"]    = self.load_image("gfx/logo.png", 0.5, 0)
+        sprites["compass"] = self.load_image("gfx/misc/compass.png", 1, 0)
+        sprites["needle"]  = self.load_image("gfx/misc/needle.png", 1, 270)
+        sprites["logo"]    = self.load_image("gfx/misc/logo.png", 0.5, 0)
 
-        sprites["diff0"] = pt.scale_by(pil("gfx/icons/diff_0.png"),1).convert_alpha()
-        sprites["diff1"] = pt.scale_by(pil("gfx/icons/diff_1.png"),1).convert_alpha()
-        sprites["diff2"] = pt.scale_by(pil("gfx/icons/diff_2.png"),1).convert_alpha()
+        sprites["diff0"] = self.load_image("gfx/icons/diff_0.png", 1, 0)
+        sprites["diff1"] = self.load_image("gfx/icons/diff_1.png", 1, 0)
+        sprites["diff2"] = self.load_image("gfx/icons/diff_2.png", 1, 0)
 
-        sprites["scen0"] = pt.scale_by(pil("gfx/icons/scen_0.png"),1).convert_alpha()
-        sprites["scen1"] = pt.scale_by(pil("gfx/icons/scen_1.png"),1).convert_alpha()
-        sprites["scen2"] = pt.scale_by(pil("gfx/icons/scen_2.png"),1).convert_alpha()
+        sprites["scen0"] = self.load_image("gfx/icons/scen_0.png", 1, 0)
+        sprites["scen1"] = self.load_image("gfx/icons/scen_1.png", 1, 0)
+        sprites["scen2"] = self.load_image("gfx/icons/scen_2.png", 1, 0)
 
-        sprites["obst0"] = pt.scale_by(pil("gfx/icons/obst_0.png"), 1).convert_alpha()
-        sprites["obst1"] = pt.scale_by(pil("gfx/icons/obst_1.png"), 1).convert_alpha()
-        sprites["obst2"] = pt.scale_by(pil("gfx/icons/obst_1.png"), 1).convert_alpha()
+        sprites["obst0"] = self.load_image("gfx/icons/obst_0.png", 1, 0)
+        sprites["obst1"] = self.load_image("gfx/icons/obst_1.png", 1, 0)
+        sprites["obst2"] = self.load_image("gfx/icons/obst_1.png", 1, 0)
 
-        sprites["mode0"] = pt.scale_by(pil("gfx/icons/mode_0.png"),1).convert_alpha()
-        sprites["mode1"] = pt.scale_by(pil("gfx/icons/mode_1.png"),1).convert_alpha()
-        sprites["mode2"] = pt.scale_by(pil("gfx/icons/mode_1.png"),1).convert_alpha()
+        sprites["mode0"] = self.load_image("gfx/icons/mode_0.png", 1, 0)
+        sprites["mode1"] = self.load_image("gfx/icons/mode_1.png", 1, 0)
+        sprites["mode2"] = self.load_image("gfx/icons/mode_1.png", 1, 0)
 
         return sprites
 

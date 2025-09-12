@@ -1,8 +1,6 @@
-import copy
-
-from .config import glob, args, opts, default_bird, default_fish, default_human, default_abstr
-from .utils import Scene, SceneManager, Button
-import pygame, time
+from ..config import glob, args, opts, default_bird, default_fish, default_human, default_abstr
+from ..utils import Scene, SceneManager, Button
+import pygame
 
 class OptiScene(Scene):
 

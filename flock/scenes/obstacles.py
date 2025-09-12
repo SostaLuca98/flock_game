@@ -1,6 +1,6 @@
-from .config import glob, args, opts
-from .utils import Scene, SceneManager, Button
-from .reader import Reader
+from ..config import glob, args, opts
+from ..utils import Scene, SceneManager, Button
+from ..camera.reader import Reader
 import pygame, time
 
 
