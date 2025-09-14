@@ -24,17 +24,6 @@ class Player(Entity):
         self.vx, self.vy = self.spe_c, 0
         self.set_direction("E")
 
-    def set_direction(self, direction):
-        if   direction == "S": self.tar_angle = +math.pi/2
-        elif direction == "N": self.tar_angle = -math.pi/2
-        elif direction == "E": self.tar_angle = 0
-        elif direction == "W": self.tar_angle = math.pi
-    
-    def set_speed(self, direction):
-        if direction == "U": self.accel = +self.acc_c
-        if direction == "D": self.accel = -self.acc_c
-        if direction == "0": self.accel = 0
-
     def _move(self, dt) -> None:
         
         # Compute new velocity module

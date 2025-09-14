@@ -17,9 +17,10 @@ class Game:
         self.screen  = pygame.display.set_mode((int(glob.SW*glob.SF), int(glob.SH*glob.SF)))
         self.tracker = Tracker() if glob.TRACKER_FLAG else None
         self.sprites = self._load_sprites()
-        self._load_scenes()
+        self._load_scenes(starting_scene="menu")
 
-    def _load_scenes(self) -> None:
+    def _load_scenes(self, starting_scene="menu") -> None:
+
         self.scene_manager = SceneManager()
         scenes = {"opti": OptiScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "menu": MenuScene(self.scene_manager, self.screen, self.tracker, self.sprites),
@@ -27,7 +28,7 @@ class Game:
                   "cred": CredScene(self.scene_manager, self.screen, self.tracker, self.sprites),
                   "game": GameScene(self.scene_manager, self.screen, self.tracker, self.sprites)
                   }
-        starting_scene = "menu"
+
         self.scene_manager.initialize(scenes, starting_scene)
         if starting_scene == "game": scenes["game"].build_level()
         self.scene_manager.scenes["opti"].change_settings()
@@ -35,14 +36,14 @@ class Game:
     def _load_sprites(self) -> dict: 
         """ Load sprite textures into pygame as surfaces and returns a dictionary of names to surfaces. """
         
+        sprites = {}
+        
         def load_image(image, scale, rot, flip_x=False, flip_y=False):
             image = pil(image).convert_alpha()
             image = pt.flip(image, flip_x=flip_x, flip_y=flip_y)
             image = pt.rotate(image, rot)
             image = pt.scale_by(image, scale)
             return image
-
-        sprites = {}
 
         # UCCELLI
         sprites["0led"] = load_image("gfx/scen0/birdL.png", 1, 235)

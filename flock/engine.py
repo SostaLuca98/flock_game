@@ -3,48 +3,16 @@ from .config import glob, args, opts
 import copy
 import pygame
 
-class Engine:
+class Collider:
 
-	def __init__(self, args, game):
+	def __init__(self, args, game) -> None:
 
-		self.args = copy.deepcopy(args)
+		self.args = args
 		self.game = game
-		self.player = game.player
-		self.flock  = game.npcs
-		self.blocks = game.blocks
-		self._build_flock()
+		self.target = self.game.target
 
-		self.pacman_x = True
-		self.pacman_y = (opts.scen != 1) # PESCI
-		self.render_graph = (opts.mode == 2)
-		self.connectivity_mode = "smoothing" # "binary"
-
-	def _build_flock(self):
-
-		dim = self.args.n+1
-		self.x  = np.zeros((dim), dtype=float)
-		self.y  = np.zeros((dim), dtype=float)
-		self.A  = np.zeros((dim,dim), dtype=float)
-		self.Dx = np.zeros((dim,dim), dtype=float)
-		self.Dy = np.zeros((dim,dim), dtype=float)
-
-		return
-
-	def _reach_target(self, target):
-
-		def dist_target(p1,p2,r):
-			dist = np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
-			return dist < r
-		
-		for f in self.flock:
-			if dist_target(f,target,target.r):
-				if dist_target(self.player,target,2*self.args.r):
-					f.arrived = True
-					self.game.score += 1
-		
-		return
-	
-	def _collision_obstacle(self, b, f, r=1.1, angle=True):
+	@staticmethod
+	def obstacle_entity(b, f, r=1.1, angle=True):
 
 		def dist_obstacle(p1,p2,r):
 			dist = np.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
@@ -58,32 +26,99 @@ class Engine:
 		f.y = b.y + (f.y-b.y)/vmod*max(b.r+f.r+10, 0*b.r*1.5)
 
 		return
+	
+	@staticmethod
+	def boundary_y_player(player):
+
+		if player.y < player.sprite.get_size()[1]/2 :
+			player.vy *= -1
+			player.y = player.sprite.get_size()[1]/2*1.1
+		if player.y > glob.SH - player.sprite.get_size()[1]/2:
+			player.vy *= -1
+			player.y = glob.SH - player.sprite.get_size()[1] / 2 * 1.1
+
+		return player
+	
+	@staticmethod
+	def boundary_y_npc(npc):
+
+		if npc.y < npc.sprite.get_size()[1] / 2:
+			npc.vy *= -1
+			npc.y = npc.sprite.get_size()[1] / 2 * 1.1
+		if npc.y > glob.SH - npc.sprite.get_size()[1] / 2:
+			npc.vy *= -1
+			npc.y = glob.SH - npc.sprite.get_size()[1] / 2 * 1.1
 		
-	def _collision_boundary(self):
+		return npc
 
-		if self.player.y < self.player.sprite.get_size()[1]/2 :
-			self.player.vy *= -1
-			self.player.y = self.player.sprite.get_size()[1]/2*1.1
-		if self.player.y > glob.SH - self.player.sprite.get_size()[1]/2:
-			self.player.vy *= -1
-			self.player.y = glob.SH - self.player.sprite.get_size()[1] / 2 * 1.1
+	def reach_target(self, player, npc):
 
-		for f in self.flock:
-			if f.y < f.sprite.get_size()[1] / 2:
-				f.vy *= -1
-				f.y = f.sprite.get_size()[1] / 2 * 1.1
-			if f.y > glob.SH - f.sprite.get_size()[1] / 2:
-				f.vy *= -1
-				f.y = glob.SH - f.sprite.get_size()[1] / 2 * 1.1
+		def dist_target(p1,p2,r):
+			dist = np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
+			return dist < r
+		
+		if dist_target(npc,self.target,self.target.r):
+			if dist_target(player,self.target,2*self.args.r):
+				npc.arrived = True
+				self.game.score += 1
 		
 		return
 
+class Engine:
+
+	def __init__(self, args, game):
+
+		self.args = copy.deepcopy(args)
+		self._build_flock()
+
+		self.game = game
+		self.collider = Collider(args, game)
+		
+		self.player = game.player
+		self.flock  = game.npcs
+		self.blocks = game.blocks
+
+		self.pacman_x = True
+		self.pacman_y = (opts.scen != 1) # PESCI
+		self.render_graph = (opts.mode == 2)
+		self.connectivity_mode = ["smoothing", "binary"][0]
+
+	def _build_flock(self):
+
+		dim = self.args.n+1
+		self.x  = np.zeros((dim), dtype=float)
+		self.y  = np.zeros((dim), dtype=float)
+		self.A  = np.zeros((dim,dim), dtype=float)
+		self.Dx = np.zeros((dim,dim), dtype=float)
+		self.Dy = np.zeros((dim,dim), dtype=float)
+
+		return
+	
+	def _compute_delta(self):
+
+		def toroidal_delta(i, j):
+
+			dx, dy = (self.x[j] - self.x[i], self.y[j] - self.y[i])
+			if self.pacman_x: dx = (dx + glob.SW/2) % glob.SW - glob.SW/2
+			if self.pacman_y: dy = (dy + glob.SH/2) % glob.SH - glob.SH/2
+			
+			return dx, dy
+
+		dim_flock = self.args.n
+		for ii in range(dim_flock+1):
+			self.Dx[ii, ii], self.Dy[ii, ii] = 0, 0
+			for jj in range(dim_flock+1):
+				dx, dy = toroidal_delta(ii, jj)
+				self.Dx[ii, jj], self.Dy[ii, jj] = dx, dy
+
+		return
 
 	def _move_step(self, vx, vy):
 
 		def build_influence_matrix():
-			def smoothing_function(d, r, coeff=0.25):
-				return np.exp(-(1/coeff) * (d / (1.5*r)) ** 2)
+
+			def smoothing_function(d, r, c1=0.25, c2=1.5, exp=2.0):
+				return np.exp(-(1/c1) * (d / (c2*r)) ** exp)
 
 			def binary_function(d, r):
 				return (d < r).astype(float)
@@ -122,22 +157,21 @@ class Engine:
 
 		return theta + noise*self.args.noise
 	
-	def _compute_delta(self):
+	def _check_collisions(self):
 
-		def toroidal_delta(i, j):
+		for b in self.blocks:
+			for f in self.flock:
+				self.collider.obstacle_entity(b,f)
+			self.collider.obstacle_entity(b, self.player, r=1.0, angle=False)
 
-			dx, dy = (self.x[j] - self.x[i], self.y[j] - self.y[i])
-			if self.pacman_x: dx = (dx + glob.SW/2) % glob.SW - glob.SW/2
-			if self.pacman_y: dy = (dy + glob.SH/2) % glob.SH - glob.SH/2
-			
-			return dx, dy
+		if opts.scen == 1: # PESCI
+			for f in self.flock:
+				self.collider.boundary_y_npc(f)
+			self.collider.boundary_y_player(self.player)
 
-		dim_flock = self.args.n
-		for ii in range(dim_flock+1):
-			self.Dx[ii, ii], self.Dy[ii, ii] = 0, 0
-			for jj in range(dim_flock+1):
-				dx, dy = toroidal_delta(ii, jj)
-				self.Dx[ii, jj], self.Dy[ii, jj] = dx, dy
+		if opts.mode == 1: # COMPETITIVA
+			for f in self.flock:
+				self.collider.reach_target(self.player, f)
 
 		return
 		
@@ -156,17 +190,7 @@ class Engine:
 		for i,f in enumerate(self.flock):
 			f.tar_angle = float(theta[i,0])
 
-		for b in self.blocks:
-			for f in self.flock:
-				self._collision_obstacle(b,f)
-			self._collision_obstacle(b,self.player, r=1.0, angle=False)
-
-		if opts.scen == 1: # PESCI
-			self._collision_boundary()
-		if opts.mode == 1: # COMPETITIVA
-			target = self.game.target
-			self._reach_target(target)
-
+		self._check_collisions()
 		self.player.update(dt)
 		for i,f in enumerate(self.flock): f.update(dt)
 

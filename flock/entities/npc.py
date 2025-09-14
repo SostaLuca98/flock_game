@@ -44,7 +44,6 @@ class NPC(Entity):
 
         # Check if arrived
         if self.arrived:
-            print("wyiuajed")
             self.x, self.y = 1e4, 1e4
             self.moving = False
 

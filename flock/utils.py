@@ -76,14 +76,20 @@ class Scene:
         self.previous_time = None
 
     def update_time(self):
-        if self.previous_time is None:
-            self.previous_time = time.time()
-        now = time.time()
-        dt = now - self.previous_time
-        while(dt<1/glob.FPS):
+
+        def compute_dt():
             now = time.time()
             dt = now - self.previous_time
+            return now, dt
+
+        if self.previous_time is None: 
+            self.previous_time = time.time()  
+
+        now, dt = compute_dt()
+        while(dt<1/glob.FPS):
+            now, dt = compute_dt()
         self.previous_time = now
+        
         return dt
 
     def update(self) -> None:
