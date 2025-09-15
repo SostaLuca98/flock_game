@@ -37,8 +37,11 @@ class GameScene(Scene):
         self.manager.scenes["opti"].change_settings()
 
         if opts.obst == 0:
-            self.blocks = [Block(args, 500, 200, 50, self.sprites[f"{self.scenario}obs"]),
-                           Block(args, 700, 400, 50, self.sprites[f"{self.scenario}obs"])]
+            if opts.scen == 2: #  RUNNERS
+                self.blocks = [Block(args, 1060, 200, 50, self.sprites[f"{self.scenario}obs"]),]
+            else:
+                self.blocks = [Block(args, 500, 200, 50, self.sprites[f"{self.scenario}obs"]),
+                            Block(args, 700, 400, 50, self.sprites[f"{self.scenario}obs"])]
         elif opts.obst == 1:
             reader = self.manager.scenes['obst'].reader
             self.blocks = [Block(args,

@@ -2,6 +2,7 @@ from .config import glob, args, opts
 import pygame, time, random
 
 class Button:
+    
     def __init__(self, x, y, text: str, img = None, font = ("Manrope", 72), color1 = "white", color2 = "blue") -> None:
         
         self.x = x

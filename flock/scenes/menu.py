@@ -14,7 +14,7 @@ class MenuScene(Scene):
         self.newg_button = Button(640, 144, "Nuovo Gioco")
         self.cont_button = Button(640, 288, "Continua Gioco")
         self.opti_button = Button(640, 432, "Opzioni")
-        self.cred_button = Button(1150, 650, "Crediti")
+        self.cred_button = Button(1175, 675, "CFU", font = ("Manrope", 48))
         self.quit_button = Button(640, 576, "Esci")
 
         # Create button events
