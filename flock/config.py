@@ -36,7 +36,7 @@ class Params:
 @dataclass
 class Options:
 
-    scen = 2
+    scen = 0
     diff = 1
     obst = 0
     mode = 0

@@ -57,6 +57,7 @@ class Player(Entity):
                 
         for i in range(-1,2):
             for j in range(-1,2):
+                if opts.scen == 1 and (j == -1 or j == 1): continue
                 cx, cy = self.x + i*glob.SW, self.y + j*glob.SH 
                 r, w   = self.args.r, (1 if opts.mode==2 else 3)
                 pygame.draw.circle(screen, (255,117,20), (cx*glob.SF,cy*glob.SF), r*glob.SF, w)
