@@ -17,7 +17,7 @@ class Game:
         self.screen  = pygame.display.set_mode((int(glob.SW*glob.SF), int(glob.SH*glob.SF)))
         self.tracker = Tracker() if glob.TRACKER_FLAG else None
         self.sprites = self._load_sprites()
-        self._load_scenes(starting_scene="menu")
+        self._load_scenes(starting_scene="game")
 
     def _load_scenes(self, starting_scene="menu") -> None:
 
@@ -55,11 +55,11 @@ class Game:
         # PESCI
         sprites["1led"] = load_image("gfx/scen1/nemo.png", 1.3, 0, flip_x=True, flip_y=False)
         sprites["1npc"] = load_image("gfx/scen1/dory.png", 1.3, 0) 
-        sprites["1scr"] = load_image("gfx/scen1/ocean.jpg", 1, 0)
+        sprites["1scr"] = load_image("gfx/scen1/ocean_2.jpeg", 0.82, 0)
         sprites["1obs"] = load_image("gfx/scen1/fish_obst_2.png", 0.4, 0)
         sprites["1tar"] = load_image("gfx/scen1/fish_target.png", 0.5, 0)
 
-        # ABSTRACT
+        # HUMANS
         sprites["2led_1"] = load_image("gfx/scen2/f1.png", 0.25, 90)
         sprites["2led_2"] = load_image("gfx/scen2/f2.png", 0.25, 90)
         sprites["2led_3"] = load_image("gfx/scen2/f3.png", 0.25, 90)
@@ -68,8 +68,8 @@ class Game:
         sprites["2npc_2"] = load_image("gfx/scen2/m2.png", 0.20, 90)
         sprites["2npc_3"] = load_image("gfx/scen2/m3.png", 0.20, 90)
         sprites["2npc_4"] = load_image("gfx/scen2/m2.png", 0.20, 90)
-        sprites["2scr"]   = load_image("gfx/scen2/abstract_bckg.png", 1.4, 0)
-        sprites["2obs"]   = load_image("gfx/scen2/abstract_obst.png", 0.4, 0)
+        sprites["2scr"]   = load_image("gfx/scen2/runner_bckg_3.jpeg", 0.8, 0) # 0.8 per 2bis 
+        sprites["2obs"]   = load_image("gfx/scen2/runner_obst_3.png", 0.6, 0) # 0.3 per conetto, 0.8 per buca, 0.6 per fuoco 
         sprites["2tar"]   = load_image("gfx/scen2/abstract_target.png", 0.1, 0)
 
         # ABSTRACT
@@ -104,7 +104,7 @@ class Game:
 
         sprites["scen0"] = load_image("gfx/icons/scen_0.png", 1, 0)
         sprites["scen1"] = load_image("gfx/icons/scen_1.png", 1, 0)
-        sprites["scen2"] = load_image("gfx/icons/scen_2.png", 1, 0)
+        sprites["scen2"] = load_image("gfx/icons/scen_2bis.png", 1.4, 0)
 
         sprites["obst0"] = load_image("gfx/icons/obst_0.png", 1, 0)
         sprites["obst1"] = load_image("gfx/icons/obst_1.png", 1, 0)
