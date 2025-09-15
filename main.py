@@ -17,7 +17,7 @@ class Game:
         self.screen  = pygame.display.set_mode((int(glob.SW*glob.SF), int(glob.SH*glob.SF)))
         self.tracker = Tracker() if glob.TRACKER_FLAG else None
         self.sprites = self._load_sprites()
-        self._load_scenes(starting_scene="game")
+        self._load_scenes(starting_scene="menu")
 
     def _load_scenes(self, starting_scene="menu") -> None:
 
@@ -68,8 +68,8 @@ class Game:
         sprites["2npc_2"] = load_image("gfx/scen2/m2.png", 0.20, 90)
         sprites["2npc_3"] = load_image("gfx/scen2/m3.png", 0.20, 90)
         sprites["2npc_4"] = load_image("gfx/scen2/m2.png", 0.20, 90)
-        sprites["2scr"]   = load_image("gfx/scen2/runner_bckg_3.jpeg", 0.8, 0) # 0.8 per 2bis 
-        sprites["2obs"]   = load_image("gfx/scen2/runner_obst_3.png", 0.6, 0) # 0.3 per conetto, 0.8 per buca, 0.6 per fuoco 
+        sprites["2scr"]   = load_image("gfx/scen2/runner_bckg_2bis.jpeg", 0.8, 0) # 0.8 per 2bis 
+        sprites["2obs"]   = load_image("gfx/scen2/runner_obst.png", 0.3, 0) # 0.3 per conetto, 0.8 per buca, 0.6 per fuoco 
         sprites["2tar"]   = load_image("gfx/scen2/abstract_target.png", 0.1, 0)
 
         # ABSTRACT
@@ -104,7 +104,7 @@ class Game:
 
         sprites["scen0"] = load_image("gfx/icons/scen_0.png", 1, 0)
         sprites["scen1"] = load_image("gfx/icons/scen_1.png", 1, 0)
-        sprites["scen2"] = load_image("gfx/icons/scen_2bis.png", 1.4, 0)
+        sprites["scen2"] = load_image("gfx/icons/scen_2bis.png", 0.5, 0)
 
         sprites["obst0"] = load_image("gfx/icons/obst_0.png", 1, 0)
         sprites["obst1"] = load_image("gfx/icons/obst_1.png", 1, 0)

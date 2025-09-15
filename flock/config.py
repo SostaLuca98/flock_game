@@ -5,9 +5,9 @@ class Globals:
 
     # PARAMETRI DA IMPOSTARE
     VERTICAL_CAMERA = 1      # ID della camera come letto da check_camera.py
-    TRACKER_FLAG = False      # accende le webcam in INPUT (NECESSARIO per usare la mano)
-    CAMERA_FLAG  = False      # accende le finestre per MOSTRARE QUANTO VISTO DALLA WEBCAM (se si vuole)
-    SF = 1.                 # scaling della finestra
+    TRACKER_FLAG = True      # accende le webcam in INPUT (NECESSARIO per usare la mano)
+    CAMERA_FLAG  = True      # accende le finestre per MOSTRARE QUANTO VISTO DALLA WEBCAM (se si vuole)
+    SF = 0.9                 # scaling della finestra
 
     MAIN_CAMERA = 0
 
