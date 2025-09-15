@@ -28,28 +28,16 @@ class Collider:
 		return
 	
 	@staticmethod
-	def boundary_y_player(player):
+	def boundary_y(entity):
 
-		if player.y < player.sprite.get_size()[1]/2 :
-			player.vy *= -1
-			player.y = player.sprite.get_size()[1]/2*1.1
-		if player.y > glob.SH - player.sprite.get_size()[1]/2:
-			player.vy *= -1
-			player.y = glob.SH - player.sprite.get_size()[1] / 2 * 1.1
+		if entity.y < entity.sprite.get_size()[1]/2 :
+			entity.vy *= -1
+			entity.y = entity.sprite.get_size()[1]/2*1.1
+		if entity.y > glob.SH - entity.sprite.get_size()[1]/2:
+			entity.vy *= -1
+			entity.y = glob.SH - entity.sprite.get_size()[1] / 2 * 1.1
 
-		return player
-	
-	@staticmethod
-	def boundary_y_npc(npc):
-
-		if npc.y < npc.sprite.get_size()[1] / 2:
-			npc.vy *= -1
-			npc.y = npc.sprite.get_size()[1] / 2 * 1.1
-		if npc.y > glob.SH - npc.sprite.get_size()[1] / 2:
-			npc.vy *= -1
-			npc.y = glob.SH - npc.sprite.get_size()[1] / 2 * 1.1
-		
-		return npc
+		return entity
 
 	def reach_target(self, player, npc):
 
@@ -166,8 +154,8 @@ class Engine:
 
 		if opts.scen == 1: # PESCI
 			for f in self.flock:
-				self.collider.boundary_y_npc(f)
-			self.collider.boundary_y_player(self.player)
+				self.collider.boundary_y(f)
+			self.collider.boundary_y(self.player)
 
 		if opts.mode == 1: # COMPETITIVA
 			for f in self.flock:

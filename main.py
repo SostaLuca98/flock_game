@@ -70,7 +70,7 @@ class Game:
         sprites["2npc_4"] = load_image("gfx/scen2/m2.png", 0.20, 90)
         sprites["2scr"]   = load_image("gfx/scen2/runner_bckg_2bis.jpeg", 0.8, 0) # 0.8 per 2bis 
         sprites["2obs"]   = load_image("gfx/scen2/runner_obst_2.png", 0.8, 0) # 0.3 per conetto, 0.8 per buca, 0.6 per fuoco 
-        sprites["2tar"]   = load_image("gfx/scen2/abstract_target.png", 0.1, 0)
+        sprites["2tar"]   = load_image("gfx/scen2/runner_obst_3.png", 0.1, 0)
 
         # ABSTRACT
         sprites["3led"] = load_image("gfx/scen3/orange_dot.png", 0.20, 0)
