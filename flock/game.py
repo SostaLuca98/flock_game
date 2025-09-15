@@ -38,7 +38,15 @@ class GameScene(Scene):
 
         if opts.obst == 0:
             if opts.scen == 2: #  RUNNERS
-                self.blocks = [Block(args, 1060, 200, 50, self.sprites[f"{self.scenario}obs"]),]
+                self.blocks = [Block(args, 1060, 200, 50, self.sprites[f"{self.scenario}obs"]),
+                               Block(args, 1060, 350, 50, self.sprites[f"{self.scenario}obs"]),
+                               Block(args, 1060, 500, 50, self.sprites[f"{self.scenario}obs"]),
+                               Block(args, 1000, 275, 50, self.sprites[f"{self.scenario}obs"]),
+                               Block(args, 1000, 425, 50, self.sprites[f"{self.scenario}obs"]),
+                               Block(args,  600, 600, 50, self.sprites[f"{self.scenario}obs"]),
+                               #Block(args, 1060, 600, 50, self.sprites[f"{self.scenario}obs"]),
+                               #Block(args, 1060, 600, 50, self.sprites[f"{self.scenario}obs"]),
+                               ]
             else:
                 self.blocks = [Block(args, 500, 200, 50, self.sprites[f"{self.scenario}obs"]),
                             Block(args, 700, 400, 50, self.sprites[f"{self.scenario}obs"])]
