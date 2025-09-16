@@ -28,13 +28,18 @@ class GameScene(Scene):
         self.build_flag = False
 
         self.scenario  = opts.scen
-        self.target = Block(args, 100, 500, 75, self.sprites[f"{self.scenario}tar"])
+        self.set_target()
 
-    def build_level(self):
+    def set_target(self):
 
-        self.scenario  = opts.scen
-        self.target.sprite = self.sprites[f"{self.scenario}tar"]
-        self.manager.scenes["opti"].change_settings()
+        if opts.scen == 2: # RUNNERS
+            self.target = Block(args, 1210, 650, 75, self.sprites[f"{self.scenario}tar"])
+        else:
+            self.target = Block(args, 100, 500, 75, self.sprites[f"{self.scenario}tar"])
+
+        return
+
+    def set_blocks(self):
 
         if opts.obst == 0:
             if opts.scen == 2: #  RUNNERS
@@ -43,7 +48,9 @@ class GameScene(Scene):
                                Block(args, 1060, 500, 50, self.sprites[f"{self.scenario}obs"]),
                                Block(args, 1000, 275, 50, self.sprites[f"{self.scenario}obs"]),
                                Block(args, 1000, 425, 50, self.sprites[f"{self.scenario}obs"]),
-                               Block(args,  600, 600, 50, self.sprites[f"{self.scenario}obs"]),
+                               Block(args,  800, 175, 50, self.sprites[f"{self.scenario}obs"]),
+                               Block(args,  600, 530, 50, self.sprites[f"{self.scenario}obs"]),
+                               Block(args,  140, 190, 50, self.sprites[f"{self.scenario}obs"])
                                #Block(args, 1060, 600, 50, self.sprites[f"{self.scenario}obs"]),
                                #Block(args, 1060, 600, 50, self.sprites[f"{self.scenario}obs"]),
                                ]
@@ -59,6 +66,14 @@ class GameScene(Scene):
                                  self.sprites[f"{self.scenario}obs"]) for i,_ in enumerate(reader.x_centers)]
         elif opts.obst == 2:
             self.blocks = list()
+
+    def build_level(self):
+
+        self.scenario  = opts.scen
+        self.target.sprite = self.sprites[f"{self.scenario}tar"]
+        self.manager.scenes["opti"].change_settings()
+
+        self.set_blocks()
 
         sprite_player = [s for n,s in self.sprites.items() if n.startswith(f"{self.scenario}led")]
         sprite_npc    = [s for n,s in self.sprites.items() if n.startswith(f"{self.scenario}npc")]

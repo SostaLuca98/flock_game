@@ -10,7 +10,7 @@ class NPC(Entity):
 
         # Define movement constants
         self.arrived = False
-        self.spe_c = self.args.speed
+        self.spe_c = self.args.speed * (1 + random.uniform(-0.4, 0.4))
         self.acc_c = 0
         self.rot_c = 5
 

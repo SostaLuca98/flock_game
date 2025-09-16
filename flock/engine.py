@@ -5,11 +5,13 @@ import pygame
 
 class Collider:
 
-	def __init__(self, args, game) -> None:
+	def __init__(self, args, game, pacman_x, pacman_y) -> None:
 
 		self.args = args
 		self.game = game
 		self.target = self.game.target
+		self.pacman_x = pacman_x
+		self.pacman_y = pacman_y
 
 	@staticmethod
 	def obstacle_entity(b, f, r=1.1, angle=True):
@@ -38,14 +40,31 @@ class Collider:
 			entity.y = glob.SH - entity.sprite.get_size()[1] / 2 * 1.1
 
 		return entity
+	
+	@staticmethod
+	def boundary_x(entity):
+
+		if entity.x < entity.sprite.get_size()[0]/2 :
+			entity.vx *= -1
+			entity.x = entity.sprite.get_size()[0]/2*1.1
+		if entity.x > glob.SW - entity.sprite.get_size()[0]/2:
+			entity.vx *= -1
+			entity.x = glob.SW - entity.sprite.get_size()[0] / 2 * 1.3
+
+		return entity
 
 	def reach_target(self, player, npc):
 
 		def dist_target(p1,p2,r):
-			dist = np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
+
+			dx, dy = (p1.x - p2.x, p1.y - p2.y)
+			if self.pacman_x: dx = (dx + glob.SW/2) % glob.SW - glob.SW/2
+			if self.pacman_y: dy = (dy + glob.SH/2) % glob.SH - glob.SH/2
+			dist = np.sqrt(dx ** 2 + dy ** 2)
+
 			return dist < r
 		
-		if dist_target(npc,self.target,self.target.r):
+		if dist_target(npc,self.target,self.target.r * 1.2):
 			if dist_target(player,self.target,2*self.args.r):
 				npc.arrived = True
 				self.game.score += 1
@@ -60,14 +79,14 @@ class Engine:
 		self._build_flock()
 
 		self.game = game
-		self.collider = Collider(args, game)
+		self.pacman_x = (opts.scen != 2) # RUNNERS
+		self.pacman_y = (opts.scen != 1) and (opts.scen != 2) # PESCI e RUNNERS
+		self.collider = Collider(args, game, self.pacman_x, self.pacman_y)
 		
 		self.player = game.player
 		self.flock  = game.npcs
 		self.blocks = game.blocks
 
-		self.pacman_x = True
-		self.pacman_y = (opts.scen != 1) # PESCI
 		self.render_graph = (opts.mode == 2)
 		self.connectivity_mode = ["smoothing", "binary"][0]
 
@@ -152,10 +171,15 @@ class Engine:
 				self.collider.obstacle_entity(b,f)
 			self.collider.obstacle_entity(b, self.player, r=1.0, angle=False)
 
-		if opts.scen == 1: # PESCI
+		if not self.pacman_y: # Rimbalzo Y
 			for f in self.flock:
 				self.collider.boundary_y(f)
 			self.collider.boundary_y(self.player)
+
+		if not self.pacman_x: # Rimbalzo X
+			for f in self.flock:
+				self.collider.boundary_x(f)
+			self.collider.boundary_x(self.player)
 
 		if opts.mode == 1: # COMPETITIVA
 			for f in self.flock:

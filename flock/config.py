@@ -39,7 +39,7 @@ class Options:
     scen = 2
     diff = 1
     obst = 0
-    mode = 0
+    mode = 1
     temp = 2
 
 glob = Globals()
@@ -48,5 +48,5 @@ opts = Options()
 
 default_bird  = Params(n=200, w=500,  r=150, r_npc=20, r_player=1.25*20, speed=75, rot=5, noise=2)
 default_fish  = Params(n=150, w=1000, r=100, r_npc=15, r_player=1.25*15, speed=50, rot=8, noise=3)
-default_human = Params(n=100, w=200,  r=200, r_npc=40, r_player=1.25*40, speed=70, rot=3, noise=0.5)
+default_human = Params(n=100, w=200,  r=100, r_npc=40, r_player=1.25*40, speed=50, rot=3, noise=0.5)
 default_abstr = Params(n=200, w=500, r=150, r_npc=30, r_player=1.25*30, speed=50, rot=3, noise=1)
