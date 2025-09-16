@@ -33,6 +33,14 @@ class CreditScene(Scene):
         logo_dmat = pygame.transform.scale_by(self.sprites["logo_dmat"], glob.SF*0.6)
         self.screen.blit(logo_dmat,(0, SH*glob.SF-logo_dmat.get_rect().height))
 
+        # logo = pygame.transform.scale_by(self.sprites["logo"], glob.SF)
+        # self.screen.blit(logo,(SW/2*glob.SF-logo.get_rect().width/2,SH/2*glob.SF-logo.get_rect().height/2))
+
+        # for b in self.buttons:
+        #     b.render(self.screen)
+
+        #pygame.display.update()
+
         for i in range(self.count):
             eps_x, eps_y = random.randint(int(-SH/2),int(SH/2)), random.randint(int(-SW/2),int(SW/2))
             logo = pygame.transform.scale_by(self.sprites["logo"], glob.SF*0.1*i)
