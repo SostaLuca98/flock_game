@@ -1,4 +1,4 @@
-from ..config import glob, args, opts, default_bird, default_fish, default_human, default_abstr
+from ..config import glob, levels, opts, default_bird, default_fish, default_human, default_abstr
 from ..utils import Scene, SceneManager, Button
 import pygame
 
@@ -127,23 +127,23 @@ class OptiScene(Scene):
 
     @staticmethod
     def change_settings():
-        if   opts.scen == 0: OptiScene.set_values(default_bird,  args)
-        elif opts.scen == 1: OptiScene.set_values(default_fish,  args)
-        elif opts.scen == 2: OptiScene.set_values(default_human, args)
-        elif opts.scen == 3: OptiScene.set_values(default_abstr, args)
+        if   opts.scen == 0: OptiScene.set_values(default_bird,  levels)
+        elif opts.scen == 1: OptiScene.set_values(default_fish,  levels)
+        elif opts.scen == 2: OptiScene.set_values(default_human, levels)
+        elif opts.scen == 3: OptiScene.set_values(default_abstr, levels)
         if opts.diff == 0:
             pass
         if opts.diff == 1:
-            args.speed *= 2
-            args.rot   *= 0.9
-            args.t_max *= 0.75
+            levels.speed *= 2
+            levels.rot   *= 0.9
+            levels.t_max *= 0.75
         if opts.diff == 2:
-            args.speed *= 4
-            args.rot   *= 0.7
-            args.t_max *= 0.5
+            levels.speed *= 4
+            levels.rot   *= 0.7
+            levels.t_max *= 0.5
         if opts.mode == 2 and opts.scen == 3:
-            if opts.temp == 0: args.n = 10
-            if opts.temp == 1: args.n = 25
-            if opts.temp == 2: args.n = 50
-            if opts.temp == 3: args.n = 100
-            if opts.temp == 4: args.n = 200
+            if opts.temp == 0: levels.n = 10
+            if opts.temp == 1: levels.n = 25
+            if opts.temp == 2: levels.n = 50
+            if opts.temp == 3: levels.n = 100
+            if opts.temp == 4: levels.n = 200

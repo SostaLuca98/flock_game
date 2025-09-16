@@ -1,4 +1,4 @@
-from ..config import glob, args, opts
+from ..config import glob
 import cv2
 import numpy as np
 

@@ -1,4 +1,4 @@
-from .config import glob, args, opts
+from .config import glob, levels, opts
 from .utils import SceneManager
 from .camera.tracker import Tracker
 from .game import GameScene

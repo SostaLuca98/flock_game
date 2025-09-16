@@ -1,15 +1,12 @@
 import numpy as np
-from .config import glob, args, opts
-import copy
+from .config import glob, opts
 import pygame
 
 class Collider:
 
-	def __init__(self, args, game, pacman_x, pacman_y) -> None:
+	def __init__(self, game, pacman_x, pacman_y) -> None:
 
-		self.args = args
 		self.game = game
-		self.target = self.game.target
 		self.pacman_x = pacman_x
 		self.pacman_y = pacman_y
 
@@ -35,6 +32,7 @@ class Collider:
 		if entity.y < entity.sprite.get_size()[1]/2 :
 			entity.vy *= -1
 			entity.y = entity.sprite.get_size()[1]/2*1.1
+
 		if entity.y > glob.SH - entity.sprite.get_size()[1]/2:
 			entity.vy *= -1
 			entity.y = glob.SH - entity.sprite.get_size()[1] / 2 * 1.1
@@ -49,11 +47,13 @@ class Collider:
 			entity.x = entity.sprite.get_size()[0]/2*1.1
 		if entity.x > glob.SW - entity.sprite.get_size()[0]/2:
 			entity.vx *= -1
-			entity.x = glob.SW - entity.sprite.get_size()[0] / 2 * 1.3
+			entity.x = glob.SW - entity.sprite.get_size()[0] / 2 * 1.1
 
 		return entity
 
-	def reach_target(self, player, npc):
+	def reach_target(self, player, npc, influence):
+
+		target = self.game.target
 
 		def dist_target(p1,p2,r):
 
@@ -64,24 +64,25 @@ class Collider:
 
 			return dist < r
 		
-		if dist_target(npc,self.target,self.target.r * 1.2):
-			if dist_target(player,self.target,2*self.args.r):
+		if npc.arrived: return
+		if dist_target(npc,target,target.r * 1.2):
+			if dist_target(player,target,2*influence):
 				npc.arrived = True
 				self.game.score += 1
-		
+
 		return
 
 class Engine:
 
 	def __init__(self, args, game):
 
-		self.args = copy.deepcopy(args)
+		self.args = args
 		self._build_flock()
 
 		self.game = game
 		self.pacman_x = (opts.scen != 2) # RUNNERS
 		self.pacman_y = (opts.scen != 1) and (opts.scen != 2) # PESCI e RUNNERS
-		self.collider = Collider(args, game, self.pacman_x, self.pacman_y)
+		self.collider = Collider(game, self.pacman_x, self.pacman_y)
 		
 		self.player = game.player
 		self.flock  = game.npcs
@@ -135,9 +136,9 @@ class Engine:
 
 			# Select influence rule
 			if self.connectivity_mode == "smoothing":
-				self.A = smoothing_function(self.R, self.args.r)
+				self.A = smoothing_function(self.R, self.args.r_influence)
 			elif self.connectivity_mode == "binary":
-				self.A = binary_function(self.R, self.args.r)
+				self.A = binary_function(self.R, self.args.r_influence)
 			else:
 				raise ValueError(f"Unknown mode: {self.connectivity_mode}")
 
@@ -183,7 +184,7 @@ class Engine:
 
 		if opts.mode == 1: # COMPETITIVA
 			for f in self.flock:
-				self.collider.reach_target(self.player, f)
+				self.collider.reach_target(self.player, f, self.args.r_influence)
 
 		return
 		

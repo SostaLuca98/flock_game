@@ -1,11 +1,10 @@
-from ..config import glob, opts
+from ..config import glob
 import pygame, random, math
 
 class Entity:
     
-    def __init__(self, args, r: float, sprite_list: pygame.Surface) -> None:
+    def __init__(self, r: float, sprite_list: pygame.Surface) -> None:
 
-        self.args = args
         self.r = r
 
         # Render and Animation Sprites

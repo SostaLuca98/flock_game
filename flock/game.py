@@ -1,4 +1,4 @@
-from .config import glob, args, opts
+from .config import glob, levels, opts
 from .utils import Scene, SceneManager, Button
 from .entities.player import Player
 from .entities.npc import NPC
@@ -11,7 +11,8 @@ class GameScene(Scene):
     def __init__(self, manager: SceneManager, screen: pygame.Surface, tracker, sprites: dict) -> None:
 
         super().__init__(manager, screen, tracker, sprites)
-
+        
+        self.args = levels
         self.keybinds_dir = {pygame.K_w: "N",
                              pygame.K_d: "E",
                              pygame.K_s: "S",
@@ -23,68 +24,54 @@ class GameScene(Scene):
         self.keystack_spe = []
         self.curr_key_spe = None
 
-        self.score_cell = Button(1050, 680, "", color1="blue")
-        self.time_cell  = Button( 150, 680, "", color1="blue")
+        self.score_cell = Button( 200, 680, "", color1="red")
+        self.time_cell  = Button(1130, 680, "", color1="red")
         self.build_flag = False
 
         self.scenario  = opts.scen
-        self.set_target()
 
     def set_target(self):
 
-        if opts.scen == 2: # RUNNERS
-            self.target = Block(args, 1210, 650, 75, self.sprites[f"{self.scenario}tar"])
-        else:
-            self.target = Block(args, 100, 500, 75, self.sprites[f"{self.scenario}tar"])
+        self.target = Block(*self.args.target, self.sprites[f"{self.scenario}tar"])
 
         return
 
     def set_blocks(self):
 
         if opts.obst == 0:
-            if opts.scen == 2: #  RUNNERS
-                self.blocks = [Block(args, 1060, 200, 50, self.sprites[f"{self.scenario}obs"]),
-                               Block(args, 1060, 350, 50, self.sprites[f"{self.scenario}obs"]),
-                               Block(args, 1060, 500, 50, self.sprites[f"{self.scenario}obs"]),
-                               Block(args, 1000, 275, 50, self.sprites[f"{self.scenario}obs"]),
-                               Block(args, 1000, 425, 50, self.sprites[f"{self.scenario}obs"]),
-                               Block(args,  800, 175, 50, self.sprites[f"{self.scenario}obs"]),
-                               Block(args,  600, 530, 50, self.sprites[f"{self.scenario}obs"]),
-                               Block(args,  140, 190, 50, self.sprites[f"{self.scenario}obs"])
-                               #Block(args, 1060, 600, 50, self.sprites[f"{self.scenario}obs"]),
-                               #Block(args, 1060, 600, 50, self.sprites[f"{self.scenario}obs"]),
-                               ]
-            else:
-                self.blocks = [Block(args, 500, 200, 50, self.sprites[f"{self.scenario}obs"]),
-                            Block(args, 700, 400, 50, self.sprites[f"{self.scenario}obs"])]
+            self.blocks = [Block(x,y,r,
+                                 self.sprites[f"{self.scenario}obs"]) 
+                                 for x,y,r in self.args.blocks]
         elif opts.obst == 1:
             reader = self.manager.scenes['obst'].reader
-            self.blocks = [Block(args,
-                                 reader.x_centers[i]+0.5,
+            self.blocks = [Block(reader.x_centers[i]+0.5,
                                  reader.y_centers[i]+0.5,
                                  reader.radii[i],
-                                 self.sprites[f"{self.scenario}obs"]) for i,_ in enumerate(reader.x_centers)]
+                                 self.sprites[f"{self.scenario}obs"]) 
+                                 for i,_ in enumerate(reader.x_centers)]
         elif opts.obst == 2:
             self.blocks = list()
 
     def build_level(self):
 
-        self.scenario  = opts.scen
-        self.target.sprite = self.sprites[f"{self.scenario}tar"]
+        self.scenario = opts.scen
         self.manager.scenes["opti"].change_settings()
 
         self.set_blocks()
+        self.set_target()
+        self.t_max = levels.t_max
 
         sprite_player = [s for n,s in self.sprites.items() if n.startswith(f"{self.scenario}led")]
         sprite_npc    = [s for n,s in self.sprites.items() if n.startswith(f"{self.scenario}npc")]
 
+        args = self.args
         self.npcs   = [NPC(args,sprite_npc,args.r_npc) for _ in range(args.n)]
         self.player = Player(args,100,200,sprite_player,args.r_player)
-        self.engine = Engine(args, self.manager.scenes["game"])
+        self.engine = Engine(args,self.manager.scenes["game"])
 
         self.score = 0
         self.t0 = time.time()
-        self.time = args.t_max
+        self.time = self.t_max
 
     def update(self) -> None:
 
@@ -96,14 +83,16 @@ class GameScene(Scene):
         self.engine.update(dt)
 
         if opts.mode == 1:
-            self.time = int(args.t_max - (time.time()-self.t0))
-            self.score_cell.text = f"SCORE: {self.score}"
+            self.time = int(self.t_max - (time.time()-self.t0))
+            self.score_cell.text = f"SCORE: {str(self.score).zfill(3)}"
             self.score_cell.update(dt)
-            self.time_cell.text = f"TIME: {self.time}"
+            self.time_cell.text = f"TIME: {str(self.time).zfill(2)}"
             self.time_cell.update(dt)
 
     def render(self) -> None:
-        if opts.mode==0 or (opts.mode==1 and self.time>=0) or opts.mode==2:
+
+        if self.time >= 0:
+
             self.screen.fill("black")
             self.screen.blit(pygame.transform.scale_by(self.sprites[f"{self.scenario}scr"], glob.SF),(0,0))
             self.engine.render(self.screen)

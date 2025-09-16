@@ -1,6 +1,6 @@
-from ..config import glob, args, opts
+from ..config import glob
 from ..utils import Scene, SceneManager, Button
-import pygame, time
+import pygame
 
 
 class CreditScene(Scene):

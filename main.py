@@ -1,11 +1,11 @@
-from flock import glob, args, opts
+import warnings; warnings.filterwarnings("ignore", category=RuntimeWarning)
+
+from flock import glob
 from flock import SceneManager, MenuScene, GameScene, OptiScene, Tracker, ObstScene, CredScene
+
 import pygame, time
 import pygame.transform as pt
 from pygame.image import load as pil
-
-import warnings
-warnings.simplefilter('error', RuntimeWarning)
 
 class Game:
 
@@ -68,7 +68,7 @@ class Game:
         sprites["2npc_2"] = load_image("gfx/scen2/m2.png", 0.20, 90)
         sprites["2npc_3"] = load_image("gfx/scen2/m3.png", 0.20, 90)
         sprites["2npc_4"] = load_image("gfx/scen2/m2.png", 0.20, 90)
-        sprites["2scr"]   = load_image("gfx/scen2/runner_bckg_3.jpeg", 0.8, 0) # 0.8 per 2bis 
+        sprites["2scr"]   = load_image("gfx/scen2/runner_bckg_3.jpeg", 0.8, 0, flip_x=True) # 0.8 per 2bis 
         sprites["2obs"]   = load_image("gfx/scen2/runner_obst_3.png", 0.6, 0) # 0.3 per conetto, 0.8 per buca, 0.6 per fuoco 
         sprites["2tar"]   = load_image("gfx/scen2/runner_target.png", 0.35, 0)
 

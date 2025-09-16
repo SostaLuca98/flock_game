@@ -1,17 +1,18 @@
 from ..config import glob, opts
 from .entity import Entity
-import pygame, math, copy
+import pygame, math
 
 class Player(Entity):
 
     def __init__(self, args, x: float, y: float, sprite_list, r: float) -> None:
 
-        super(Player, self).__init__(args, r, sprite_list)
-        
+        super(Player, self).__init__(r, sprite_list)
+        self.influence = args.r_influence
+
         # Define movement constants
-        self.spe_c = self.args.speed
-        self.acc_c = self.args.acc
-        self.rot_c = self.args.rot
+        self.spe_c = args.speed
+        self.acc_c = args.acc
+        self.rot_c = args.rot
 
         # Define initial movement parameters
         self.tar_angle = 0
@@ -23,6 +24,8 @@ class Player(Entity):
         self.x , self.y  = x, y
         self.vx, self.vy = self.spe_c, 0
         self.set_direction("E")
+
+        self._build_sprite(sprite_list, r, 7)
 
     def _move(self, dt) -> None:
         
@@ -59,7 +62,7 @@ class Player(Entity):
             for j in range(-1,2):
                 if opts.scen == 1 and (j == -1 or j == 1): continue
                 cx, cy = self.x + i*glob.SW, self.y + j*glob.SH 
-                r, w   = self.args.r, (1 if opts.mode==2 else 3)
+                r, w   = self.influence, (1 if opts.mode==2 else 3)
                 pygame.draw.circle(screen, (255,117,20), (cx*glob.SF,cy*glob.SF), r*glob.SF, w)
 
         if opts.scen != 3: return 

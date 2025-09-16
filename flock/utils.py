@@ -1,5 +1,5 @@
-from .config import glob, args, opts
-import pygame, time, random
+from .config import glob
+import pygame, time
 
 class Button:
     

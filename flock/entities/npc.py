@@ -1,16 +1,16 @@
-from ..config import glob, args, opts
-from .entity import Entity
-import pygame, math, random, copy
+from ..config import glob, opts
+from  .entity import Entity
+import pygame, math, random
 
 class NPC(Entity):
 
     def __init__(self, args, sprite_list: pygame.Surface, r: float) -> None:
 
-        super(NPC, self).__init__(args, r, sprite_list)
+        super(NPC, self).__init__(r, sprite_list)
 
         # Define movement constants
         self.arrived = False
-        self.spe_c = self.args.speed * (1 + random.uniform(-0.4, 0.4))
+        self.spe_c = args.speed * (1 + 0.5*random.uniform(-1,1))
         self.acc_c = 0
         self.rot_c = 5
 
@@ -24,6 +24,8 @@ class NPC(Entity):
         self.x = random.randint(int(self.sprite.get_size()[0]/2),int(glob.SW-self.sprite.get_size()[0]/2))
         self.y = random.randint(int(self.sprite.get_size()[1]/2),int(glob.SH-self.sprite.get_size()[1]/2))
         self.vx, self.vy = math.cos(self.tar_angle), math.sin(self.tar_angle)
+
+        self._build_sprite(sprite_list, r, random.randint(5, 8))
 
     def _move(self, dt) -> None:
         
@@ -42,15 +44,13 @@ class NPC(Entity):
         self.x = self.x % glob.SW
         self.y = self.y % glob.SH
 
-        # Check if arrived
-        if self.arrived:
-            self.x, self.y = 1e4, 1e4
-            self.moving = False
-
         # Update direction angle for rendering
         self.dir_angle = (math.atan2(-self.vy,self.vx)*360/(2*math.pi))%(360)
 
     def update(self, dt) -> None:
+        if self.arrived:
+            self.x, self.y = 1e4, 1e4
+            self.moving = False
         super().update(dt)
 
     def render(self, screen: pygame.Surface) -> None:
