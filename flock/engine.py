@@ -89,7 +89,7 @@ class Engine:
 		self.blocks = game.blocks
 
 		self.render_graph = (opts.mode == 2)
-		self.connectivity_mode = ["smoothing", "binary"][0]
+		self.connectivity_mode = glob.INFLUENCE
 
 	def _build_flock(self):
 
@@ -135,7 +135,7 @@ class Engine:
 			self.R = np.sqrt(self.Dx**2 + self.Dy**2)
 
 			# Select influence rule
-			if self.connectivity_mode == "smoothing":
+			if self.connectivity_mode == "smooth":
 				self.A = smoothing_function(self.R, self.args.r_influence)
 			elif self.connectivity_mode == "binary":
 				self.A = binary_function(self.R, self.args.r_influence)

@@ -1,20 +1,30 @@
 from dataclasses import dataclass
+import json, os
 
 @dataclass
 class Globals:
 
     # PARAMETRI DA IMPOSTARE
-    VERTICAL_CAMERA = 1      # ID della camera come letto da check_camera.py
-    TRACKER_FLAG = False      # accende le webcam in INPUT (NECESSARIO per usare la mano)
-    CAMERA_FLAG  = False      # accende le finestre per MOSTRARE QUANTO VISTO DALLA WEBCAM (se si vuole)
-    SF = 0.9                 # scaling della finestra
-
-    MAIN_CAMERA = 0
+    
+    MAIN_CAMERA     = None  # ID della camera principale 
+    VERTICAL_CAMERA = None  # ID della camera come letto da check_camera.py
+    
+    TRACKER_FLAG = None     # accende le webcam in INPUT (NECESSARIO per usare la mano)
+    CAMERA_FLAG  = None     # accende le finestre per MOSTRARE QUANTO VISTO DALLA WEBCAM (se si vuole)
+    
+    INFLUENCE = None        # raggio di influenza iniziale [binary, smooth]
+    SF = None               # scaling della finestra
 
     # Parametri per rendering - NON modificare
     FPS = 30
     SW = 1280
     SH = 720
+
+    # Metodo per aggiornare i parametri globali
+    def update(self, params: dict):
+        for k, v in params.items():
+            if hasattr(self, k):
+                setattr(self, k, v)
 
 @dataclass
 class Levels:
@@ -52,6 +62,10 @@ class Options:
     temp = 2
 
 glob = Globals()
+with open("./config.json", "r") as f:
+    glob_params = json.load(f)
+glob.update(glob_params)
+
 opts = Options()
 levels = Levels()
 
