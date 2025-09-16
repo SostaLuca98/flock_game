@@ -101,6 +101,7 @@ class Game:
         sprites["compass"] = load_image("gfx/misc/compass.png", 1, 0)
         sprites["needle"]  = load_image("gfx/misc/needle.png", 1, 270)
         sprites["logo"]    = load_image("gfx/misc/logo.png", 0.5, 0)
+        sprites["logo_dmat"] = load_image("gfx/misc/logo_dmat.png", 0.5, 0)
 
         sprites["diff0"] = load_image("gfx/icons/diff_0.png", 1, 0)
         sprites["diff1"] = load_image("gfx/icons/diff_1.png", 1, 0)
