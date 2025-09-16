@@ -4,5 +4,5 @@
     "TRACKER_FLAG": false,     
     "CAMERA_FLAG":  false,      
     "INFLUENCE": "binary",
-    "SF": 1.2
+    "SF": 0.9
 }

@@ -1,18 +1,22 @@
-import warnings; warnings.filterwarnings("ignore", category=RuntimeWarning)
+import warnings, sys, os
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+original_stdout, original_stderr = sys.stdout, sys.stderr
+sys.stdout, sys.stderr = open(os.devnull, 'w'), open(os.devnull, 'w')
+import pygame
+sys.stdout, sys.stderr = original_stdout, original_stderr
+
+import time
+import pygame.transform as pt
+from pygame.image import load as pil
 
 from flock import glob
 from flock import SceneManager, MenuScene, GameScene, OptiScene, Tracker, ObstScene, CredScene
-
-import pygame, time
-import pygame.transform as pt
-from pygame.image import load as pil
 
 class Game:
 
     def __init__(self) -> None:
         """ Initialize global game variables """
 
-        pygame.init()
         self.running = True
         self.screen  = pygame.display.set_mode((int(glob.SW*glob.SF), int(glob.SH*glob.SF)))
         self.tracker = Tracker() if glob.TRACKER_FLAG else None
@@ -133,5 +137,6 @@ class Game:
         if self.tracker is not None:
             self.tracker.quit()
 
+pygame.init()
 g = Game()
 g.run()
