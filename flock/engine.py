@@ -209,9 +209,17 @@ class Engine:
 
 	def render(self, screen: pygame.Surface) -> None:
 
+		for i in range(-1,2):
+			if (not self.pacman_x) and (i == -1 or i == 1): continue
+			for j in range(-1,2):
+				if (not self.pacman_y) and (j == -1 or j == 1): continue
+				cx, cy = self.player.x + i*glob.SW, self.player.y + j*glob.SH
+				r, w   = self.args.r_influence, (1 if opts.mode==2 else 3)
+				pygame.draw.circle(screen, (255,117,20), (cx*glob.SF,cy*glob.SF), r*glob.SF, w)
+
 		if not self.render_graph: return
 
-		max_influence = self.args.w
+		max_influence = self.args.w + self.args.n
 		
 		def influence_to_color(value, is_last_node=False):
 			if is_last_node:
@@ -243,3 +251,4 @@ class Engine:
 				color = influence_to_color(self.A[i, j], is_last_node=(i == dim_flock))
 				draw_line((self.x[i], self.y[i]), (self.x[i]+self.Dx[i,j], self.y[i]+self.Dy[i,j]), color=color)
 				draw_line((self.x[j], self.y[j]), (self.x[j]+self.Dx[j,i], self.y[j]+self.Dy[j,i]), color=color)
+		

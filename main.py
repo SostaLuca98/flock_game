@@ -21,7 +21,7 @@ class Game:
         self.screen  = pygame.display.set_mode((int(glob.SW*glob.SF), int(glob.SH*glob.SF)))
         self.tracker = Tracker() if glob.TRACKER_FLAG else None
         self.sprites = self._load_sprites()
-        self._load_scenes(starting_scene="game")
+        self._load_scenes(starting_scene="menu")
 
     def _load_scenes(self, starting_scene="menu") -> None:
 

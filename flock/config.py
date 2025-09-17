@@ -58,7 +58,7 @@ class Options:
     scen = 2
     diff = 1
     obst = 0
-    mode = 1
+    mode = 0
     temp = 2
 
 glob = Globals()

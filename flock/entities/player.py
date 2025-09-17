@@ -7,7 +7,6 @@ class Player(Entity):
     def __init__(self, args, x: float, y: float, sprite_list, r: float) -> None:
 
         super(Player, self).__init__(r, sprite_list)
-        self.influence = args.r_influence
 
         # Define movement constants
         self.spe_c = args.speed
@@ -57,13 +56,6 @@ class Player(Entity):
     def render(self, screen: pygame.Surface) -> None:
 
         super().render(screen)
-                
-        for i in range(-1,2):
-            for j in range(-1,2):
-                if opts.scen == 1 and (j == -1 or j == 1): continue
-                cx, cy = self.x + i*glob.SW, self.y + j*glob.SH 
-                r, w   = self.influence, (1 if opts.mode==2 else 3)
-                pygame.draw.circle(screen, (255,117,20), (cx*glob.SF,cy*glob.SF), r*glob.SF, w)
 
         if opts.scen != 3: return 
         self.draw_fullarrow(screen, (self.x, self.y),  
