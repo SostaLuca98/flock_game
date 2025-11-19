@@ -60,6 +60,7 @@ class Options:
     obst = 0
     mode = 0
     temp = 2
+    bigobs_pos = 0
 
 glob = Globals()
 with open("./config.json", "r") as f:

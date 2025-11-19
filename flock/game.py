@@ -43,12 +43,28 @@ class GameScene(Scene):
                                  self.sprites[f"{self.scenario}obs"]) 
                                  for x,y,r in self.args.blocks]
         elif opts.obst == 1:
-            reader = self.manager.scenes['obst'].reader
-            self.blocks = [Block(reader.x_centers[i]+0.5,
-                                 reader.y_centers[i]+0.5,
-                                 reader.radii[i],
-                                 self.sprites[f"{self.scenario}obs"]) 
-                                 for i,_ in enumerate(reader.x_centers)]
+            if opts.scen == 1: # TODO: here we set bigobs in any fish case: consider allowing both custom obst and bigobs, as separate options
+                print(levels.blocks, flush=True)
+                if opts.bigobs_pos == 11:
+                    self.blocks = [Block(200,200,150,self.sprites[f"{self.scenario}obs"])]
+                elif opts.bigobs_pos == 12:
+                    self.blocks = [Block(1080,200,150,self.sprites[f"{self.scenario}obs"])]
+                elif opts.bigobs_pos == 21:
+                    self.blocks = [Block(200,520,150,self.sprites[f"{self.scenario}obs"])]
+                elif opts.bigobs_pos == 22:
+                    self.blocks = [Block(1080,520,150,self.sprites[f"{self.scenario}obs"])]
+                elif opts.bigobs_pos == 5:
+                    self.blocks = [Block(640,360,150,self.sprites[f"{self.scenario}obs"])]
+                else:
+                    self.blocks = list()
+                print(self.blocks, flush=True)
+            else:
+                reader = self.manager.scenes['obst'].reader
+                self.blocks = [Block(reader.x_centers[i]+0.5,
+                                    reader.y_centers[i]+0.5,
+                                    reader.radii[i],
+                                    self.sprites[f"{self.scenario}obs"])
+                                    for i,_ in enumerate(reader.x_centers)]
         elif opts.obst == 2:
             self.blocks = list()
 

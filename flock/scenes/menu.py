@@ -19,7 +19,7 @@ class MenuScene(Scene):
 
         # Create button events
         def newg_button():
-            if opts.obst == 1:
+            if opts.obst == 1 and not opts.scen == 1:  # TODO: here we set bigobs in any fish case: consider allowing both custom obst and bigobs, as separate options
                 self.manager.set_scene("obst")
                 self.manager.scenes["obst"].reader.open()
                 self.manager.scenes["obst"].reader.detect()
