@@ -4,5 +4,5 @@
     "TRACKER_FLAG": true,     
     "CAMERA_FLAG":  true,      
     "INFLUENCE": "smooth",
-    "SF": 0.9
+    "SF": 1.2
 }

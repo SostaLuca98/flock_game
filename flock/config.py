@@ -55,7 +55,7 @@ class Levels:
 @dataclass
 class Options:
 
-    scen = 2
+    scen = 1
     diff = 1
     obst = 0
     mode = 0
@@ -81,4 +81,4 @@ target_other = (100, 500, 75)
 default_bird  = Levels(pacman_x= True, pacman_y= True, blocks=blocks_other, target=target_other, n=200, w=500,  r_influence=150, r_npc=20, r_player=1.25*20, speed=75, rot=5, noise=2)
 default_fish  = Levels(pacman_x= True, pacman_y=False, blocks=blocks_other, target=target_other, n=150, w=1000, r_influence=100, r_npc=15, r_player=1.25*15, speed=50, rot=8, noise=2.5)
 default_human = Levels(pacman_x=False, pacman_y=False, blocks=blocks_human, target=target_human, n=100, w=1200, r_influence=100, r_npc=40, r_player=1.25*40, speed=65, rot=3, noise=2)
-default_abstr = Levels(pacman_x= True, pacman_y= True, blocks=blocks_other, target=target_other, n=200, w=500,  r_influence=150, r_npc=30, r_player=1.25*30, speed=50, rot=3, noise=1)
+default_abstr = Levels(pacman_x= True, pacman_y=False, blocks=blocks_other, target=target_other, n=200, w=500,  r_influence=150, r_npc=30, r_player=1.25*30, speed=50, rot=3, noise=1)

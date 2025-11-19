@@ -81,7 +81,7 @@ class Engine:
 
 		self.game = game
 		self.pacman_x = (opts.scen != 2) # RUNNERS
-		self.pacman_y = (opts.scen != 1) and (opts.scen != 2) # PESCI e RUNNERS
+		self.pacman_y = (opts.scen != 1) and (opts.scen != 2) and (opts.scen != 3) # PESCI e RUNNERS e ABSTRACT
 		self.collider = Collider(game, self.pacman_x, self.pacman_y)
 		
 		self.player = game.player
