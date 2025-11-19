@@ -103,9 +103,9 @@ class Game:
         sprites["logo"]    = load_image("gfx/misc/logo.png", 0.5, 0)
         sprites["logo_dmat"] = load_image("gfx/misc/logo_dmat.png", 0.5, 0)
 
-        sprites["diff0"] = load_image("gfx/icons/diff_0.png", 1, 0)
-        sprites["diff1"] = load_image("gfx/icons/diff_1.png", 1, 0)
-        sprites["diff2"] = load_image("gfx/icons/diff_2.png", 1, 0)
+        sprites["diff0"] = load_image("gfx/icons/velo_0.png", 1, 0)
+        sprites["diff1"] = load_image("gfx/icons/velo_1.png", 1, 0)
+        sprites["diff2"] = load_image("gfx/icons/velo_2.png", 1, 0)
 
         sprites["scen0"] = load_image("gfx/icons/scen_0.png", 1, 0)
         sprites["scen1"] = load_image("gfx/icons/scen_1.png", 1, 0)
@@ -118,6 +118,14 @@ class Game:
         sprites["mode0"] = load_image("gfx/icons/mode_0.png", 1, 0)
         sprites["mode1"] = load_image("gfx/icons/mode_1.png", 1, 0)
         sprites["mode2"] = load_image("gfx/icons/mode_2.png", 2, 0)
+
+        sprites["posNW"] = load_image("gfx/icons/posNW.png", 1, 0)
+        sprites["posNC"] = load_image("gfx/icons/posNC.png", 1, 0)
+        sprites["posNE"] = load_image("gfx/icons/posNE.png", 1, 0)
+        sprites["posSW"] = load_image("gfx/icons/posSW.png", 1, 0)
+        sprites["posSC"] = load_image("gfx/icons/posSC.png", 1, 0)
+        sprites["posSE"] = load_image("gfx/icons/posSE.png", 1, 0)
+        sprites["emptySW"] = load_image("gfx/icons/emptySW.png", 1, 0)
 
         return sprites
 

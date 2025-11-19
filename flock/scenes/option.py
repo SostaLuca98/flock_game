@@ -11,7 +11,7 @@ class OptiScene(Scene):
 
         # Create buttons
         self.scen_text = Button(240, 144, "Scenario")
-        self.diff_text = Button(240, 288, "Difficoltà")
+        self.diff_text = Button(240, 288, "Velocità")
         self.obst_text = Button(240, 432, "Ostacoli")
         self.mode_text = Button(240, 576, "Modalità")
 

@@ -78,7 +78,7 @@ Una volta installati i requirements e scaricato il gioco:
     - pecore:
         - tutti i bordi sono stile PacMan
         - target (modalità competitiva): recinto
-- Difficoltà: aumentandola, si aumenta la velocità del (SOLO) leader e riduce la velocità angolare in risposta ai comandi
+- Velocità: aumentandola, si aumenta la velocità del (SOLO) leader e riduce la velocità angolare in risposta ai comandi
 - Modalità:
     - libera (ochetta): no score
     - competitiva: in un certo tempo, portare gli animali verso il target.
