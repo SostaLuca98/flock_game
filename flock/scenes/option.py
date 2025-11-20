@@ -154,11 +154,11 @@ class OptiScene(Scene):
         if opts.diff == 1:
             levels.speed *= 2
             levels.rot   *= 0.9
-            levels.t_max *= 0.75
+            # levels.t_max *= 0.75
         if opts.diff == 2:
             levels.speed *= 4
             levels.rot   *= 0.7
-            levels.t_max *= 0.5
+            # levels.t_max *= 0.5
         if opts.mode == 2 and opts.scen == 3:
             if opts.temp == 0: levels.n = 10
             if opts.temp == 1: levels.n = 25

@@ -43,6 +43,6 @@ class Tracker:
                     inclination = self.calculate_inclination(hand_landmarks.landmark)
 
         if glob.CAMERA_FLAG:
-            cv2.imshow('MediaPipe Hands', image)
+            cv2.imshow('MediaPipe Hands', cv2.resize(image, (300,190)))
 
         if inclination is not None: return int(inclination)
