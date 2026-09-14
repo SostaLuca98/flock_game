@@ -2,8 +2,13 @@
 
 ## Requirements
 Python (3.11.9 se dove scaricarlo)
-Virtualenv
-Installate i requirements.txt tramite pip
+Virtualenv (su Windows, VScode propone in automatico di creare un venv)
+Installare i requirements.txt tramite pip:
+    ```
+    .\.venv\Scripts\activate
+    python.exe -m pip install -r requirements.txt
+    ```
+
 
 ## Funzionamento Generale
 Il programma è diviso in SCENE che costituiscono possibili livelli o menu. In ogni momento c'è una scena attiva scelta tramite MANAGER che consente anche di cambiare le scene tra di loro.
