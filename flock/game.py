@@ -43,7 +43,7 @@ class GameScene(Scene):
                                  self.sprites[f"{self.scenario}obs"]) 
                                  for x,y,r in self.args.blocks]
         elif opts.obst == 1:
-            if opts.scen == 1: # TODO: here we set bigobs in any fish case: consider allowing both custom obst and bigobs, as separate options
+            if opts.bigobst:  # TODO: here we use bigobst directly as selected in config.py: consider allowing both custom obst and bigobst, as separate options
                 print(levels.blocks, flush=True)
                 if opts.bigobs_pos == 11:
                     self.blocks = [Block(200,200,150,self.sprites[f"{self.scenario}obs"])]

@@ -104,7 +104,8 @@ class OptiScene(Scene):
                 pygame.draw.rect(self.screen, (0, 0, 0), (1150*glob.SF, 144*glob.SF - h / 2 + i*h - h/15, w/2, h/15))
             pygame.draw.circle(self.screen, (255, 0, 0), (1150*glob.SF, 144*glob.SF + 5*h-r/2+10*glob.SF), r)
 
-        if opts.obst == 1 and opts.scen == 1: # TODO: here we set bigobs in any fish case: consider allowing both custom obst and bigobs, as separate options
+        # if opts.obst == 1 and opts.scen == 1: # TODO: here we set bigobs in any fish case: consider allowing both custom obst and bigobs, as separate options
+        if opts.obst == 1 and opts.bigobst:  # TODO: here we use bigobst directly as selected in config.py: consider allowing both custom obst and bigobst, as separate options
             w, h = 30*glob.SF, 30*glob.SF
             if opts.bigobs_pos > 0:
                 if opts.bigobs_pos == 5:
@@ -118,8 +119,9 @@ class OptiScene(Scene):
             t.render(self.screen)
         for t in self.temps:
             if opts.mode == 2 and opts.scen == 3: t.render(self.screen)
-        for t in self.bigobs_poss:
-            if opts.obst == 1 and opts.scen == 1: t.render(self.screen)
+        if opts.bigobst:  # TODO: here we use bigobst directly as selected in config.py: consider allowing both custom obst and bigobst, as separate options
+            for t in self.bigobs_poss:
+                if opts.obst == 1: t.render(self.screen)
 
         pygame.display.update()
 
