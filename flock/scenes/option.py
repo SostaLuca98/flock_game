@@ -44,13 +44,14 @@ class OptiScene(Scene):
         self.temp_4 = Button(1150, 384,  "25", font=("Aptos", 32)).register_event(lambda : setattr(opts, 'temp', 1))
         self.temp_5 = Button(1150, 464,  "10", font=("Aptos", 32)).register_event(lambda : setattr(opts, 'temp', 0))
 
-        self.bigobs_pos_nw = Button(1050, 412, "NW", pygame.transform.scale_by(sprites[f"posNW"], 0.2)).register_event(lambda : setattr(opts, 'bigobs_pos', 11))
-        self.bigobs_pos_nc = Button(1110, 412, "NC", pygame.transform.scale_by(sprites[f"posNC"], 0.2)).register_event(lambda : setattr(opts, 'bigobs_pos', 5))
-        self.bigobs_pos_ne = Button(1170, 412, "NE", pygame.transform.scale_by(sprites[f"posNE"], 0.2)).register_event(lambda : setattr(opts, 'bigobs_pos', 12))
-        # self.bigobs_pos_sw = Button(1050, 472, "SW", pygame.transform.scale_by(sprites[f"posSW"], 0.2)).register_event(lambda : setattr(opts, 'bigobs_pos', 21))
+        self.bigobs_pos_nw = Button(1050, 412, "NW", pygame.transform.scale_by(sprites[f"posNW"], 0.2)).register_event(lambda : [setattr(opts, 'bigobst', True), setattr(opts, 'bigobs_pos', 11)])
+        self.bigobs_pos_nc = Button(1110, 412, "NC", pygame.transform.scale_by(sprites[f"posNC"], 0.2)).register_event(lambda : [setattr(opts, 'bigobst', True), setattr(opts, 'bigobs_pos', 5)])
+        self.bigobs_pos_ne = Button(1170, 412, "NE", pygame.transform.scale_by(sprites[f"posNE"], 0.2)).register_event(lambda : [setattr(opts, 'bigobst', True), setattr(opts, 'bigobs_pos', 12)])
+        # self.bigobs_pos_sw = Button(1050, 472, "SW", pygame.transform.scale_by(sprites[f"posSW"], 0.2)).register_event(lambda : [setattr(opts, 'bigobst', True), setattr(opts, 'bigobs_pos', 21)])
         self.bigobs_empty_sw = Button(1050, 472, "SW", pygame.transform.scale_by(sprites[f"emptySW"], 0.2))
-        self.bigobs_pos_sc = Button(1110, 472, "SC", pygame.transform.scale_by(sprites[f"posSC"], 0.2)).register_event(lambda : setattr(opts, 'bigobs_pos', 5))
-        self.bigobs_pos_se = Button(1170, 472, "SE", pygame.transform.scale_by(sprites[f"posSE"], 0.2)).register_event(lambda : setattr(opts, 'bigobs_pos', 22))
+        self.bigobs_pos_sc = Button(1110, 472, "SC", pygame.transform.scale_by(sprites[f"posSC"], 0.2)).register_event(lambda : [setattr(opts, 'bigobst', True), setattr(opts, 'bigobs_pos', 5)])
+        self.bigobs_pos_se = Button(1170, 472, "SE", pygame.transform.scale_by(sprites[f"posSE"], 0.2)).register_event(lambda : [setattr(opts, 'bigobst', True), setattr(opts, 'bigobs_pos', 22)])
+        self.cam_obs = Button(1230, 442, "cam", pygame.transform.scale_by(sprites[f"cam"], 0.12)).register_event(lambda : setattr(opts, 'bigobst', False))
 
         self.menu_button = Button(1150, 650, "Menu").register_event(lambda : self.manager.set_scene("menu"))
 
@@ -61,7 +62,7 @@ class OptiScene(Scene):
                         self.obst_1, self.obst_2, self.obst_3,
                         self.mode_1, self.mode_2, self.mode_3]
         self.temps = [self.temp_1, self.temp_2, self.temp_3, self.temp_4, self.temp_5]
-        self.bigobs_poss = [self.bigobs_pos_nw, self.bigobs_pos_nc, self.bigobs_pos_ne, self.bigobs_empty_sw, self.bigobs_pos_sc, self.bigobs_pos_se]
+        self.bigobs_poss = [self.bigobs_pos_nw, self.bigobs_pos_nc, self.bigobs_pos_ne, self.bigobs_empty_sw, self.bigobs_pos_sc, self.bigobs_pos_se, self.cam_obs]
 
     def update(self) -> None:
 
@@ -104,14 +105,16 @@ class OptiScene(Scene):
                 pygame.draw.rect(self.screen, (0, 0, 0), (1150*glob.SF, 144*glob.SF - h / 2 + i*h - h/15, w/2, h/15))
             pygame.draw.circle(self.screen, (255, 0, 0), (1150*glob.SF, 144*glob.SF + 5*h-r/2+10*glob.SF), r)
 
-        # if opts.obst == 1 and opts.scen == 1: # TODO: here we set bigobs in any fish case: consider allowing both custom obst and bigobs, as separate options
-        if opts.obst == 1 and opts.bigobst:  # TODO: here we use bigobst directly as selected in config.py: consider allowing both custom obst and bigobst, as separate options
+        if opts.obst == 1:
             w, h = 30*glob.SF, 30*glob.SF
-            if opts.bigobs_pos > 0:
+            if opts.bigobst:
                 if opts.bigobs_pos == 5:
                     pygame.draw.rect(self.screen, (0, 0, 255), (1110*glob.SF - w / 2, 442*glob.SF - h / 2, w, h))
                 else:
                     pygame.draw.rect(self.screen, (0, 0, 255), ( ( 1037 + 147*(opts.bigobs_pos % 10 - 1) )*glob.SF - w / 2, ( 399 + 86*(opts.bigobs_pos // 10 - 1) )*glob.SF - h / 2, w, h))
+            else:
+                loc_scale = 0.12/0.08
+                pygame.draw.rect(self.screen, (0, 0, 255), (1230*glob.SF - loc_scale*w / 2, 442*glob.SF - loc_scale*h / 2, loc_scale*w, loc_scale*h))
 
         for b in self.buttons:
             b.render(self.screen)
@@ -119,9 +122,8 @@ class OptiScene(Scene):
             t.render(self.screen)
         for t in self.temps:
             if opts.mode == 2 and opts.scen == 3: t.render(self.screen)
-        if opts.bigobst:  # TODO: here we use bigobst directly as selected in config.py: consider allowing both custom obst and bigobst, as separate options
-            for t in self.bigobs_poss:
-                if opts.obst == 1: t.render(self.screen)
+        for t in self.bigobs_poss:
+            if opts.obst == 1: t.render(self.screen)
 
         pygame.display.update()
 

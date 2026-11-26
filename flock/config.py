@@ -60,7 +60,7 @@ class Options:
     obst = 0
     mode = 0
     temp = 2
-    bigobst = True # TODO: here we use bigobst directly as selected in config.py: consider allowing both custom obst and bigobst, as separate options
+    bigobst = True
     bigobs_pos = 0
 
 glob = Globals()

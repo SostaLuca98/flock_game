@@ -126,6 +126,7 @@ class Game:
         sprites["posSC"] = load_image("gfx/icons/posSC.png", 1, 0)
         sprites["posSE"] = load_image("gfx/icons/posSE.png", 1, 0)
         sprites["emptySW"] = load_image("gfx/icons/emptySW.png", 1, 0)
+        sprites["cam"] = load_image("gfx/icons/cam.png", 1, 0)
 
         return sprites
 
